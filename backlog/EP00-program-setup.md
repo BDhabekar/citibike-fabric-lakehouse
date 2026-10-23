@@ -38,7 +38,7 @@ As Bharat, I want the design, conventions and backlog in one repo, so that any c
 - **Sprint:** 0
 - **Depends on:** T001
 - **DP-700:** 1.2
-- **Status:** todo
+- **Status:** done
 - **Read first:** docs/conventions.md §7
 **Do**
 1. On github.com, signed in as `BDhabekar`: New repository → name `citibike-fabric-lakehouse` → **Private** → no README, no .gitignore, no licence (the repo already has its files).
@@ -50,6 +50,6 @@ As Bharat, I want the design, conventions and backlog in one repo, so that any c
    ```
 3. On GitHub: Settings → General → Default branch → switch to `dev` (Fabric commits there; `main` stays the release branch).
 **Acceptance**
-- [ ] The repo exists, private, with branches `main` and `dev`, same commit on both.
-- [ ] Default branch is `dev`.
-**Result:** —
+- [x] The repo exists, private, with branches `main` and `dev`, same commit on both.
+- [x] Default branch is `dev`.
+**Result:** Oct 23: GitHub repo created and pushed; main and dev both at 06950e1 locally and on origin. Closed on Bharat's call (private visibility and default branch dev not re-checked by Claude). ADO: closed in bdhabekar-citibike.

@@ -44,4 +44,5 @@ Do not read the other epic files, the whole data-contract file or the ADE HQ tra
 
 *Updated by each task chat in its last step: one line, newest first.*
 
+- Sat Oct 24, 2026 · T002 done: repo on GitHub, main and dev pushed. Backlog mirrored to Azure Boards (dev.azure.com/bdhabekar-citibike, project citibike-fabric-lakehouse) for tracking. Next: Sprint 1 from Mon Oct 26 with T003.
 - Fri Oct 23, 2026 · T001 done: repo scaffolded and committed locally. Next: T002 (Bharat creates the GitHub repo and pushes), then Sprint 1 from Mon Oct 26 with T003.
