@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+
+# Power BI local files (the model and report live in fabric/ as TMDL and PBIR)
+*.pbix
+**/.pbi/localSettings.json
+**/.pbi/cache.abf
+
+# Data and evidence never go in this repo (seed/ is the one exception)
+*.csv
+!seed/*.csv
+*.zip
+*.parquet
+evidence/
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

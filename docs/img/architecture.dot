@@ -1,0 +1,53 @@
+digraph citibike {
+  graph [rankdir=TB, bgcolor="#FAF6EE", fontname="Helvetica", fontsize=12, pad=0.4, nodesep=0.35, ranksep=0.55, label="Citi Bike operations lakehouse on Microsoft Fabric  (one workspace per environment: dev, test, prod)", labelloc=t, fontcolor="#1B1B1B"];
+  node  [shape=box, style="rounded,filled", fillcolor="#FFFFFF", color="#1B1B1B", fontname="Helvetica", fontsize=11, fontcolor="#1B1B1B", margin="0.18,0.08"];
+  edge  [color="#1B1B1B", fontname="Helvetica", fontsize=9, fontcolor="#444444", arrowsize=0.7];
+
+  subgraph cluster_src { label="Public sources"; style="rounded,dashed"; color="#888888"; fontcolor="#1B1B1B";
+    om_arch [label="Open-Meteo archive\nREST · JSON · daily"];
+    om_fc   [label="Open-Meteo forecast\nREST · JSON · daily"];
+    gbfs_ref[label="GBFS station_information\n+ system_regions\nJSON · daily snapshot"];
+    trips   [label="Citi Bike trip files\nzipped CSV · ~1 GB/month"];
+    gbfs_st [label="GBFS station_status\nJSON · every 60 s"];
+  }
+
+  subgraph cluster_ing { label="Ingestion"; style="rounded"; color="#E8642C"; fontcolor="#E8642C";
+    pl_w  [label="pl_ingest_weather_archive\nCopy · REST connector\nwatermark + 7-day overlap"];
+    nb_fc [label="nb_ingest_weather_forecast\nPython requests\nretries + backoff"];
+    pl_g  [label="pl_ingest_gbfs_reference\nCopy · HTTP · metadata-driven\n(ctl.source_config)"];
+    pl_t  [label="pl_ingest_trips_month\nCopy · HTTP · ZipDeflate"];
+    es    [label="es_station_status\nEventstream · HTTP source", fillcolor="#FDE8DD"];
+  }
+
+  subgraph cluster_lake { label="Lakehouse (Spark)"; style="rounded"; color="#1B1B1B";
+    land  [label="lh_bronze · Files\nraw JSON and CSV, immutable\npartitioned by ingest date"];
+    bronze[label="lh_bronze · Tables\nbronze_weather · bronze_gbfs · bronze_trips\nStructured Streaming availableNow"];
+    silver[label="lh_silver · Tables\nweather_hourly · region · station_scd2\ntrips · station_status_hourly\nquarantine_* · data-quality rules"];
+  }
+
+  subgraph cluster_rt { label="Real-Time Intelligence"; style="rounded"; color="#E8642C"; fontcolor="#E8642C";
+    eh   [label="eh_citibike · kqldb_citibike\nstation_status_raw → update policy → station_status\nmv_station_status_latest", fillcolor="#FDE8DD"];
+    act  [label="act_citibike_alerts\nempty 15 min at rush hour", fillcolor="#FDE8DD"];
+    rtd  [label="rtd_citibike_live\nReal-Time Dashboard", fillcolor="#FDE8DD"];
+  }
+
+  gold [label="wh_gold · Warehouse (T-SQL)\ndim: date · station (SCD2) · region · weather_hour · weather_code\nfact: trip · station_hour   ·   rpt views   ·   ctl run log + DQ results\nRLS by region · masking · column security"];
+  sm   [label="sm_citibike (Direct Lake)  →  rpt_citibike_ops\ndemand vs weather · empty at rush hour · pipeline health"];
+
+  ops  [label="pl_daily 11:30 IST · pl_monthly_trips on the 8th · pl_backfill\nlogging (ctl.run_log) · failure alert · Monitoring hub · Capacity Metrics", shape=note, fillcolor="#FFFFFF"];
+  cicd [label="GitHub: dev ↔ ws-citibike-dev  ·  PR dev → main with CI checks\ndeployment pipeline dev → test → prod  ·  vl_citibike value sets", shape=note, fillcolor="#FFFFFF"];
+
+  om_arch -> pl_w; om_fc -> nb_fc; gbfs_ref -> pl_g; trips -> pl_t; gbfs_st -> es;
+  pl_w -> land; nb_fc -> land; pl_g -> land; pl_t -> land;
+  land -> bronze [label=" new files only"];
+  bronze -> silver [label=" PySpark: flatten, type,\n dedupe, SCD2, UTC"];
+  es -> eh [label=" every minute"];
+  eh -> act; eh -> rtd;
+  eh -> silver [label=" OneLake availability\n + shortcut", style=dashed];
+  silver -> eh [label=" shortcut with\n query acceleration", style=dashed];
+  silver -> gold [label=" stored procedures\n delete + insert per window"];
+  gold -> sm;
+  ops -> gold [style=invis];
+  sm -> ops [style=invis];
+  ops -> cicd [style=invis];
+}
