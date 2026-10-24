@@ -46,6 +46,7 @@ Do not read the other epic files, the whole data-contract file or the ADE HQ tra
 
 *Updated by each task chat in its last step: one line, newest first.*
 
+- Sat Oct 24, 2026 · T012 done: rulesets on `main` and `dev` proved (direct push to `main` refused, GH013). Next: Sprint 1 from Mon Oct 26 with T003.
 - Sat Oct 24, 2026 · Personal details redacted from the whole history (one-off force push, Bharat's call), repo made public, rulesets on `main` and `dev` (T012). Azure Boards GitHub app connected; closing commits end with `Closed AB#<ADO>`.
 - Sat Oct 24, 2026 · T002 done: repo on GitHub, main and dev pushed. Backlog mirrored to Azure Boards (dev.azure.com/bdhabekar-citibike, project citibike-fabric-lakehouse) for tracking. Next: Sprint 1 from Mon Oct 26 with T003.
 - Fri Oct 23, 2026 · T001 done: repo scaffolded and committed locally. Next: T002 (Bharat creates the GitHub repo and pushes), then Sprint 1 from Mon Oct 26 with T003.
