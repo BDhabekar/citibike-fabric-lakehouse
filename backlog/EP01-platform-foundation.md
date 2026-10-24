@@ -11,6 +11,7 @@ As the platform owner, I want a Fabric trial capacity in my own tenant, so that 
 
 #### T003 · Sign in with the tenant account and switch on the tenant settings
 - **Story:** US002
+- **ADO:** #9
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 30 min
@@ -38,6 +39,7 @@ As the platform owner, I want a Fabric trial capacity in my own tenant, so that 
 
 #### T004 · Start the 60-day trial and record its dates
 - **Story:** US002
+- **ADO:** #10
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 15 min
@@ -59,6 +61,7 @@ As the platform owner, I want a Fabric trial capacity in my own tenant, so that 
 
 #### T005 · Install the Capacity Metrics app and read a baseline
 - **Story:** US002
+- **ADO:** #11
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 30 min
@@ -84,6 +87,7 @@ As a developer, I want separate dev, test and prod workspaces with the same item
 
 #### T006 · Create the three workspaces, their settings and the domain
 - **Story:** US003
+- **ADO:** #14
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 45 min
@@ -106,6 +110,7 @@ As a developer, I want separate dev, test and prod workspaces with the same item
 
 #### T007 · Create the test analyst user and confirm the role map
 - **Story:** US003
+- **ADO:** #15
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 20 min
@@ -125,6 +130,7 @@ As a developer, I want separate dev, test and prod workspaces with the same item
 
 #### T008 · Create the lakehouses and the warehouse in dev, and upload the seed file
 - **Story:** US003
+- **ADO:** #16
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 20 min
@@ -148,6 +154,7 @@ As a developer, I want Spark settings and environment values stored as items, so
 
 #### T009 · Create the environment `env_citibike`
 - **Story:** US004
+- **ADO:** #18
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 30 min
@@ -170,6 +177,7 @@ As a developer, I want Spark settings and environment values stored as items, so
 
 #### T010 · Create the variable library `vl_citibike` with three value sets
 - **Story:** US004
+- **ADO:** #19
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 40 min
@@ -196,6 +204,7 @@ As a developer, I want the dev workspace synced to GitHub, so that every change 
 
 #### T011 · Connect `ws-citibike-dev` to GitHub and make the first workspace commit
 - **Story:** US005
+- **ADO:** #22
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 30 min
@@ -217,6 +226,7 @@ As a developer, I want the dev workspace synced to GitHub, so that every change 
 
 #### T012 · Protect `main` and `dev` on GitHub
 - **Story:** US005
+- **ADO:** #23
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 15 min
@@ -241,6 +251,7 @@ As the architect, I want each risky feature tried on a small case first, so that
 
 #### T013 · Spike R1: the Eventstream HTTP source polls the station feed
 - **Story:** US006
+- **ADO:** #26
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 45 min
@@ -265,6 +276,7 @@ As the architect, I want each risky feature tried on a small case first, so that
 
 #### T014 · Spike R2: find an alert route that reaches Bharat
 - **Story:** US006
+- **ADO:** #27
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 45 min
@@ -287,6 +299,7 @@ As the architect, I want each risky feature tried on a small case first, so that
 
 #### T015 · Spike R3: copy a zipped trip file from HTTP and unzip it into Files
 - **Story:** US006
+- **ADO:** #28
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 45 min
@@ -309,6 +322,7 @@ As the architect, I want each risky feature tried on a small case first, so that
 
 #### T016 · Spike R4: CI can import a notebook's Git file and test it
 - **Story:** US006
+- **ADO:** #29
 - **Owner:** Claude builds
 - **Model:** Sonnet
 - **Estimate:** 30 min
@@ -328,6 +342,7 @@ As the architect, I want each risky feature tried on a small case first, so that
 
 #### T017 · Spike R5: Structured Streaming `availableNow` over a Files folder
 - **Story:** US006
+- **ADO:** #30
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 30 min
@@ -348,6 +363,7 @@ As the architect, I want each risky feature tried on a small case first, so that
 
 #### T018 · Spike R6: warehouse reads silver, a pipeline runs a procedure, and the variable library resolves
 - **Story:** US006
+- **ADO:** #31
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 45 min
@@ -371,6 +387,7 @@ As the architect, I want each risky feature tried on a small case first, so that
 
 #### T019 · Close the spikes: record outcomes and adjust affected cards
 - **Story:** US006
+- **ADO:** #32
 - **Owner:** Claude builds
 - **Model:** Sonnet
 - **Estimate:** 30 min

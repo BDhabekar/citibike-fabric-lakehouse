@@ -11,6 +11,7 @@ As a reviewer, I want tests and checks to run on every pull request, so that a b
 
 #### T075 · `.github/workflows/ci.yml`
 - **Story:** US026
+- **ADO:** #133
 - **Owner:** Claude builds
 - **Model:** Sonnet
 - **Estimate:** 60 min
@@ -31,6 +32,7 @@ As a reviewer, I want tests and checks to run on every pull request, so that a b
 
 #### T076 · Require the checks on `main`
 - **Story:** US026
+- **ADO:** #134
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 10 min
@@ -53,6 +55,7 @@ As a release manager, I want items promoted dev → test → prod with each stag
 
 #### T077 · Deployment pipeline `dp-citibike`
 - **Story:** US027
+- **ADO:** #137
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 45 min
@@ -73,6 +76,7 @@ As a release manager, I want items promoted dev → test → prod with each stag
 
 #### T078 · `pl_post_deploy` and a smoke run in test
 - **Story:** US027
+- **ADO:** #138
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 60 min
@@ -92,6 +96,7 @@ As a release manager, I want items promoted dev → test → prod with each stag
 
 #### T079 · Release v1.0.0 to prod
 - **Story:** US027
+- **ADO:** #139
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 90 min
@@ -115,6 +120,7 @@ As a release manager, I want items promoted dev → test → prod with each stag
 
 #### T080 · One change through the whole path
 - **Story:** US027
+- **ADO:** #140
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 45 min

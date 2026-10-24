@@ -12,6 +12,7 @@ As Bharat, I want the design, conventions and backlog in one repo, so that any c
 
 #### T001 · Scaffold the repo, the design docs and the backlog
 - **Story:** US001
+- **ADO:** #4
 - **Owner:** Claude builds
 - **Model:** Opus
 - **Estimate:** 120 min
@@ -32,6 +33,7 @@ As Bharat, I want the design, conventions and backlog in one repo, so that any c
 
 #### T002 · Create the GitHub repository and push both branches
 - **Story:** US001
+- **ADO:** #5
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Haiku
 - **Estimate:** 15 min

@@ -102,7 +102,8 @@ A notebook that finds an error-severity check above its threshold raises an exce
 ## 7. Git
 
 - Branches: `dev` (connected to `ws-citibike-dev`), `main` (what is in prod). `main` takes changes only through a pull request from `dev` with green checks.
-- Commit messages: `T0xx: <what changed>` for task work; Fabric commits from the workspace use the same pattern, typed in the Source control pane.
+- Commit messages: `T0xx: <what changed>` for task work; Fabric commits from the workspace use the same pattern, typed in the Source control pane. The commit that closes a task ends with `Closed AB#<ADO>` (the card's ADO id); other commits for the task may add a plain `AB#<ADO>` to link without closing.
+- Azure Boards: the Azure Boards GitHub app connects this repo to `dev.azure.com/bdhabekar-citibike` (project `citibike-fabric-lakehouse`). Repo cards stay the source of truth; Azure Boards is the tracking view.
 - Tags: `vMAJOR.MINOR.PATCH` on `main` after each release to prod.
 - Identity in this repo: `user.email = 166133418+BDhabekar@users.noreply.github.com`, `user.name = BDhabekar`.
 - Never committed: secrets, tokens, `.pbix` files, data files other than `seed/`, anything under `evidence/` (screenshots live in ADE HQ).
@@ -123,7 +124,7 @@ Only for `nb_lib_common`, semantic model TMDL and report PBIR files, and only in
 
 ## 10. Task chats and commits
 
-Each task chat commits its own repo changes at the end of the task, on `dev`, with the message `T0xx: <summary>`, and ends with the two lines Bharat runs on Windows:
+Each task chat commits its own repo changes at the end of the task, on `dev`, with the message `T0xx: <summary> Closed AB#<ADO>`, and ends with the two lines Bharat runs on Windows:
 
 ```
 git -C D:\GitRepositories\citibike-fabric-lakehouse pull --rebase origin dev

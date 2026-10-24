@@ -11,6 +11,7 @@ As an operations lead, I want one page for demand against weather, one for empty
 
 #### T081 · `sm_citibike`: Direct Lake model, relationships and measures
 - **Story:** US028
+- **ADO:** #144
 - **Owner:** Claude builds
 - **Model:** Sonnet
 - **Estimate:** 60 min
@@ -30,6 +31,7 @@ As an operations lead, I want one page for demand against weather, one for empty
 
 #### T082 · `rpt_citibike_ops`: three pages, released as v1.1.0
 - **Story:** US028
+- **ADO:** #145
 - **Owner:** Claude builds
 - **Model:** Sonnet
 - **Estimate:** 90 min
@@ -49,6 +51,7 @@ As an operations lead, I want one page for demand against weather, one for empty
 
 #### T083 · Direct Lake framing and fallback, shown
 - **Story:** US028
+- **ADO:** #146
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 30 min

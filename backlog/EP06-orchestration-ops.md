@@ -11,6 +11,7 @@ As an operator, I want one daily run and one monthly run, so that nobody has to 
 
 #### T064 · `pl_daily`
 - **Story:** US023
+- **ADO:** #114
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 90 min
@@ -35,6 +36,7 @@ As an operator, I want one daily run and one monthly run, so that nobody has to 
 
 #### T065 · `pl_monthly_trips`
 - **Story:** US023
+- **ADO:** #115
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 60 min
@@ -53,6 +55,7 @@ As an operator, I want one daily run and one monthly run, so that nobody has to 
 
 #### T066 · `pl_backfill`
 - **Story:** US023
+- **ADO:** #116
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 45 min
@@ -71,6 +74,7 @@ As an operator, I want one daily run and one monthly run, so that nobody has to 
 
 #### T067 · Failure path, alert and a forced failure
 - **Story:** US023
+- **ADO:** #117
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 60 min
@@ -95,6 +99,7 @@ As an operator, I want to see what ran, what it cost in capacity, and why someth
 
 #### T068 · Monitoring hub, Spark monitoring and capacity use of a daily run
 - **Story:** US024
+- **ADO:** #120
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 45 min
@@ -114,6 +119,7 @@ As an operator, I want to see what ran, what it cost in capacity, and why someth
 
 #### T069 · Error drills: break it on purpose, find it, fix it
 - **Story:** US024
+- **ADO:** #121
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 60 min
@@ -132,6 +138,7 @@ As an operator, I want to see what ran, what it cost in capacity, and why someth
 
 #### T070 · Optimisation pass with before and after numbers
 - **Story:** US024
+- **ADO:** #122
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 60 min

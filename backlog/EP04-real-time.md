@@ -11,6 +11,7 @@ As an operations lead, I want every station's status landed every minute, so tha
 
 #### T045 · Eventhouse, KQL database, tables, policies and the update policy
 - **Story:** US018
+- **ADO:** #83
 - **Owner:** Claude writes, Bharat runs
 - **Model:** Sonnet
 - **Estimate:** 45 min
@@ -32,6 +33,7 @@ As an operations lead, I want every station's status landed every minute, so tha
 
 #### T046 · `es_station_status`: the live poller, built from the runbook
 - **Story:** US018
+- **ADO:** #84
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 45 min
@@ -52,6 +54,7 @@ As an operations lead, I want every station's status landed every minute, so tha
 
 #### T047 · Latest-state view and the KQL queryset with windowing
 - **Story:** US018
+- **ADO:** #85
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 60 min
@@ -78,6 +81,7 @@ As an operations lead, I want a live dashboard and an alert when a station stays
 
 #### T048 · Station names in KQL through a shortcut with query acceleration
 - **Story:** US019
+- **ADO:** #88
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 45 min
@@ -98,6 +102,7 @@ As an operations lead, I want a live dashboard and an alert when a station stays
 
 #### T049 · `rtd_citibike_live` Real-Time Dashboard
 - **Story:** US019
+- **ADO:** #89
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 45 min
@@ -116,6 +121,7 @@ As an operations lead, I want a live dashboard and an alert when a station stays
 
 #### T050 · Activator: rush-hour empty-station alert
 - **Story:** US019
+- **ADO:** #90
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 45 min
@@ -142,6 +148,7 @@ As an analyst, I want hourly availability per station kept in the lakehouse, so 
 
 #### T051 · OneLake availability for `station_status` and the shortcut in `lh_silver`
 - **Story:** US020
+- **ADO:** #93
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 30 min
@@ -160,6 +167,7 @@ As an analyst, I want hourly availability per station kept in the lakehouse, so 
 
 #### T052 · `nb_silver_station_status_hourly`
 - **Story:** US020
+- **ADO:** #94
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 75 min
@@ -181,6 +189,7 @@ As an analyst, I want hourly availability per station kept in the lakehouse, so 
 
 #### T053 · Tests for the hourly aggregation
 - **Story:** US020
+- **ADO:** #95
 - **Owner:** Claude builds
 - **Model:** Sonnet
 - **Estimate:** 30 min

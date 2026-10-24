@@ -27,7 +27,7 @@ TASK_RE = re.compile(r"^#### (T\d{3}) · (.+)$")
 FIELD_RE = re.compile(r"^- \*\*([A-Za-z0-9 -]+):\*\* ?(.*)$")
 RESULT_RE = re.compile(r"^\*\*Result:\*\* ?(.*)$")
 
-REQUIRED = ["Story", "Owner", "Model", "Estimate", "Sprint", "Depends on", "DP-700", "Status", "Read first"]
+REQUIRED = ["Story", "ADO", "Owner", "Model", "Estimate", "Sprint", "Depends on", "DP-700", "Status", "Read first"]
 STATUSES = {"todo", "doing", "done", "blocked"}
 MODELS = {"Sonnet", "Haiku", "Opus"}
 OWNERS = ("Bharat builds", "Claude builds", "Claude writes, Bharat runs")
@@ -135,6 +135,8 @@ def cmd_check(_args) -> int:
             problems.append(f"{tid}: bad model '{t.fields.get('Model')}'")
         if not t.fields.get("Owner", "").startswith(OWNERS):
             problems.append(f"{tid}: bad owner '{t.fields.get('Owner')}'")
+        if not re.fullmatch(r"#\d+", t.fields.get("ADO", "")):
+            problems.append(f"{tid}: ADO must look like '#9' (the Azure Boards work item id)")
         if t.minutes <= 0:
             problems.append(f"{tid}: estimate must look like '45 min'")
         if t.sprint == 99:
@@ -154,6 +156,12 @@ def cmd_check(_args) -> int:
                 problems.append(f"{tid}: done but has unticked acceptance boxes")
             if t.result in ("", "—"):
                 problems.append(f"{tid}: done but Result line is empty")
+    seen_ado = {}
+    for tid, t in tasks.items():
+        a = t.fields.get("ADO")
+        if a and a in seen_ado:
+            problems.append(f"{tid}: ADO {a} already used by {seen_ado[a]}")
+        seen_ado.setdefault(a, tid)
     for sid, s in stories.items():
         if not any(t.story == sid for t in tasks.values()):
             problems.append(f"{sid}: story has no tasks")
@@ -200,7 +208,7 @@ def cmd_next(args) -> int:
     shown = ready if args.all else ready[:8]
     for t in shown:
         mark = " (in progress)" if t.fields.get("Status") == "doing" else ""
-        print(f"{t.id}  sprint {t.sprint}  {t.fields.get('Model'):6}  {t.minutes:>3} min  {t.title}{mark}")
+        print(f"{t.id}  {t.fields.get('ADO', ''):5}  sprint {t.sprint}  {t.fields.get('Model'):6}  {t.minutes:>3} min  {t.title}{mark}")
     if len(ready) > len(shown):
         print(f"... {len(ready) - len(shown)} more ready (use --all)")
     return 0
@@ -215,7 +223,8 @@ def cmd_show(args) -> int:
     print(f"{t.epic} · {epics[t.epic]['title']}")
     print(f"  {t.feature} · {features[t.feature]['title']}")
     print(f"    {t.story} · {stories[t.story]['title']}")
-    print(f"File: {t.file.relative_to(ROOT)}\n")
+    print(f"File: {t.file.relative_to(ROOT)}")
+    print(f"Commit message: {t.id}: <summary> Closed AB{t.fields.get('ADO', '#?')}\n")
     print("\n".join(card_lines(t)))
     open_deps = [d for d in t.deps if tasks.get(d) and tasks[d].fields.get("Status") != "done"]
     if open_deps:

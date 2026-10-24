@@ -11,6 +11,7 @@ As a candidate, I want a README an interviewer can read in five minutes, so that
 
 #### T084 · README in full
 - **Story:** US029
+- **ADO:** #150
 - **Owner:** Claude builds
 - **Model:** Sonnet
 - **Estimate:** 90 min
@@ -30,6 +31,7 @@ As a candidate, I want a README an interviewer can read in five minutes, so that
 
 #### T085 · Evidence pack
 - **Story:** US029
+- **ADO:** #151
 - **Owner:** Claude builds
 - **Model:** Sonnet
 - **Estimate:** 45 min
@@ -47,6 +49,7 @@ As a candidate, I want a README an interviewer can read in five minutes, so that
 
 #### T086 · Make the repo public
 - **Story:** US029
+- **ADO:** #152
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 20 min
@@ -70,6 +73,7 @@ As a candidate, I want to explain the project fluently and answer its likely que
 
 #### T087 · Twenty-five Fabric questions into the interview bank
 - **Story:** US030
+- **ADO:** #154
 - **Owner:** Claude builds
 - **Model:** Sonnet
 - **Estimate:** 45 min
@@ -87,6 +91,7 @@ As a candidate, I want to explain the project fluently and answer its likely que
 
 #### T088 · Ten-minute walkthrough, out loud
 - **Story:** US030
+- **ADO:** #155
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 60 min
@@ -104,6 +109,7 @@ As a candidate, I want to explain the project fluently and answer its likely que
 
 #### T089 · Trial-end checklist
 - **Story:** US030
+- **ADO:** #156
 - **Owner:** Claude builds
 - **Model:** Sonnet
 - **Estimate:** 30 min

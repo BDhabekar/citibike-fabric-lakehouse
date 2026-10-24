@@ -18,6 +18,7 @@ Ids are never renumbered or reused. A new task gets the next free number, wherev
 ```
 #### T013 · Spike R1: Eventstream HTTP source polls the station feed
 - **Story:** US006
+- **ADO:** #26
 - **Owner:** Bharat builds (Claude guides) | Claude builds | Claude writes, Bharat runs
 - **Model:** Sonnet | Haiku
 - **Estimate:** 45 min
@@ -33,7 +34,7 @@ Ids are never renumbered or reused. A new task gets the next free number, wherev
 **Result:** —
 ```
 
-`DP-700` codes refer to `docs/dp700-map.md`.
+`DP-700` codes refer to `docs/dp700-map.md`. `ADO` is the task's work item id in Azure Boards (`dev.azure.com/bdhabekar-citibike`, project `citibike-fabric-lakehouse`), fixed once and never changed.
 
 ## Running a task (the protocol every task chat follows)
 
@@ -52,7 +53,7 @@ The chat then:
 7. Checks each acceptance box against real evidence (a screenshot, a query result, a file in the repo).
 8. Writes the three-part explanation (what we did, in production, in an interview) into `D:\MissionAzureDataEngineer\notes\fabric-project-explained.md`, and files screenshots in `D:\MissionAzureDataEngineer\projects\citibike-fabric-lakehouse\evidence\YYYY-MM-DD\`.
 9. Closes the card: `python3 tools/backlog.py set T0xx done --result "<one line: what exists now, any UI difference met>"`.
-10. Updates any doc the task changed (for example `docs/environments.md`), runs `python3 tools/backlog.py check`, commits on `dev` with `T0xx: <summary>`, and gives Bharat the two push lines from `docs/conventions.md` §10.
+10. Updates any doc the task changed (for example `docs/environments.md`), runs `python3 tools/backlog.py check`, commits on `dev` with `T0xx: <summary> Closed AB#<ADO>` (the `show` command prints the exact line), and gives Bharat the two push lines from `docs/conventions.md` §10. Once pushed, the Azure Boards GitHub app links the commit to the work item and closes it.
 11. Ends with the next ready task: `python3 tools/backlog.py next`.
 
 If the task cannot be done as written, the chat follows change control (`docs/architecture.md` §10): `blocked`, a Proposed decision, and a question to Bharat.

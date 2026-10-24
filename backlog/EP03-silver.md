@@ -11,6 +11,7 @@ As an operator, I want every silver load to record which checks ran and how many
 
 #### T032 · DQ runner and quarantine writer in `nb_lib_common`
 - **Story:** US013
+- **ADO:** #59
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 60 min
@@ -31,6 +32,7 @@ As an operator, I want every silver load to record which checks ran and how many
 
 #### T033 · Tests for the DQ runner
 - **Story:** US013
+- **ADO:** #60
 - **Owner:** Claude builds
 - **Model:** Sonnet
 - **Estimate:** 30 min
@@ -53,6 +55,7 @@ As an analyst, I want one weather row per UTC hour, preferring measured archive 
 
 #### T034 · Flatten Open-Meteo's parallel arrays
 - **Story:** US014
+- **ADO:** #63
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 60 min
@@ -71,6 +74,7 @@ As an analyst, I want one weather row per UTC hour, preferring measured archive 
 
 #### T035 · `nb_silver_weather_hourly` with source-priority upsert
 - **Story:** US014
+- **ADO:** #64
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 75 min
@@ -94,6 +98,7 @@ As an analyst, I want one weather row per UTC hour, preferring measured archive 
 
 #### T036 · Tests for the weather priority rule
 - **Story:** US014
+- **ADO:** #65
 - **Owner:** Claude builds
 - **Model:** Sonnet
 - **Estimate:** 30 min
@@ -116,6 +121,7 @@ As an analyst, I want every version of every station kept, so that a trip is mat
 
 #### T037 · `nb_silver_region`
 - **Story:** US015
+- **ADO:** #68
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 30 min
@@ -133,6 +139,7 @@ As an analyst, I want every version of every station kept, so that a trip is mat
 
 #### T038 · SCD Type 2 function with deterministic keys
 - **Story:** US015
+- **ADO:** #69
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 75 min
@@ -151,6 +158,7 @@ As an analyst, I want every version of every station kept, so that a trip is mat
 
 #### T039 · `nb_silver_station_scd2`
 - **Story:** US015
+- **ADO:** #70
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 60 min
@@ -173,6 +181,7 @@ As an analyst, I want every version of every station kept, so that a trip is mat
 
 #### T040 · Tests for SCD2
 - **Story:** US015
+- **ADO:** #71
 - **Owner:** Claude builds
 - **Model:** Sonnet
 - **Estimate:** 45 min
@@ -195,6 +204,7 @@ As an analyst, I want one clean row per ride with UTC and local times, so that t
 
 #### T041 · `nb_silver_trips`
 - **Story:** US016
+- **ADO:** #74
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 90 min
@@ -218,6 +228,7 @@ As an analyst, I want one clean row per ride with UTC and local times, so that t
 
 #### T042 · Tests for the trip rules
 - **Story:** US016
+- **ADO:** #75
 - **Owner:** Claude builds
 - **Model:** Sonnet
 - **Estimate:** 45 min
@@ -235,6 +246,7 @@ As an analyst, I want one clean row per ride with UTC and local times, so that t
 
 #### T043 · Station-id conformance check between trips and stations
 - **Story:** US016
+- **ADO:** #76
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 45 min
@@ -259,6 +271,7 @@ As an operator, I want partitioning, file sizes and old versions managed, so tha
 
 #### T044 · Table layout and `nb_ops_table_maintenance`
 - **Story:** US017
+- **ADO:** #79
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 45 min

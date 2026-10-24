@@ -11,6 +11,7 @@ As an analyst, I want trips and station-hours in a star schema with conformed di
 
 #### T054 · DDL for `dim`, `fact`, `rpt`, `dq`, `sec` and `gold`
 - **Story:** US021
+- **ADO:** #99
 - **Owner:** Claude writes, Bharat runs
 - **Model:** Sonnet
 - **Estimate:** 45 min
@@ -30,6 +31,7 @@ As an analyst, I want trips and station-hours in a star schema with conformed di
 
 #### T055 · `gold.usp_load_dim_date`
 - **Story:** US021
+- **ADO:** #100
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 30 min
@@ -48,6 +50,7 @@ As an analyst, I want trips and station-hours in a star schema with conformed di
 
 #### T056 · Dataflow Gen2 `df_weather_codes` into `dim.weather_code`
 - **Story:** US021
+- **ADO:** #101
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 45 min
@@ -67,6 +70,7 @@ As an analyst, I want trips and station-hours in a star schema with conformed di
 
 #### T057 · `gold.usp_load_dim_region` and `gold.usp_load_dim_station`
 - **Story:** US021
+- **ADO:** #102
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 45 min
@@ -84,6 +88,7 @@ As an analyst, I want trips and station-hours in a star schema with conformed di
 
 #### T058 · `gold.usp_load_dim_weather_hour @from_utc, @to_utc`
 - **Story:** US021
+- **ADO:** #103
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 45 min
@@ -101,6 +106,7 @@ As an analyst, I want trips and station-hours in a star schema with conformed di
 
 #### T059 · `gold.usp_load_fact_trip @trip_month`
 - **Story:** US021
+- **ADO:** #104
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 90 min
@@ -120,6 +126,7 @@ As an analyst, I want trips and station-hours in a star schema with conformed di
 
 #### T060 · `gold.usp_load_fact_station_hour @from_utc, @to_utc`
 - **Story:** US021
+- **ADO:** #105
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 45 min
@@ -137,6 +144,7 @@ As an analyst, I want trips and station-hours in a star schema with conformed di
 
 #### T061 · Reporting views in `rpt`
 - **Story:** US021
+- **ADO:** #106
 - **Owner:** Claude writes, Bharat runs
 - **Model:** Sonnet
 - **Estimate:** 30 min
@@ -160,6 +168,7 @@ As an analyst, I want gold to reconcile with silver and to answer quickly, so th
 
 #### T062 · `dq.usp_run_checks @run_id, @scope`
 - **Story:** US022
+- **ADO:** #109
 - **Owner:** Claude writes, Bharat runs
 - **Model:** Sonnet
 - **Estimate:** 45 min
@@ -179,6 +188,7 @@ As an analyst, I want gold to reconcile with silver and to answer quickly, so th
 
 #### T063 · Warehouse performance review
 - **Story:** US022
+- **ADO:** #110
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 30 min

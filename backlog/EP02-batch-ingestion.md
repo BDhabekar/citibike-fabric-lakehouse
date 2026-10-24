@@ -11,6 +11,7 @@ As an operator, I want sources, watermarks and run results in control tables, so
 
 #### T020 · Create the `ctl` schema, tables and seed procedure in `wh_gold`
 - **Story:** US007
+- **ADO:** #36
 - **Owner:** Claude writes, Bharat runs
 - **Model:** Sonnet
 - **Estimate:** 45 min
@@ -32,6 +33,7 @@ As an operator, I want sources, watermarks and run results in control tables, so
 
 #### T021 · Logging, watermark and window procedures
 - **Story:** US007
+- **ADO:** #37
 - **Owner:** Claude writes, Bharat runs
 - **Model:** Sonnet
 - **Estimate:** 30 min
@@ -58,6 +60,7 @@ As an operator, I want sources, watermarks and run results in control tables, so
 
 #### T022 · `nb_lib_common` version 1: config, paths, lineage and the exit payload
 - **Story:** US007
+- **ADO:** #38
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 60 min
@@ -91,6 +94,7 @@ As an analyst, I want every hour of weather since the backfill start, so that de
 
 #### T023 · `pl_ingest_weather_archive` with fixed values, one month
 - **Story:** US008
+- **ADO:** #41
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 60 min
@@ -110,6 +114,7 @@ As an analyst, I want every hour of weather since the backfill start, so that de
 
 #### T024 · Parameterise the weather pipeline: watermark, overlap window, monthly chunks, logging
 - **Story:** US008
+- **ADO:** #42
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 90 min
@@ -138,6 +143,7 @@ As an analyst, I want a daily snapshot of the station list and regions, so that 
 
 #### T025 · `pl_ingest_gbfs_reference`, driven by `ctl.source_config`
 - **Story:** US009
+- **ADO:** #44
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 75 min
@@ -163,6 +169,7 @@ As an analyst, I want each month's trip file landed and unzipped, so that Spark 
 
 #### T026 · `pl_ingest_trips_month`
 - **Story:** US010
+- **ADO:** #46
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 75 min
@@ -191,6 +198,7 @@ As a data engineer, I want one source ingested in Python with retries and backof
 
 #### T027 · `nb_ingest_weather_forecast`
 - **Story:** US011
+- **ADO:** #49
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 75 min
@@ -212,6 +220,7 @@ As a data engineer, I want one source ingested in Python with retries and backof
 
 #### T028 · Unit tests for the HTTP helper and the path builders
 - **Story:** US011
+- **ADO:** #50
 - **Owner:** Claude builds
 - **Model:** Sonnet
 - **Estimate:** 45 min
@@ -235,6 +244,7 @@ As a data engineer, I want every landed file turned into bronze rows exactly onc
 
 #### T029 · `nb_bronze_load_json` with Structured Streaming `availableNow`
 - **Story:** US012
+- **ADO:** #53
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 90 min
@@ -257,6 +267,7 @@ As a data engineer, I want every landed file turned into bronze rows exactly onc
 
 #### T030 · `nb_bronze_load_trips`
 - **Story:** US012
+- **ADO:** #54
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 60 min
@@ -277,6 +288,7 @@ As a data engineer, I want every landed file turned into bronze rows exactly onc
 
 #### T031 · Prove bronze is idempotent
 - **Story:** US012
+- **ADO:** #55
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 30 min

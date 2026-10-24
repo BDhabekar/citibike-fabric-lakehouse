@@ -11,6 +11,7 @@ As a data owner, I want analysts to see only what their job needs, so that trip 
 
 #### T071 · Workspace roles and item permissions
 - **Story:** US025
+- **ADO:** #126
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 30 min
@@ -30,6 +31,7 @@ As a data owner, I want analysts to see only what their job needs, so that trip 
 
 #### T072 · GRANTs, row-level security, dynamic data masking and column-level security
 - **Story:** US025
+- **ADO:** #127
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 75 min
@@ -50,6 +52,7 @@ As a data owner, I want analysts to see only what their job needs, so that trip 
 
 #### T073 · OneLake security: a folder-level role on `lh_bronze`
 - **Story:** US025
+- **ADO:** #128
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 30 min
@@ -69,6 +72,7 @@ As a data owner, I want analysts to see only what their job needs, so that trip 
 
 #### T074 · Endorsement, descriptions, lineage and the audit log
 - **Story:** US025
+- **ADO:** #129
 - **Owner:** Bharat builds (Claude guides)
 - **Model:** Sonnet
 - **Estimate:** 30 min
