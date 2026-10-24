@@ -19,6 +19,8 @@ Do not read the other epic files, the whole data-contract file or the ADE HQ tra
 - **Who does what.** Bharat builds in Fabric (pipelines, notebooks, KQL, T-SQL, deployment) and learns as he goes. Claude teaches, writes the docs, tests, CI, control and DDL scripts, the semantic model and the report, and does every file edit. Bharat never edits repo files.
 - **Teach before building.** Every task starts with the full explanation the ADE HQ way (idea, in production, in an interview, steps with the screen each starts from, a small example, what done looks like). Correct any mistake before moving on.
 - **Check Microsoft's page** before giving a step where a wrong setting costs time or data, and say where each portal step came from (a named page with its date, or "from memory, unverified").
+- **Never push to `main` directly.** Before any commit, check the branch (`git -C D:\GitRepositories\citibike-fabric-lakehouse branch --show-current`); it must be `dev`. `main` changes only through a pull request from `dev`, and a GitHub ruleset enforces it.
+- **The repo is public: no personal data.** No email addresses, sign-in names, employer or family names, tenant or workspace ids. Use the placeholders in `docs/environments.md` §1.
 - **Secrets never enter a chat or a file.** Tokens and passwords go from Bharat's password manager straight into the Fabric or GitHub screen.
 - **Evidence and notes** go to ADE HQ (`projects/citibike-fabric-lakehouse/evidence/`, `notes/fabric-project-explained.md`), not to this public-bound repo.
 - **Commit at the end of the task** on `dev` (`T0xx: ...`); give Bharat the push lines from `docs/conventions.md` §10.
@@ -44,5 +46,6 @@ Do not read the other epic files, the whole data-contract file or the ADE HQ tra
 
 *Updated by each task chat in its last step: one line, newest first.*
 
+- Sat Oct 24, 2026 · Personal details redacted from the whole history (one-off force push, Bharat's call), repo made public, rulesets on `main` and `dev` (T012). Azure Boards GitHub app connected; closing commits end with `Closed AB#<ADO>`.
 - Sat Oct 24, 2026 · T002 done: repo on GitHub, main and dev pushed. Backlog mirrored to Azure Boards (dev.azure.com/bdhabekar-citibike, project citibike-fabric-lakehouse) for tracking. Next: Sprint 1 from Mon Oct 26 with T003.
 - Fri Oct 23, 2026 · T001 done: repo scaffolded and committed locally. Next: T002 (Bharat creates the GitHub repo and pushes), then Sprint 1 from Mon Oct 26 with T003.

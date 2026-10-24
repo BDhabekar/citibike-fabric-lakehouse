@@ -10,6 +10,8 @@ The map of what exists where and who may do what (ADE HQ rule 24). Update it the
 | Test analyst (for security tests only) | `analyst.region@<tenant-domain>` (created in T007) | tenant `bharat-ade` | Fabric free licence; Viewer on `ws-citibike-prod`; Read on `wh_gold` only; mapped to one region in `sec.user_region` |
 | GitHub | `BDhabekar` | github.com | owner of `BDhabekar/citibike-fabric-lakehouse` |
 
+Placeholders: `<tenant-admin-upn>` is Bharat's admin sign-in in `bharat-ade`, `<tenant-domain>` that tenant's `onmicrosoft.com` domain, `<alert-email>` his personal email. The repo is public, so the real values are never written here; ask Bharat for them in the chat when a step needs one.
+
 Never used for this project: the employer work account, a relative's tenant or his Azure for Students subscription, the Gmail address as a sign-in.
 
 ## 2. Capacity
