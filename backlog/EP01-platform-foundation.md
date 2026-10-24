@@ -233,15 +233,15 @@ As a developer, I want the dev workspace synced to GitHub, so that every change 
 - **Sprint:** 1
 - **Depends on:** T011
 - **DP-700:** 1.2
-- **Status:** todo
+- **Status:** doing
 - **Read first:** docs/conventions.md §7
 **Do**
 1. GitHub repo → Settings → Rules → Rulesets → New branch ruleset `protect-main`, target `main`: require a pull request before merging (0 approvals needed, since he is the only person), block force pushes, restrict deletions. Status checks are added in T076.
 2. Ruleset `protect-dev`, target `dev`: block force pushes, restrict deletions. No pull request rule (Fabric commits straight to `dev`).
 **Acceptance**
-- [ ] Both rulesets active.
+- [x] Both rulesets active.
 - [ ] A direct push to `main` is refused (Claude prepares an empty test commit on a throwaway branch; Bharat tries the push and pastes the refusal).
-**Result:** —
+**Result:** Oct 24: repo made public (rulesets are not enforced on free private repos); protect-main (PR required, 0 approvals, no force push, no deletion) and protect-dev (no force push, no deletion) created and Active. Done out of order, before T011, on Bharat's call. Open: the refused-direct-push test.
 
 ## FT05 · Risk spikes
 
