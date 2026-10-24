@@ -53,8 +53,9 @@ The chat then:
 7. Checks each acceptance box against real evidence (a screenshot, a query result, a file in the repo).
 8. Writes the three-part explanation (what we did, in production, in an interview) into `D:\MissionAzureDataEngineer\notes\fabric-project-explained.md`, and files screenshots in `D:\MissionAzureDataEngineer\projects\citibike-fabric-lakehouse\evidence\YYYY-MM-DD\`.
 9. Closes the card: `python3 tools/backlog.py set T0xx done --result "<one line: what exists now, any UI difference met>"`.
-10. Updates any doc the task changed (for example `docs/environments.md`), runs `python3 tools/backlog.py check`, commits on `dev` with `T0xx: <summary> Closed AB#<ADO>` (the `show` command prints the exact line), and gives Bharat the two push lines from `docs/conventions.md` §10. Once pushed, the Azure Boards GitHub app links the commit to the work item and closes it.
-11. Ends with the next ready task: `python3 tools/backlog.py next`.
+10. Updates any doc the task changed (for example `docs/environments.md`), runs `python3 tools/backlog.py check`, commits on `dev` with `T0xx: <summary> AB#<ADO>` (the `show` command prints the exact line), and gives Bharat the two push lines from `docs/conventions.md` §10. Once pushed, the Azure Boards GitHub app links the commit to the work item.
+11. Closes the work item in Azure Boards. In the browser pane, open `https://dev.azure.com/bdhabekar-citibike/citibike-fabric-lakehouse/_workitems/edit/<ADO>` (Bharat signs in if asked), set State to **Closed**, add the Result line as a comment, save, and confirm the item reads Closed. A `Closed AB#` keyword in the commit does not do this: Azure Boards changes state only when a pull request is merged into the default branch, and task commits go straight to `dev` (tested on T012, Oct 24, 2026).
+12. Ends with the next ready task: `python3 tools/backlog.py next`.
 
 If the task cannot be done as written, the chat follows change control (`docs/architecture.md` §10): `blocked`, a Proposed decision, and a question to Bharat.
 

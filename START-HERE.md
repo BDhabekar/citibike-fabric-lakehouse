@@ -5,7 +5,7 @@ This repo is the Citi Bike operations lakehouse on Microsoft Fabric, Bharat's se
 ## Read in this order, and stop when you have what the task needs
 
 1. This file.
-2. `backlog/README.md`: the task-chat protocol (11 steps). Follow it exactly.
+2. `backlog/README.md`: the task-chat protocol (12 steps). Follow it exactly.
 3. `python3 tools/backlog.py show T0xx`: your card, with its story and feature.
 4. Only the files the card lists under **Read first**.
 5. `D:\MissionAzureDataEngineer\INSTRUCTIONS.md` §5.5, §6 (teaching and building rules) the first time in a chat. Its rules apply here unless this repo says otherwise.
@@ -46,7 +46,8 @@ Do not read the other epic files, the whole data-contract file or the ADE HQ tra
 
 *Updated by each task chat in its last step: one line, newest first.*
 
+- Sat Oct 24, 2026 · Azure Boards closing moved into the task chat (protocol step 11): `Closed AB#` on a direct push to `dev` links but does not close, tested on T012.
 - Sat Oct 24, 2026 · T012 done: rulesets on `main` and `dev` proved (direct push to `main` refused, GH013). Next: Sprint 1 from Mon Oct 26 with T003.
-- Sat Oct 24, 2026 · Personal details redacted from the whole history (one-off force push, Bharat's call), repo made public, rulesets on `main` and `dev` (T012). Azure Boards GitHub app connected; closing commits end with `Closed AB#<ADO>`.
+- Sat Oct 24, 2026 · Personal details redacted from the whole history (one-off force push, Bharat's call), repo made public, rulesets on `main` and `dev` (T012). Azure Boards GitHub app connected; task commits end with `AB#<ADO>`.
 - Sat Oct 24, 2026 · T002 done: repo on GitHub, main and dev pushed. Backlog mirrored to Azure Boards (dev.azure.com/bdhabekar-citibike, project citibike-fabric-lakehouse) for tracking. Next: Sprint 1 from Mon Oct 26 with T003.
 - Fri Oct 23, 2026 · T001 done: repo scaffolded and committed locally. Next: T002 (Bharat creates the GitHub repo and pushes), then Sprint 1 from Mon Oct 26 with T003.

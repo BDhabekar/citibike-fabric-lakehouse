@@ -224,7 +224,7 @@ def cmd_show(args) -> int:
     print(f"  {t.feature} · {features[t.feature]['title']}")
     print(f"    {t.story} · {stories[t.story]['title']}")
     print(f"File: {t.file.relative_to(ROOT)}")
-    print(f"Commit message: {t.id}: <summary> Closed AB{t.fields.get('ADO', '#?')}\n")
+    print(f"Commit message: {t.id}: <summary> AB{t.fields.get('ADO', '#?')}  (then close the item in Azure Boards: protocol step 11)\n")
     print("\n".join(card_lines(t)))
     open_deps = [d for d in t.deps if tasks.get(d) and tasks[d].fields.get("Status") != "done"]
     if open_deps:
