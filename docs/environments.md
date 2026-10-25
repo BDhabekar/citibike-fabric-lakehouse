@@ -14,6 +14,8 @@ Placeholders: `<tenant-admin-upn>` is Bharat's admin sign-in in `bharat-ade`, `<
 
 Never used for this project: the employer work account, a relative's tenant or his Azure for Students subscription, the Gmail address as a sign-in.
 
+Seen in T003 (Oct 25, 2026): the tenant also holds his Gmail address as an external user, which is never used to sign in to Fabric. The Fabric tenant settings for creating items, trials, Git and GitHub sync and workspace creation were already enabled for the entire organization; there is no variable-library or Eventhouse switch. Service principals creating workspaces and deployment pipelines is Disabled (see EP08).
+
 ## 2. Capacity
 
 | | |

@@ -18,7 +18,7 @@ As the platform owner, I want a Fabric trial capacity in my own tenant, so that 
 - **Sprint:** 1
 - **Depends on:** —
 - **DP-700:** 1.1
-- **Status:** todo
+- **Status:** done
 - **Read first:** docs/environments.md §1, docs/decisions.md ADR-002
 **Do**
 1. In a private browser window, go to `https://app.fabric.microsoft.com` and sign in as `<tenant-admin-upn>` (never the Gmail address). Accept the free Fabric licence if offered.
@@ -32,10 +32,10 @@ As the platform owner, I want a Fabric trial capacity in my own tenant, so that 
 3. Leave every setting that sends data outside the tenant or turns on paid features (Copilot, Azure OpenAI) as it is.
 4. Screenshot each changed setting.
 **Acceptance**
-- [ ] Signed in as the tenant account; the free licence shows under Account manager.
-- [ ] Each setting above is enabled, with a screenshot filed in ADE HQ evidence.
-- [ ] `docs/environments.md` §1 still matches what was seen (fix it if not).
-**Result:** —
+- [x] Signed in as the tenant account; the free licence shows under Account manager.
+- [x] Each setting above is enabled, with a screenshot filed in ADE HQ evidence.
+- [x] `docs/environments.md` §1 still matches what was seen (fix it if not).
+**Result:** Signed in with the tenant admin account, free licence active; creating items, trial, Git and GitHub sync and workspace creation already enabled org-wide (nothing changed); no variable-library or Eventhouse switch exists; service-principal workspace creation is Disabled (note for EP08)
 
 #### T004 · Start the 60-day trial and record its dates
 - **Story:** US002

@@ -46,6 +46,7 @@ Do not read the other epic files, the whole data-contract file or the ADE HQ tra
 
 *Updated by each task chat in its last step: one line, newest first.*
 
+- Sun Oct 25, 2026 · T003 done: signed in with the tenant admin account, free licence active; the Fabric tenant settings the project needs were already on (nothing changed). Next: T004 (start the Fabric trial), Mon Oct 26.
 - Sat Oct 24, 2026 · Azure Boards closing moved into the task chat (protocol step 11): `Closed AB#` on a direct push to `dev` links but does not close, tested on T012.
 - Sat Oct 24, 2026 · T012 done: rulesets on `main` and `dev` proved (direct push to `main` refused, GH013). Next: Sprint 1 from Mon Oct 26 with T003.
 - Sat Oct 24, 2026 · Personal details redacted from the whole history (one-off force push, Bharat's call), repo made public, rulesets on `main` and `dev` (T012). Azure Boards GitHub app connected; task commits end with `AB#<ADO>`.
