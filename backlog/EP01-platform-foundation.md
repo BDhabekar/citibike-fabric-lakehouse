@@ -46,7 +46,7 @@ As the platform owner, I want a Fabric trial capacity in my own tenant, so that 
 - **Sprint:** 1
 - **Depends on:** T003
 - **DP-700:** 1.1
-- **Status:** todo
+- **Status:** blocked
 - **Read first:** docs/cost-and-capacity.md §1, §2, §6
 **Do**
 1. Account manager (the profile picture, top right) → **Start trial** (or Free trial).
@@ -57,7 +57,7 @@ As the platform owner, I want a Fabric trial capacity in my own tenant, so that 
 - [ ] Account manager shows the trial with days remaining.
 - [ ] §6 of the cost doc has the start date, end date and region.
 - [ ] No Azure subscription or payment method was asked for or attached (if one is asked for, stop: that is not the trial).
-**Result:** —
+**Result:** Blocked Oct 26, 2026: the Fabric trial is refused in the new tenant (see ADR-022); only a Power BI trial started
 
 #### T005 · Install the Capacity Metrics app and read a baseline
 - **Story:** US002
