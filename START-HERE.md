@@ -46,7 +46,7 @@ Do not read the other epic files, the whole data-contract file or the ADE HQ tra
 
 *Updated by each task chat in its last step: one line, newest first.*
 
-- Mon Oct 26, 2026 · T004 done: Fabric trial started overnight on its own (Central India, 4 CU, ends about Dec 25; last day for screenshots and publish Dec 18). ADR-022 resolved. ADR-023 (Proposed): the capacity is an F4, not the F64 the docs assumed; Bharat decides. Evidence and notes in ADE HQ still to be filed. Next: T005.
+- Mon Oct 26, 2026 · T004 done: Fabric trial started overnight on its own (Central India, 4 CU, ends about Dec 25; last day for screenshots and publish Dec 18). ADR-022 resolved. ADR-023 (Proposed): the capacity is an F4, not the F64 the docs assumed; Bharat decides. Evidence and notes filed in ADE HQ. Next: T005.
 - Sun Oct 25, 2026 · T003 done: signed in with the tenant admin account, free licence active; the Fabric tenant settings the project needs were already on (nothing changed). Next: T004 (start the Fabric trial), Mon Oct 26.
 - Sat Oct 24, 2026 · Azure Boards closing moved into the task chat (protocol step 11): `Closed AB#` on a direct push to `dev` links but does not close, tested on T012.
 - Sat Oct 24, 2026 · T012 done: rulesets on `main` and `dev` proved (direct push to `main` refused, GH013). Next: Sprint 1 from Mon Oct 26 with T003.
