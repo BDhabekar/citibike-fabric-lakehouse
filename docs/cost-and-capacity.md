@@ -2,7 +2,7 @@
 
 ## 1. The build costs ₹0, and nothing can bill by accident
 
-- The project runs on the **Fabric trial capacity**: 60 days, 64 capacity units, no credit card. [Microsoft Learn: Fabric trial capacity](https://learn.microsoft.com/en-us/fabric/fundamentals/fabric-trial) and [Get started with Microsoft Fabric](https://microsoft.com/microsoft-fabric/getting-started), read Oct 23, 2026.
+- The project runs on the **Fabric trial capacity**: 60 days, no credit card. The capacity Fabric actually gave is **4 capacity units (an F4)**, not 64 (see ADR-023). [Microsoft Learn: Fabric trial capacity](https://learn.microsoft.com/en-us/fabric/fundamentals/fabric-trial) and [Get started with Microsoft Fabric](https://microsoft.com/microsoft-fabric/getting-started), read Oct 23, 2026.
 - The trial lives in Bharat's own tenant (`bharat-ade`). **No Azure subscription is attached to Fabric during the build.** The tenant's own Azure subscription is expired, so there is no payment method anywhere in the path. A bill is impossible, not just unlikely.
 - GitHub Actions is free for public repositories, and private repositories on GitHub Free get 2,000 minutes a month. CI here uses a few minutes a day.
 - The only money in the plan is the DP-700 exam fee (₹4,865 in the ADE plan; check the price, and any free-voucher offer, at booking).
@@ -12,7 +12,7 @@
 | Fact | What it means here |
 |---|---|
 | 60 days from the day it starts | Started in T004. The start and end dates are written in §6 below the same day. |
-| 64 CU, the size of an F64 | Plenty for this project. Timings seen on the trial are **not** what an F2 would give (an F2 is 1/32 of it). Say so in interviews. |
+| 4 CU, the size of an F4 (read in the Admin portal on Oct 26, 2026; the size cannot be changed) | An F4 is twice an F2 and 1/16 of the F64 first assumed. Whether it is enough is ADR-023 (Proposed). Timings seen on the trial are **not** what a larger capacity would give. Say so in interviews. |
 | Needs a per-user Power BI licence | The free Fabric licence, taken in T003. The trial includes a Power BI individual trial. |
 | When it ends | Workspaces drop off the capacity. Content is kept for 7 days and can be reattached to a paid capacity in that window, then it is gone. |
 | Cannot be restarted once cancelled | Never press Cancel trial. |
@@ -71,7 +71,8 @@ The trial has no price, but it has a size. Watch it in the Capacity Metrics app 
 
 | | |
 |---|---|
-| Trial started | — |
-| Trial ends | — |
-| Region chosen | — |
-| Last day to finish screenshots, publish and DP-700 practice on live items | trial end minus 7 days |
+| Trial started | Mon Oct 26, 2026, about 02:21 IST (the capacity's own name carries 2026-10-25 20:51 UTC) |
+| Trial ends | about Fri Dec 25, 2026 (60 days from the start; the Admin portal showed 59 days left at 09:15 IST on Oct 26) |
+| Region chosen | Central India (the default offered; no choice was needed) |
+| Capacity size | 4 CU (F4), cannot be resized |
+| Last day to finish screenshots, publish and DP-700 practice on live items | Fri Dec 18, 2026 (trial end minus 7 days) |

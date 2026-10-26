@@ -46,7 +46,7 @@ As the platform owner, I want a Fabric trial capacity in my own tenant, so that 
 - **Sprint:** 1
 - **Depends on:** T003
 - **DP-700:** 1.1
-- **Status:** blocked
+- **Status:** done
 - **Read first:** docs/cost-and-capacity.md §1, §2, §6
 **Do**
 1. Account manager (the profile picture, top right) → **Start trial** (or Free trial).
@@ -54,10 +54,10 @@ As the platform owner, I want a Fabric trial capacity in my own tenant, so that 
 3. Agree and start. Read the end date from Account manager.
 4. Claude writes the start date, end date and region into `docs/cost-and-capacity.md` §6 and `docs/environments.md` §2, and works out the date seven days before the end (the last day for screenshots and publish).
 **Acceptance**
-- [ ] Account manager shows the trial with days remaining.
-- [ ] §6 of the cost doc has the start date, end date and region.
-- [ ] No Azure subscription or payment method was asked for or attached (if one is asked for, stop: that is not the trial).
-**Result:** Blocked Oct 26, 2026: the Fabric trial is refused in the new tenant (see ADR-022); only a Power BI trial started
+- [x] Account manager shows the trial with days remaining.
+- [x] §6 of the cost doc has the start date, end date and region.
+- [x] No Azure subscription or payment method was asked for or attached (if one is asked for, stop: that is not the trial).
+**Result:** Fabric trial active in Central India from Oct 26, 2026 (ends about Dec 25; last day for screenshots Dec 18). Met a refusal first (ADR-022, resolved by itself) and found the capacity is an F4, not F64 (ADR-023, Proposed)
 
 #### T005 · Install the Capacity Metrics app and read a baseline
 - **Story:** US002

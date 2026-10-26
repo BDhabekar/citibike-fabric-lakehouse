@@ -20,9 +20,9 @@ Seen in T003 (Oct 25, 2026): the tenant also holds his Gmail address as an exter
 
 | | |
 |---|---|
-| Type | Fabric trial, 64 CU |
+| Type | Fabric trial, 4 CU (F4), started Oct 26, 2026 |
 | Admin | Bharat |
-| Region | written in `docs/cost-and-capacity.md` §6 by T004 |
+| Region | Central India; dates in `docs/cost-and-capacity.md` §6 |
 | Azure subscription | none during the build |
 
 ## 3. Workspaces
