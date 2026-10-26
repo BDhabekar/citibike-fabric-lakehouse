@@ -44,14 +44,14 @@ Bharat opens a new chat in the "Mission Azure Data Engineer" project, on the mod
 
 The chat then:
 
-1. Asks for access to `D:\GitRepositories` and, if the card needs evidence or notes, `D:\MissionAzureDataEngineer`.
+1. Asks for access to `D:\GitRepositories` (evidence and notes live in `portfolio-hq` there).
 2. Reads `START-HERE.md`, runs `python3 tools/backlog.py show T0xx`, and reads only the card's **Read first** files.
 3. Stops if a dependency is not `done` (the `show` command prints a warning) and says which task comes first.
 4. Sets the card to `doing` (`python3 tools/backlog.py set T0xx doing`).
 5. Gives Bharat the whole task before he starts, the ADE HQ way: the idea in plain words, why it matters in production and in an interview, the steps with the screen each one starts from, what to send back, a small example of the finished result, and what done looks like. Cost line: "trial capacity, ₹0" (anything else stops the task).
 6. Guides the build. Corrects any mistake before moving on.
 7. Checks each acceptance box against real evidence (a screenshot, a query result, a file in the repo).
-8. Writes the three-part explanation (what we did, in production, in an interview) into `D:\MissionAzureDataEngineer\notes\fabric-project-explained.md`, and files screenshots in `D:\MissionAzureDataEngineer\projects\citibike-fabric-lakehouse\evidence\YYYY-MM-DD\`.
+8. Writes the three-part explanation (what we did, in production, in an interview) into `D:\GitRepositories\portfolio-hq\citibike\fabric-project-explained.md`, and files screenshots in `D:\GitRepositories\portfolio-hq\citibike\evidence\YYYY-MM-DD\`.
 9. Closes the card: `python3 tools/backlog.py set T0xx done --result "<one line: what exists now, any UI difference met>"`.
 10. Updates any doc the task changed (for example `docs/environments.md`), runs `python3 tools/backlog.py check`, commits on `dev` with `T0xx: <summary> AB#<ADO>` (the `show` command prints the exact line), and gives Bharat the two push lines from `docs/conventions.md` §10. Once pushed, the Azure Boards GitHub app links the commit to the work item.
 11. Closes the work item in Azure Boards. In the browser pane, open `https://dev.azure.com/bdhabekar-citibike/citibike-fabric-lakehouse/_workitems/edit/<ADO>` (Bharat signs in if asked), set State to **Closed**, add the Result line as a comment, save, and confirm the item reads Closed. A `Closed AB#` keyword in the commit does not do this: Azure Boards changes state only when a pull request is merged into the default branch, and task commits go straight to `dev` (tested on T012, Oct 24, 2026).

@@ -60,5 +60,5 @@ Created in dev, promoted to test and prod by `dp-citibike`, except where marked.
 | What | Where |
 |---|---|
 | Code, docs, backlog, tests, CI | `D:\GitRepositories\citibike-fabric-lakehouse` = GitHub `BDhabekar/citibike-fabric-lakehouse` |
-| Screenshots and proof | `D:\MissionAzureDataEngineer\projects\citibike-fabric-lakehouse\evidence\YYYY-MM-DD\` (private) |
-| Teaching notes (what we did, in production, in an interview) | `D:\MissionAzureDataEngineer\notes\fabric-project-explained.md` (private) |
+| Screenshots and proof | `D:\GitRepositories\portfolio-hq\citibike\evidence\YYYY-MM-DD\` (private) |
+| Teaching notes (what we did, in production, in an interview) | `D:\GitRepositories\portfolio-hq\citibike\fabric-project-explained.md` (private) |

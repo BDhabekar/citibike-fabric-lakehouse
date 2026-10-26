@@ -8,7 +8,7 @@ This repo is the Citi Bike operations lakehouse on Microsoft Fabric, Bharat's se
 2. `backlog/README.md`: the task-chat protocol (12 steps). Follow it exactly.
 3. `python3 tools/backlog.py show T0xx`: your card, with its story and feature.
 4. Only the files the card lists under **Read first**.
-5. `D:\MissionAzureDataEngineer\INSTRUCTIONS.md` §5.5, §6 (teaching and building rules) the first time in a chat. Its rules apply here unless this repo says otherwise.
+5. `D:\GitRepositories\portfolio-hq\INSTRUCTIONS.md` (teaching, building, cost and planning rules) the first time in a chat. Its rules apply here unless this repo says otherwise.
 
 Do not read the other epic files, the whole data-contract file or the ADE HQ trackers unless the card says so. That is what keeps a task chat small enough for Sonnet.
 
@@ -22,7 +22,7 @@ Do not read the other epic files, the whole data-contract file or the ADE HQ tra
 - **Never push to `main` directly.** Before any commit, check the branch (`git -C D:\GitRepositories\citibike-fabric-lakehouse branch --show-current`); it must be `dev`. `main` changes only through a pull request from `dev`, and a GitHub ruleset enforces it.
 - **The repo is public: no personal data.** No email addresses, sign-in names, employer or family names, tenant or workspace ids. Use the placeholders in `docs/environments.md` §1.
 - **Secrets never enter a chat or a file.** Tokens and passwords go from Bharat's password manager straight into the Fabric or GitHub screen.
-- **Evidence and notes** go to ADE HQ (`projects/citibike-fabric-lakehouse/evidence/`, `notes/fabric-project-explained.md`), not to this public-bound repo.
+- **Evidence and notes** go to `D:\GitRepositories\portfolio-hq` (`citibike/evidence/`, `citibike/fabric-project-explained.md`), not to this public-bound repo.
 - **Commit at the end of the task** on `dev` (`T0xx: ...`); give Bharat the push lines from `docs/conventions.md` §10.
 - **Model.** Use the model on the card. If a task turns into an architecture question, say so, write a one-page brief, and let Bharat take it to a separate Opus chat.
 

@@ -81,9 +81,9 @@ As a candidate, I want to explain the project fluently and answer its likely que
 - **Depends on:** T084
 - **DP-700:** —
 - **Status:** todo
-- **Read first:** D:\MissionAzureDataEngineer\career\interview-bank-plan.md
+- **Read first:** D:\GitRepositories\interview-prep\interview-bank-plan.md
 **Do**
-1. Add 25 `Q-###` blocks to `career/interview-bank.md` in ADE HQ, each answered from this project's own decisions and numbers (lakehouse vs warehouse, Direct Lake and fallback, SCD2 with deletes, idempotency, streaming design, CI/CD path, security, cost, troubleshooting).
+1. Add 25 `Q-###` blocks to `interview-bank.md` in `D:\GitRepositories\interview-prep`, each answered from this project's own decisions and numbers (lakehouse vs warehouse, Direct Lake and fallback, SCD2 with deletes, idempotency, streaming design, CI/CD path, security, cost, troubleshooting).
 2. Rebuild the Career HQ Interview tab as the bank plan says.
 **Acceptance**
 - [ ] 25 new blocks, each tied to a decision or a number in this repo.
