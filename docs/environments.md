@@ -43,6 +43,8 @@ Seen in T007 (Oct 27, 2026): `analyst.region` exists in Entra as a Member of the
 
 Seen in T006 (Oct 27, 2026): the three workspaces exist on the trial capacity (workspace type Fabric Trial, SKU FTL4, Central India) and sit in the domain `Mobility`. Workspace defaults read in dev (test and prod reported the same): Spark pool Starter Pool (memory optimized, medium nodes, 1 to 10 nodes), "Customize compute configurations for items" on, no default environment, Spark runtime 2.0 (Spark 4.1, Delta 4.2), which T006 recorded as a preview. Microsoft's lifecycle page, read on Oct 27 and last updated Jul 29, 2026, lists 2.0 as GA and 1.3 as end of support announced, so `env_citibike` (T009) uses 2.0 (ADR-024). OneLake settings: cache for shortcuts off, diagnostic events off, no lifecycle rules. Git, roles for the analyst and the other rows of the table are still to do in their own tasks.
 
+Seen in T010 (Oct 27, 2026): `vl_citibike` in dev has twelve String variables and four value sets: Default (the dev values, cannot be renamed), `dev` (no overrides, active), `test` (overrides `env_name`) and `prod` (overrides `env_name` and the three backfill variables). Microsoft says a workspace created by a deployment starts on Default, so the stage's own set is chosen by hand in T077 (ADR-025).
+
 ## 4. Items per workspace
 
 Created in dev, promoted to test and prod by `dp-citibike`, except where marked.

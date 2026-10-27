@@ -175,7 +175,7 @@ As a developer, I want Spark settings and environment values stored as items, so
 - [x] It is the default environment of `ws-citibike-dev`.
 **Result:** env_citibike is published in ws-citibike-dev on Runtime 2.0 (Spark 4.1, Delta 4.2), chosen in ADR-024 because Microsoft lists 2.0 as GA and 1.3 as end of support announced, with the Starter Pool at default compute values, spark.sql.session.timeZone = UTC and no libraries, and it is the workspace default environment. UI differences: a new environment opens with 2.0 preselected; Spark properties is its own page under Spark compute (property chosen from a dropdown); the default switch is under Workspace settings, Data Engineering/Science, Spark settings, Environment tab; no Published message was captured (Publish greyed, no pending banner).
 
-#### T010 · Create the variable library `vl_citibike` with three value sets
+#### T010 · Create the variable library `vl_citibike` with its value sets
 - **Story:** US004
 - **ADO:** #19
 - **Owner:** Bharat builds (Claude guides)
@@ -184,17 +184,17 @@ As a developer, I want Spark settings and environment values stored as items, so
 - **Sprint:** 1
 - **Depends on:** T006
 - **DP-700:** 1.2, 1.4
-- **Status:** todo
+- **Status:** done
 - **Read first:** docs/conventions.md §3
 **Do**
 1. `ws-citibike-dev` → New item → Variable library → `vl_citibike`.
 2. Add each variable in `docs/conventions.md` §3 as type String, with the dev value as the default value set.
 3. Add value sets `test` and `prod` with their values (only the variables that differ need overriding).
-4. Make `dev` the active value set in this workspace. Save.
+4. The Default value set cannot be renamed, so add a fourth value set `dev` with no overrides and make it the active one in this workspace (ADR-025). Save.
 **Acceptance**
-- [ ] Twelve variables, three value sets, values exactly as in the conventions table.
-- [ ] Active value set in dev is `dev`.
-**Result:** —
+- [x] Twelve variables, four value sets (Default, `dev`, `test`, `prod`), values exactly as in the conventions table.
+- [x] Active value set in dev is `dev`.
+**Result:** vl_citibike in ws-citibike-dev: 12 String variables, value sets Default (dev values), dev (no overrides, active), test, prod; Default cannot be renamed so dev was added (ADR-025 b); tails of four long default URLs and the hourly list to be compared when the library is first committed to Git.
 
 ## FT04 · Source control
 
