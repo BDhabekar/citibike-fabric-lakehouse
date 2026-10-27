@@ -117,16 +117,16 @@ As a developer, I want separate dev, test and prod workspaces with the same item
 - **Sprint:** 1
 - **Depends on:** T006
 - **DP-700:** 1.3
-- **Status:** todo
+- **Status:** done
 - **Read first:** docs/environments.md §1
 **Do**
 1. Microsoft Entra admin center (entra.microsoft.com, signed in as the tenant account) → Users → New user → Create new user: `analyst.region`, display name "Test Analyst", auto-generated password. Bharat keeps the password in his own password manager; it never goes into a chat or a file.
 2. Sign in once as the analyst in a separate private window at `app.fabric.microsoft.com`, change the password, accept the free licence, sign out.
 3. Give no workspace access yet (T071 does that).
 **Acceptance**
-- [ ] The analyst user exists and has signed in once.
-- [ ] No password or token appears in any chat, file or screenshot.
-**Result:** —
+- [x] The analyst user exists and has signed in once.
+- [x] No password or token appears in any chat, file or screenshot.
+**Result:** The test analyst user analyst.region (display name Test Analyst) exists as an enabled Member with 0 roles, 0 groups and no workspace access, and has signed in once at app.fabric.microsoft.com; its Account manager reads Free account and Start trial was not pressed. UI difference: the Entra menu path is Entra ID > Users > All users.
 
 #### T008 · Create the lakehouses and the warehouse in dev, and upload the seed file
 - **Story:** US003

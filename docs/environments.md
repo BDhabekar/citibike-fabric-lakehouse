@@ -16,6 +16,8 @@ Never used for this project: the employer work account, a relative's tenant or h
 
 Seen in T003 (Oct 25, 2026): the tenant also holds his Gmail address as an external user, which is never used to sign in to Fabric. The Fabric tenant settings for creating items, trials, Git and GitHub sync and workspace creation were already enabled for the entire organization; there is no variable-library or Eventhouse switch. Service principals creating workspaces and deployment pipelines is Disabled (see EP08).
 
+Seen in T007 (Oct 27, 2026): `analyst.region` exists in Entra as a Member of the tenant's own `onmicrosoft.com` domain (display name Test Analyst), created by the tenant admin account and signed in once at `app.fabric.microsoft.com`; its Account manager reads Free account. It holds 0 roles and 0 groups and has no workspace access; the grants in the table row above are made in T071. Never press Start trial in that account's session.
+
 ## 2. Capacity
 
 | | |
