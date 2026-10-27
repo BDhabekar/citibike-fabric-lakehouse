@@ -279,13 +279,13 @@ As an operator, I want partitioning, file sizes and old versions managed, so tha
 - **Depends on:** T041
 - **DP-700:** 3.3
 - **Status:** todo
-- **Read first:** docs/data-contracts.md §2–3 (partitions)
+- **Read first:** docs/data-contracts.md §2–3 (partitions); docs/decisions.md ADR-024
 **Do**
-1. Claude lays out the options (partitioning, V-Order, optimize-write, Z-order, VACUUM retention) with their cost, checks Microsoft's current property names, and recommends.
+1. Claude lays out the options (partitioning, V-Order, optimize-write, Z-order, VACUUM retention) with their cost, checks Microsoft's current property names, and recommends. The environment runs Runtime 2.0 (ADR-024): read its defaults first (deletion vectors on for new tables, adaptive target file size, `OPTIMIZE` fast mode, optimize-write no longer set) so no setting is chosen against 1.3 behaviour.
 2. Apply the chosen table properties to the silver tables.
 3. `nb_ops_table_maintenance`: for each bronze and silver table, `OPTIMIZE` (with Z-order where chosen) and `VACUUM` with 7-day retention; exit payload with files before/after.
 4. Run once; note the file counts.
 **Acceptance**
-- [ ] Settings and reasons written in the Result line and ADR log (Claude adds ADR-022).
+- [ ] Settings and reasons written in the Result line and ADR log (Claude adds the next free ADR number; ADR-022 to ADR-024 are taken).
 - [ ] The notebook runs green; file counts before/after recorded.
 **Result:** —

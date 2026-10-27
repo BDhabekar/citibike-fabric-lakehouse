@@ -106,7 +106,7 @@ As a developer, I want separate dev, test and prod workspaces with the same item
 - [x] Three workspaces on the trial capacity, named exactly as in `docs/environments.md`.
 - [x] Domain `Mobility` exists with the three workspaces in it.
 - [x] The Spark and OneLake defaults seen are written in the Result line.
-**Result:** Three workspaces (type Fabric Trial, F4 trial capacity, Central India) are in domain Mobility. Dev defaults seen, test and prod reported the same: Starter Pool (memory optimized, medium, 1-10 nodes), no default environment, Spark runtime 2.0 (Spark 4.1, Delta 4.2), which Microsoft lists as preview, so T009 must set GA 1.3 itself; OneLake cache for shortcuts off, diagnostics off, no lifecycle rules. UI difference: 'License mode' is now 'Workspace type'; OneLake settings has General, Storage report and Lifecycle management pages.
+**Result:** Three workspaces (type Fabric Trial, F4 trial capacity, Central India) are in domain Mobility. Dev defaults seen, test and prod reported the same: Starter Pool (memory optimized, medium, 1-10 nodes), no default environment, Spark runtime 2.0 (Spark 4.1, Delta 4.2), which was recorded as a preview (corrected in T009: Microsoft's lifecycle page lists 2.0 as GA, see ADR-024); OneLake cache for shortcuts off, diagnostics off, no lifecycle rules. UI difference: 'License mode' is now 'Workspace type'; OneLake settings has General, Storage report and Lifecycle management pages.
 
 #### T007 · Create the test analyst user and confirm the role map
 - **Story:** US003
@@ -161,7 +161,7 @@ As a developer, I want Spark settings and environment values stored as items, so
 - **Sprint:** 1
 - **Depends on:** T006
 - **DP-700:** 1.1, 3.3
-- **Status:** todo
+- **Status:** done
 - **Read first:** docs/conventions.md §4
 **Do**
 1. `ws-citibike-dev` → New item → Environment → `env_citibike`.
@@ -171,9 +171,9 @@ As a developer, I want Spark settings and environment values stored as items, so
 5. Save and **Publish** (an environment is not used until published).
 6. Workspace settings → Data Engineering/Science → Environment → set `env_citibike` as the workspace default.
 **Acceptance**
-- [ ] `env_citibike` is published with runtime, pool and the time-zone property.
-- [ ] It is the default environment of `ws-citibike-dev`.
-**Result:** —
+- [x] `env_citibike` is published with runtime, pool and the time-zone property.
+- [x] It is the default environment of `ws-citibike-dev`.
+**Result:** env_citibike is published in ws-citibike-dev on Runtime 2.0 (Spark 4.1, Delta 4.2), chosen in ADR-024 because Microsoft lists 2.0 as GA and 1.3 as end of support announced, with the Starter Pool at default compute values, spark.sql.session.timeZone = UTC and no libraries, and it is the workspace default environment. UI differences: a new environment opens with 2.0 preselected; Spark properties is its own page under Spark compute (property chosen from a dropdown); the default switch is under Workspace settings, Data Engineering/Science, Spark settings, Environment tab; no Published message was captured (Publish greyed, no pending banner).
 
 #### T010 · Create the variable library `vl_citibike` with three value sets
 - **Story:** US004

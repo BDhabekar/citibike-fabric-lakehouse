@@ -19,10 +19,10 @@ As a reviewer, I want tests and checks to run on every pull request, so that a b
 - **Depends on:** T016, T028
 - **DP-700:** 1.2
 - **Status:** todo
-- **Read first:** docs/conventions.md §3, §7; docs/risks.md R4
+- **Read first:** docs/conventions.md §3, §7; docs/risks.md R4; docs/decisions.md ADR-024
 **Do**
 1. One workflow, triggers: pull requests to `dev` and `main`, and pushes to `dev`.
-2. Jobs: `tests` (Ubuntu, Java 17, Python 3.11, `pyspark` and `pytest` pinned, run `tests/`); `lint` (`ruff` on `tests/`, `tools/` and the notebook files); `json` (every `.json` and `.platform` file under `/fabric` parses); `no-hardcoding` (`tools/scan_hardcoded.py`: fails on the URLs and coordinates from `vl_citibike` found outside `vl_citibike`, `docs/`, `tests/`); `backlog` (`python tools/backlog.py check`).
+2. Jobs: `tests` (Ubuntu, `pyspark` and `pytest` pinned, run `tests/`; Fabric runs Runtime 2.0, so pin `pyspark` to Spark 4.1 and choose Java and Python versions that match it or write down why not; the test Spark session sets `spark.sql.ansi.enabled` to false, because Fabric turns it off where open-source Spark 4.1 turns it on; ADR-024); `lint` (`ruff` on `tests/`, `tools/` and the notebook files); `json` (every `.json` and `.platform` file under `/fabric` parses); `no-hardcoding` (`tools/scan_hardcoded.py`: fails on the URLs and coordinates from `vl_citibike` found outside `vl_citibike`, `docs/`, `tests/`); `backlog` (`python tools/backlog.py check`).
 3. Claude writes `tools/scan_hardcoded.py` and its own test.
 4. Commit on a branch `ci-setup`; Bharat pushes it and opens a pull request into `dev`; all jobs green; merge.
 **Acceptance**
