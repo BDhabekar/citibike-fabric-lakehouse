@@ -68,16 +68,16 @@ As the platform owner, I want a Fabric trial capacity in my own tenant, so that 
 - **Sprint:** 1
 - **Depends on:** T004
 - **DP-700:** 3.1
-- **Status:** todo
+- **Status:** done
 - **Read first:** docs/cost-and-capacity.md §5
 **Do**
 1. Install the Microsoft Fabric Capacity Metrics app from the Power BI apps marketplace (Apps → Get apps). Connect it to the trial capacity (the capacity id comes from Admin portal → Capacity settings → Trial).
 2. Open the Compute page; note the CU % for the last day (it should be close to zero).
 3. Screenshot the page.
 **Acceptance**
-- [ ] The app opens and shows the trial capacity.
-- [ ] Baseline screenshot filed; the CU % is written in the Result line.
-**Result:** —
+- [x] The app opens and shows the trial capacity.
+- [x] Baseline screenshot filed; the CU % is written in the Result line.
+**Result:** Capacity Metrics app installed, trial capacity visible (F4, Central India); Compute page average 7.62%, peak 10.04%, no throttling. One practice notebook sitting used 33,937 of 34,705 CU-s, so the baseline is a sitting, not idle. The app loaded its data on its own after an initial credentials error.
 
 ## FT03 · Workspaces and shared items
 

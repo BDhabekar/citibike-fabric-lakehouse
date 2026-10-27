@@ -46,6 +46,7 @@ Do not read the other epic files, the whole data-contract file or the ADE HQ tra
 
 *Updated by each task chat in its last step: one line, newest first.*
 
+- Tue Oct 27, 2026 · T005 done: Capacity Metrics app installed and showing the trial capacity (F4, Central India). Baseline from the Compute page: average 7.62%, peak 10.04%, no throttling; one practice notebook sitting of about 2 h 21 min used 98% of the CU. See `docs/cost-and-capacity.md` §5, input for ADR-023 option (a). Evidence and notes filed in portfolio-hq. Next: `python3 tools/backlog.py next`.
 - Mon Oct 26, 2026 · T004 done: Fabric trial started overnight on its own (Central India, 4 CU, ends about Dec 25; last day for screenshots and publish Dec 18). ADR-022 resolved. ADR-023 (Proposed): the capacity is an F4, not the F64 the docs assumed; Bharat decides. Evidence and notes filed in ADE HQ. Next: T005.
 - Sun Oct 25, 2026 · T003 done: signed in with the tenant admin account, free licence active; the Fabric tenant settings the project needs were already on (nothing changed). Next: T004 (start the Fabric trial), Mon Oct 26.
 - Sat Oct 24, 2026 · Azure Boards closing moved into the task chat (protocol step 11): `Closed AB#` on a direct push to `dev` links but does not close, tested on T012.
