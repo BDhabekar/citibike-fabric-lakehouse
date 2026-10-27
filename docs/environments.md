@@ -59,6 +59,8 @@ Created in dev, promoted to test and prod by `dp-citibike`, except where marked.
 | shortcut `kql_station_status` in `lh_silver` | T051 | recreated after deployment by the runbook step in T079 |
 | `sm_citibike`, `rpt_citibike_ops` | EP09 | deployment |
 
+Seen in T008 (Oct 27, 2026): `lh_bronze`, `lh_silver` and `wh_gold` exist in `ws-citibike-dev`; both lakehouses were created with "Lakehouse schemas" cleared (the box is ticked by default) and each shows a SQL analytics endpoint beside it in the item list, with no default semantic model listed. `lh_bronze` → Files holds `_checkpoints`, `bronze` and `seed`; `Files/seed/wmo_weather_codes.csv` is in `seed` (770 B, the same size as the repo file). The warehouse Create dialog has an Advanced pane (description and collation, collation set to Workspace default); nothing was changed there. Collation of all three items: see `docs/conventions.md` §5.
+
 ## 5. What lives outside Fabric
 
 | What | Where |

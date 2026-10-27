@@ -75,6 +75,7 @@ Rules:
 - Every load procedure: parameters for its window, `SET NOCOUNT ON`, `BEGIN TRAN`, delete the window, insert the window, `COMMIT`, then `SELECT @@ROWCOUNT AS rows_written`-style output for the pipeline. On error: `ROLLBACK` and `THROW`.
 - Scripts that create objects use `CREATE OR ALTER` where Fabric supports it, otherwise `DROP ... IF EXISTS` then `CREATE`. Re-running a script is always safe.
 - Seed data is inserted by procedures (`ctl.usp_seed_config`), never by hand, because deployment moves objects but not data.
+- Collation: `lh_bronze`, `lh_silver` and `wh_gold` all report `Latin1_General_100_BIN2_UTF8` (case-sensitive), the workspace default, read from `sys.databases` in dev on Oct 27, 2026 (T008). String comparisons, join keys and object names are therefore case-sensitive, so names are written exactly as created. Because the lakehouse endpoints and the warehouse match, the cross-database reads in ADR-004 (spike T018) compare strings the same way. A warehouse made later with a different collation would break that match, and collation cannot be changed after creation (Microsoft Learn, "Collation in Fabric Data Warehouse", read Oct 27, 2026; page date not shown).
 
 ## 6. Notebook exit contract
 

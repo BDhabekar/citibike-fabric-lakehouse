@@ -137,16 +137,16 @@ As a developer, I want separate dev, test and prod workspaces with the same item
 - **Sprint:** 1
 - **Depends on:** T006
 - **DP-700:** 2.2
-- **Status:** todo
+- **Status:** done
 - **Read first:** docs/decisions.md ADR-004, ADR-005; docs/data-contracts.md §1
 **Do**
 1. In `ws-citibike-dev`: New item → Lakehouse → `lh_bronze`. Leave "Lakehouse schemas" **unticked** (ADR-005). Repeat for `lh_silver`.
 2. New item → Warehouse → `wh_gold`.
 3. In `lh_bronze` → Files: create folders `bronze`, `seed`, `_checkpoints`. Upload `seed/wmo_weather_codes.csv` from the repo into `Files/seed/`.
 **Acceptance**
-- [ ] `lh_bronze`, `lh_silver`, `wh_gold` exist in dev, lakehouses without schemas.
-- [ ] `Files/seed/wmo_weather_codes.csv` is in `lh_bronze`.
-**Result:** —
+- [x] `lh_bronze`, `lh_silver`, `wh_gold` exist in dev, lakehouses without schemas.
+- [x] `Files/seed/wmo_weather_codes.csv` is in `lh_bronze`.
+**Result:** lh_bronze and lh_silver (schemas off) and wh_gold exist in ws-citibike-dev; Files/seed/wmo_weather_codes.csv (770 B) is in lh_bronze beside bronze and _checkpoints; all three report collation Latin1_General_100_BIN2_UTF8 (workspace default, seen on the warehouse Advanced pane); no default semantic model is listed. Evidence in portfolio-hq.
 
 ### US004 · Versioned configuration
 As a developer, I want Spark settings and environment values stored as items, so that they travel with deployment instead of living in people's heads.
