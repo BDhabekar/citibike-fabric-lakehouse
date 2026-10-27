@@ -39,6 +39,8 @@ Seen in T003 (Oct 25, 2026): the tenant also holds his Gmail address as an exter
 | Eventstream | built by hand (runbook), stopped after T050 | none | built by hand (runbook), running |
 | Schedules | off | off | `pl_daily` 11:30 IST daily; `pl_monthly_trips` 07:00 IST on the 8th |
 
+Seen in T006 (Oct 27, 2026): the three workspaces exist on the trial capacity (workspace type Fabric Trial, SKU FTL4, Central India) and sit in the domain `Mobility`. Workspace defaults read in dev (test and prod reported the same): Spark pool Starter Pool (memory optimized, medium nodes, 1 to 10 nodes), "Customize compute configurations for items" on, no default environment, Spark runtime 2.0 (Spark 4.1, Delta 4.2), which Microsoft lists as public preview, so `env_citibike` (T009) sets the newest GA runtime (1.3 on Oct 27) itself. OneLake settings: cache for shortcuts off, diagnostic events off, no lifecycle rules. Git, roles for the analyst and the other rows of the table are still to do in their own tasks.
+
 ## 4. Items per workspace
 
 Created in dev, promoted to test and prod by `dp-citibike`, except where marked.

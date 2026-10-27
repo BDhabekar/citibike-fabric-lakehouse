@@ -94,7 +94,7 @@ As a developer, I want separate dev, test and prod workspaces with the same item
 - **Sprint:** 1
 - **Depends on:** T004
 - **DP-700:** 1.1
-- **Status:** todo
+- **Status:** done
 - **Read first:** docs/environments.md §3, docs/conventions.md §1
 **Do**
 1. Workspaces → New workspace → `ws-citibike-dev`. Advanced → License mode **Trial**. Repeat for `ws-citibike-test` and `ws-citibike-prod`.
@@ -103,10 +103,10 @@ As a developer, I want separate dev, test and prod workspaces with the same item
 4. Workspace settings → OneLake: note the options shown (for DP-700), change nothing.
 5. Repeat steps 3–4 reading only, in test and prod, to confirm the same defaults.
 **Acceptance**
-- [ ] Three workspaces on the trial capacity, named exactly as in `docs/environments.md`.
-- [ ] Domain `Mobility` exists with the three workspaces in it.
-- [ ] The Spark and OneLake defaults seen are written in the Result line.
-**Result:** —
+- [x] Three workspaces on the trial capacity, named exactly as in `docs/environments.md`.
+- [x] Domain `Mobility` exists with the three workspaces in it.
+- [x] The Spark and OneLake defaults seen are written in the Result line.
+**Result:** Three workspaces (type Fabric Trial, F4 trial capacity, Central India) are in domain Mobility. Dev defaults seen, test and prod reported the same: Starter Pool (memory optimized, medium, 1-10 nodes), no default environment, Spark runtime 2.0 (Spark 4.1, Delta 4.2), which Microsoft lists as preview, so T009 must set GA 1.3 itself; OneLake cache for shortcuts off, diagnostics off, no lifecycle rules. UI difference: 'License mode' is now 'Workspace type'; OneLake settings has General, Storage report and Lifecycle management pages.
 
 #### T007 · Create the test analyst user and confirm the role map
 - **Story:** US003
