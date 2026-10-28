@@ -106,6 +106,7 @@ A notebook that finds an error-severity check above its threshold raises an exce
 - Commit messages: `T0xx: <what changed>` for task work; Fabric commits from the workspace use the same pattern, typed in the Source control pane. Task commits end with `AB#<ADO>` (the card's ADO id) so the Azure Boards app links them to the work item. The task chat closes the work item itself in Azure Boards (protocol step 11): `Closed AB#` only changes state when a pull request is merged into the default branch, and task commits go straight to `dev`.
 - Azure Boards: the Azure Boards GitHub app connects this repo to `dev.azure.com/bdhabekar-citibike` (project `citibike-fabric-lakehouse`). Repo cards stay the source of truth; Azure Boards is the tracking view.
 - Tags: `vMAJOR.MINOR.PATCH` on `main` after each release to prod.
+- Fabric's default commit message ("Committing N items from workspace <id>") carries the workspace id, and the first sync of a new connection commits with it by itself (T011, ADR-026). Every commit from the Source control pane is typed as `T0xx: ...`; the default is never accepted.
 - Identity in this repo: `user.email = 166133418+BDhabekar@users.noreply.github.com`, `user.name = BDhabekar`.
 - Never committed: secrets, tokens, `.pbix` files, data files other than `seed/`, anything under `evidence/` (screenshots live in ADE HQ).
 

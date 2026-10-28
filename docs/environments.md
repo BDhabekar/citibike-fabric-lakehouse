@@ -45,6 +45,8 @@ Seen in T006 (Oct 27, 2026): the three workspaces exist on the trial capacity (w
 
 Seen in T010 (Oct 27, 2026): `vl_citibike` in dev has twelve String variables and four value sets: Default (the dev values, cannot be renamed), `dev` (no overrides, active), `test` (overrides `env_name`) and `prod` (overrides `env_name` and the three backfill variables). Microsoft says a workspace created by a deployment starts on Default, so the stage's own set is chosen by hand in T077 (ADR-025).
 
+Seen in T011 (Oct 28, 2026): `ws-citibike-dev` is connected to GitHub (account added with a fine-grained token limited to this one repository, Contents read and write, expiry Jan 26, 2027; the token itself is only in Fabric), branch `dev`, folder `fabric`. The first sync copied the five items into the empty folder and committed by itself; the Source control pane then read 0 changes, every item Synced, last synced 19:41 IST, commit `c6323fb`. The folders written are `env_citibike.Environment`, `lh_bronze.Lakehouse`, `lh_silver.Lakehouse`, `vl_citibike.VariableLibrary` and `wh_gold.Warehouse` (the two SQL analytics endpoints are not Git items); `fabric/README.md` was left alone. `vl_citibike` matches `docs/conventions.md` §3 exactly. The default commit message carried the workspace id: ADR-026. The Git tenant switches (synchronize with Git repositories, sync with GitHub repositories) read Enabled for the entire organization on the Admin portal on Oct 28. The token must be renewed before Jan 26, 2027; the trial ends about Dec 25, so renewal is only needed if the project is kept running after the trial.
+
 ## 4. Items per workspace
 
 Created in dev, promoted to test and prod by `dp-citibike`, except where marked.

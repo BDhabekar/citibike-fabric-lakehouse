@@ -211,7 +211,7 @@ As a developer, I want the dev workspace synced to GitHub, so that every change 
 - **Sprint:** 1
 - **Depends on:** T002, T008, T009, T010
 - **DP-700:** 1.2
-- **Status:** todo
+- **Status:** done
 - **Read first:** docs/decisions.md ADR-014, ADR-020; docs/conventions.md §7, §9
 **Do**
 1. GitHub → Settings (account) → Developer settings → Fine-grained tokens → Generate: repository access **only** `citibike-fabric-lakehouse`; permission Contents **Read and write**; expiry 90 days. Bharat copies it straight into Fabric in the next step; it is never pasted into a chat or a file.
@@ -219,10 +219,10 @@ As a developer, I want the dev workspace synced to GitHub, so that every change 
 3. Source control pane → commit everything with the message `T011: first workspace commit`.
 4. Claude reads the repo after Bharat runs `git -C D:\GitRepositories\citibike-fabric-lakehouse pull` and lists what Fabric wrote under `/fabric`.
 **Acceptance**
-- [ ] The workspace shows "Synced" with branch `dev`.
-- [ ] `/fabric` on GitHub has folders for `lh_bronze`, `lh_silver`, `wh_gold`, `env_citibike`, `vl_citibike`.
-- [ ] The token expiry date is in the Result line (renew before it).
-**Result:** —
+- [x] The workspace shows "Synced" with branch `dev`.
+- [x] `/fabric` on GitHub has folders for `lh_bronze`, `lh_silver`, `wh_gold`, `env_citibike`, `vl_citibike`.
+- [x] The token expiry date is in the Result line (renew before it).
+**Result:** Oct 28: ws-citibike-dev connected to GitHub (fine-grained token, one repo, Contents read and write, expires Jan 26, 2027), branch dev, folder fabric. The first sync committed the five items by itself (c6323fb, default message, so no typed 'T011: first workspace commit'); Source control reads 0 changes, all items Synced. fabric/ holds lh_bronze.Lakehouse, lh_silver.Lakehouse, wh_gold.Warehouse, env_citibike.Environment, vl_citibike.VariableLibrary; vl_citibike matches conventions §3. Fabric's default message carried the workspace id, accepted as ADR-026.
 
 #### T012 · Protect `main` and `dev` on GitHub
 - **Story:** US005
