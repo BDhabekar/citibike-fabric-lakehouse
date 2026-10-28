@@ -258,7 +258,7 @@ As the architect, I want each risky feature tried on a small case first, so that
 - **Sprint:** 1
 - **Depends on:** T006
 - **DP-700:** 2.3
-- **Status:** todo
+- **Status:** done
 - **Read first:** docs/risks.md R1, docs/sources.md §3, docs/decisions.md ADR-007
 **Do**
 1. In `ws-citibike-dev`: New item → Eventstream → `es_spike_http`.
@@ -268,11 +268,11 @@ As the architect, I want each risky feature tried on a small case first, so that
 5. Also open `system_regions.json` in a browser and note its fields (for T037).
 6. Delete `es_spike_http` after the notes are taken (it must not stay polling).
 **Acceptance**
-- [ ] At least three polls seen in the preview, screenshot filed.
-- [ ] Event shape written in `docs/risks.md` R1 (Claude writes it): per poll or per station, and the field list.
-- [ ] `system_regions` fields written in `docs/sources.md` §3.
-- [ ] The spike eventstream is deleted.
-**Result:** —
+- [x] At least three polls seen in the preview, screenshot filed.
+- [x] Event shape written in `docs/risks.md` R1 (Claude writes it): per poll or per station, and the field list.
+- [x] `system_regions` fields written in `docs/sources.md` §3.
+- [x] The spike eventstream is deleted.
+**Result:** HTTP source polled station_status about every 60 s (JSON pointer /data/stations, offered with pagination off): one event per station, 13 fields, about 2,521 events a minute shown in Data insights, not in the preview; system_regions has region_id and name, 7 regions; es_spike_http deleted (conn_spike_gbfs stays); evidence in portfolio-hq.
 
 #### T014 · Spike R2: find an alert route that reaches Bharat
 - **Story:** US006

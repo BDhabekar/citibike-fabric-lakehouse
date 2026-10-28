@@ -68,9 +68,9 @@ Every GBFS file has the same envelope: `last_updated` (Unix seconds), `ttl` (sec
  "rental_uris": {"android": "...", "ios": "..."}, "is_charging": false}
 ```
 
-**`system_regions` → `data.regions[]`**: `region_id`, `name` (confirm in T013).
+**`system_regions` → `data.regions[]`**: `region_id` (string) and `name`, nothing else; envelope `ttl` 60, `version` "2.3". Seven regions read on Oct 28: `70` JC District, `71` NYC District, `158` 8D, `185` Bronx, `189` IC HQ, `190` testzone, `311` Hoboken District. `8D`, `IC HQ` and `testzone` look like operational regions; T037 decides whether the dimension keeps them (read in a browser on Oct 28).
 
-**`station_status` → `data.stations[]`**, fields seen on Oct 23: `station_id`, `num_bikes_available`, `num_ebikes_available`, `num_bikes_disabled`, `num_docks_available`, `num_docks_disabled`, `is_installed`, `is_renting`, `is_returning`, `last_reported` (Unix seconds), `vehicle_types_available[]` {`vehicle_type_id`, `count`}, `num_scooters_available` and `num_scooters_unavailable` (missing on uninstalled placeholder stations). `is_installed`, `is_renting` and `is_returning` may arrive as `0/1` or `true/false`; parsing accepts both. Station count: about two thousand (confirm in T013).
+**`station_status` → `data.stations[]`**, fields seen on Oct 23: `station_id`, `num_bikes_available`, `num_ebikes_available`, `num_bikes_disabled`, `num_docks_available`, `num_docks_disabled`, `is_installed`, `is_renting`, `is_returning`, `last_reported` (Unix seconds), `vehicle_types_available[]` {`vehicle_type_id`, `count`}, `num_scooters_available` and `num_scooters_unavailable` (missing on uninstalled placeholder stations). `is_installed`, `is_renting` and `is_returning` may arrive as `0/1` or `true/false`; parsing accepts both. Station count: 2,521 entries in one poll on Oct 28, about 1.08 MB of JSON; every `is_*` flag arrived as `0/1` in that poll.
 
 **Schema drift is expected.** Lyft adds fields without notice. Bronze stores the whole payload as text; silver parses with an explicit schema and ignores unknown fields; a new field is a decision, never a failure.
 
