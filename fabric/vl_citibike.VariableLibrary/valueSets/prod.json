@@ -1,0 +1,22 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/variableLibrary/definition/valueSet/1.0.0/schema.json",
+  "name": "prod",
+  "variableOverrides": [
+    {
+      "name": "env_name",
+      "value": "prod"
+    },
+    {
+      "name": "backfill_last_month",
+      "value": "202609"
+    },
+    {
+      "name": "backfill_first_month",
+      "value": "202607"
+    },
+    {
+      "name": "weather_backfill_start",
+      "value": "2026-07-01"
+    }
+  ]
+}

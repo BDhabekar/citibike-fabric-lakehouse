@@ -1,0 +1,77 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/variableLibrary/definition/variables/1.0.0/schema.json",
+  "variables": [
+    {
+      "name": "env_name",
+      "note": "",
+      "type": "String",
+      "value": "dev"
+    },
+    {
+      "name": "gbfs_base_url",
+      "note": "",
+      "type": "String",
+      "value": "https://gbfs.lyft.com/gbfs/2.3/bkn/en"
+    },
+    {
+      "name": "weather_archive_url",
+      "note": "",
+      "type": "String",
+      "value": "https://archive-api.open-meteo.com/v1/archive"
+    },
+    {
+      "name": "weather_forecast_url",
+      "note": "",
+      "type": "String",
+      "value": "https://api.open-meteo.com/v1/forecast"
+    },
+    {
+      "name": "weather_latitude",
+      "note": "",
+      "type": "String",
+      "value": "40.7829"
+    },
+    {
+      "name": "weather_longitude",
+      "note": "",
+      "type": "String",
+      "value": "-73.9654"
+    },
+    {
+      "name": "weather_hourly_vars",
+      "note": "",
+      "type": "String",
+      "value": "temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,rain,snowfall,cloud_cover,wind_speed_10m,weather_code"
+    },
+    {
+      "name": "trips_base_url",
+      "note": "",
+      "type": "String",
+      "value": "https://s3.amazonaws.com/tripdata"
+    },
+    {
+      "name": "backfill_first_month",
+      "note": "",
+      "type": "String",
+      "value": "202604"
+    },
+    {
+      "name": "backfill_last_month",
+      "note": "",
+      "type": "String",
+      "value": "202604"
+    },
+    {
+      "name": "weather_backfill_start",
+      "note": "",
+      "type": "String",
+      "value": "2026-04-01"
+    },
+    {
+      "name": "dq_max_reject_pct",
+      "note": "",
+      "type": "String",
+      "value": "1.0"
+    }
+  ]
+}
