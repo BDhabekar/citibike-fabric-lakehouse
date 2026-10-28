@@ -87,6 +87,7 @@ As an operator, I want one daily run and one monthly run, so that nobody has to 
 1. In `pl_daily` and `pl_monthly_trips`: an on-failure path from each stage to `sp_run_end_failed` (status `failed`, the failed activity's error message) and the alert (route from ADR-016), ending in a `fail_pipeline` Fail activity so the run still shows as failed.
 2. Force a failure: run `pl_monthly_trips` with `trip_month = 209901`.
 3. Check the log row, the alert and the run status.
+**Note (T014, ADR-016).** The alert is an Activator email to the tenant admin user (route 2). Build the rule in `ws-citibike-prod` or `ws-citibike-test`, never in dev, and reuse `docs/runbooks/alert-rule.md` from T050. A trigger from job events or the pipeline failure path has not been proven yet; prove it here before relying on it.
 **Acceptance**
 - [ ] The alert arrived; `ctl.run_log` has the failed step with its message; the run shows Failed.
 **Result:** —

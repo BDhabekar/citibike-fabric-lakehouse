@@ -18,6 +18,8 @@ Seen in T003 (Oct 25, 2026): the tenant also holds his Gmail address as an exter
 
 Seen in T007 (Oct 27, 2026): `analyst.region` exists in Entra as a Member of the tenant's own `onmicrosoft.com` domain (display name Test Analyst), created by the tenant admin account and signed in once at `app.fabric.microsoft.com`; its Account manager reads Free account. It holds 0 roles and 0 groups and has no workspace access; the grants in the table row above are made in T071. Never press Start trial in that account's session.
 
+Seen in T014 (Oct 28, 2026): the Contact information Email of the tenant admin user in Entra is set to a plus form of the Gmail address (`<alert-email>` with a `+fabric` tag, the real value kept out of this file). Activator alert emails go to that user and reach the Gmail inbox. Leave it set; the failure alert depends on it (ADR-016).
+
 ## 2. Capacity
 
 | | |

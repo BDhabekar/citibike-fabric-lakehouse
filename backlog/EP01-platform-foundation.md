@@ -283,7 +283,7 @@ As the architect, I want each risky feature tried on a small case first, so that
 - **Sprint:** 1
 - **Depends on:** T006
 - **DP-700:** 3.1
-- **Status:** todo
+- **Status:** done
 - **Read first:** docs/risks.md R2, R9; docs/decisions.md ADR-016
 **Do**
 1. Option 1: New item → Activator → `act_spike`. Source: Real-Time hub → Fabric events → Job events (or the sample data source if job events are not offered). Make a rule that fires on any event; action Email to `<alert-email>`. Start it and wait for a mail.
@@ -292,10 +292,10 @@ As the architect, I want each risky feature tried on a small case first, so that
 4. Stop and delete `act_spike` (and `pl_spike_alert` if made).
 5. Decide with Bharat whether the alert address may appear in a public repo (R9).
 **Acceptance**
-- [ ] One route delivered a test alert to Bharat's phone or Gmail; screenshot of the received message filed.
-- [ ] The working route and the publish decision for the address are written in ADR-016 by Claude.
-- [ ] Spike items deleted.
-**Result:** —
+- [x] One route delivered a test alert to Bharat's phone or Gmail; screenshot of the received message filed.
+- [x] The working route and the publish decision for the address are written in ADR-016 by Claude.
+- [x] Spike items deleted.
+**Result:** Route 2 works: an Activator email to the tenant admin user, whose Entra contact Email is a plus form of the Gmail address, reached the Gmail inbox as a test alert and as a live firing; the plain Gmail address cannot be picked in the To box (route 1), route 3 not needed; R9 decided as option C (rule built by hand in a workspace without Git, never in dev), see ADR-016. Screen differences: the condition reads On every value and the free-text field is Message.
 
 #### T015 · Spike R3: copy a zipped trip file from HTTP and unzip it into Files
 - **Story:** US006

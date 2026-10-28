@@ -135,6 +135,7 @@ As an operations lead, I want a live dashboard and an alert when a station stays
 2. Rule `rush_hour_empty`: fire when the query returns rows; action through the route ADR-016 records; message lists station names.
 3. Test outside rush hour by a temporary copy of the function with the hour filter removed; restore it after the alert arrives.
 4. Stop the dev Eventstream after this task (`docs/runbooks/eventstream.md`, Stop section); it runs only in prod from T079.
+**Note (T014, ADR-016).** Build `act_citibike_alerts` in a workspace with no Git link (`ws-citibike-prod`, or `ws-citibike-test` while testing), never in `ws-citibike-dev`: a rule's recipient is stored in the item definition and Git would carry it into the public repo. Pick the tenant admin user in the To box, never type an address. Write `docs/runbooks/alert-rule.md` with the rule's settings and `<alert-recipient>`. Settle in this task whether the source query can be read from another workspace.
 **Acceptance**
 - [ ] A real alert, with station names, reached Bharat; screenshot filed.
 - [ ] The temporary function is removed; the dev Eventstream is stopped.
