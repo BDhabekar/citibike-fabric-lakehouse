@@ -181,10 +181,11 @@ As an analyst, I want each month's trip file landed and unzipped, so that Spark 
 **Do**
 1. Parameters `trip_month` (`YYYYMM`), `run_id`, `parent_run_id`. Library variable `trips_base_url`.
 2. `sp_run_start` → `del_month_folder`: Delete activity on `lh_bronze` Files `bronze/trips/month=<trip_month>/` (the only delete a pipeline may do; ignore "not found").
-3. `cp_trips_zip`: the setup proved in T015, URL built from `trips_base_url` and `trip_month`.
+3. Two Copy activities, as proved in T015 (ADR-027): `cp_trips_stage` (HTTP to the staging path, Binary, no compression, URL built from `trips_base_url` and `trip_month`), then `cp_trips_unzip` (the staged zip, ZipDeflate, preserve-name tick off, into `bronze/trips/month=<trip_month>/`).
 4. `gm_month_folder`: Get Metadata child items; `if_has_files`: fail with "no CSV extracted for <month>" if the count is 0.
-5. Failure path on `cp_trips_zip`: `sp_run_end` with status `failed` and the activity's error message (a 404 means "file not published yet").
+5. Failure path on `cp_trips_stage` and on `cp_trips_unzip`: `sp_run_end` with status `failed` and the activity's error message (a 404 means "file not published yet").
 6. Run for `202604` twice; then once for `209901` to see the clean failure.
+**Note (T015, ADR-027).** The connection is `conn_tripdata bharat` (Fabric adds ` bharat` to the name typed) with the data source path `https://s3.amazonaws.com/tripdata/`. The trailing slash matters: without it Fabric requests the wrong path and returns a 404. A Copy activity takes its base address from the connection, so settle here whether `trips_base_url` can feed it or the connection stays the one place for the address; the relative URL is `<trip_month>-citibike-tripdata.zip`. CSV names differ by month (`-partN.csv` in 2026-04, `_N.csv` in 2026-06): read a month folder by `*.csv`. Measured in T015: 2026-04 took 23 s and 25 s, 2026-06 (1.051 GB) 63 s and 31 s. The staged zip is overwritten on a rerun, never deleted.
 **Acceptance**
 - [ ] `202604` lands its CSVs; the second run leaves the same file names and sizes.
 - [ ] The `209901` run fails with a logged, readable message in `ctl.run_log`.

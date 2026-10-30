@@ -15,10 +15,11 @@ Type notation: Spark types for lakehouse tables, T-SQL types for the warehouse, 
 | `gbfs_station_information` | `Files/bronze/gbfs_station_information/ingest_date=YYYY-MM-DD/run_id=<run_id>/station_information.json` | `pl_ingest_gbfs_reference` |
 | `gbfs_system_regions` | `Files/bronze/gbfs_system_regions/ingest_date=YYYY-MM-DD/run_id=<run_id>/system_regions.json` | `pl_ingest_gbfs_reference` |
 | `trips` | `Files/bronze/trips/month=YYYYMM/` (the CSVs from the zip) | `pl_ingest_trips_month` |
+| trips staging | `Files/bronze/_staging/trips/month=YYYYMM/<YYYYMM>-citibike-tripdata.zip` (the zip as downloaded; ADR-027) | `pl_ingest_trips_month` |
 | seed | `Files/seed/wmo_weather_codes.csv` | uploaded once from `seed/` in this repo |
 | checkpoints | `Files/_checkpoints/<source_id>/` | `nb_bronze_load_json` |
 
-`ingest_date` is the UTC date of the run. `run_id` is the pipeline run id (`@pipeline().RunId`), or `manual-<yyyyMMddHHmmss>` for a hand run. A trip month folder is the only landing path a pipeline may delete, and only its own month, just before re-copying it.
+`ingest_date` is the UTC date of the run. `run_id` is the pipeline run id (`@pipeline().RunId`), or `manual-<yyyyMMddHHmmss>` for a hand run. A trip month folder is the only landing path a pipeline may delete, and only its own month, just before re-copying it. The staged zip is never deleted: a rerun overwrites the same file name.
 
 ---
 

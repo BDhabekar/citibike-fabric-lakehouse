@@ -88,7 +88,10 @@ Recent sizes (zipped): 2026-04 165 MB · 2026-05 917 MB · 2026-06 1,051 MB · 2
 
 **Columns** (current format): `ride_id`, `rideable_type`, `started_at`, `ended_at`, `start_station_name`, `start_station_id`, `end_station_name`, `end_station_id`, `start_lat`, `start_lng`, `end_lat`, `end_lng`, `member_casual`.
 
-- `started_at` and `ended_at` are New York local time with no offset. The exact text format, including any fractional seconds, is confirmed in T015.
+- `started_at` and `ended_at` are New York local time with no offset. Text format confirmed in T015 (Oct 30, 2026) on the top rows of `202604-citibike-tripdata-part1.csv` and `202606-citibike-tripdata_1.csv`: `yyyy-MM-dd HH:mm:ss.SSS`, a space between date and time, three fractional digits, no offset, for example `2026-04-06 18:55:38.804` and `2026-06-02 14:51:58.403`. The preview showed only the top of each file, so whether every row carries three fractional digits was not checked; T041 should test for it.
+- The header of both files is the 13-column list above, exactly and in that order. Station ids are text with a decimal part (for example `7293.10`, `6740.01`).
+- The CSV names inside the zip differ by month: 2026-04 holds `202604-citibike-tripdata-part1.csv` to `-part4.csv` (4 files, 179 MB each in the lakehouse listing); 2026-06 holds `202606-citibike-tripdata_1.csv` to `_6.csv` (6 files, 185 to 186 MB and one of 71 MB). A month folder is therefore read by `*.csv`, not by name.
+- Measured in T015 with Copy on the trial capacity: the 2026-04 zip (164.6 MB) unzipped to 753.5 MB of CSV; the 2026-06 zip (1.051 GB) unzipped to about 1.0 GB. The ratio is not constant, so do not size bronze from the zip size.
 - `start_station_id` and `end_station_id` are GBFS `short_name` values, not GBFS `station_id`s. Conformance is measured in T043.
 - The publisher removes staff trips, test-station trips and trips under 60 seconds.
 - Electric bikes can end away from a dock, so end station fields can be empty.

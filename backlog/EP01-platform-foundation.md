@@ -306,19 +306,19 @@ As the architect, I want each risky feature tried on a small case first, so that
 - **Sprint:** 1
 - **Depends on:** T008
 - **DP-700:** 2.2
-- **Status:** todo
+- **Status:** done
 - **Read first:** docs/risks.md R3, docs/sources.md §4
 **Do**
 1. `ws-citibike-dev` → New item → Data pipeline → `pl_spike_zip`.
-2. Copy activity. Source: connection type HTTP, URL `https://s3.amazonaws.com/tripdata/202604-citibike-tripdata.zip`, anonymous; file format **Binary**; compression type **ZipDeflate**. Destination: `lh_bronze` → Files → folder `bronze/trips/month=202604`; file format Binary; tick "preserve zip file name as folder" **off**.
-3. Run. Note duration and bytes read.
+2. Two Copy activities (ADR-027; one Copy from HTTP with ZipDeflate fails with `UserErrorSourceNotSeekable`). `cp_trips_stage`: connection `conn_tripdata` (type HTTP, data source path `https://s3.amazonaws.com/tripdata/` with the trailing slash, anonymous), relative URL `202604-citibike-tripdata.zip`, Binary, no compression, to `lh_bronze` Files folder `bronze/_staging/trips/month=202604`, file name `202604-citibike-tripdata.zip`. `cp_trips_unzip`, on success of the first: source that staged file in `lh_bronze` Files, Binary, ZipDeflate, "preserve zip file name as folder" **off**; destination `bronze/trips/month=202604`, Binary, file name empty.
+3. Run. Note duration and bytes read for each activity. Added Oct 30 after the first run: repeat once for `202606` (1,051 MB zip) to test the real size, then delete both June folders (ADR-021: dev loads 2026-04 only).
 4. Browse the folder: list the CSV names. Open one in the preview: note the header and two `started_at` values exactly as written (for T041).
-5. Leave the files (T026 replaces them); delete `pl_spike_zip`.
+5. Leave the April files and the staged April zip (T026 replaces them); delete `pl_spike_zip`.
 **Acceptance**
-- [ ] CSVs for 2026-04 sit in `Files/bronze/trips/month=202604/`, screenshot filed.
-- [ ] The header and the timestamp text format are written in `docs/sources.md` §4 by Claude.
-- [ ] Duration and size in the Result line.
-**Result:** —
+- [x] CSVs for 2026-04 sit in `Files/bronze/trips/month=202604/`, screenshot filed.
+- [x] The header and the timestamp text format are written in `docs/sources.md` §4 by Claude.
+- [x] Duration and size in the Result line.
+**Result:** Oct 30: one Copy from HTTP with ZipDeflate fails (UserErrorSourceNotSeekable, R3 met), so ADR-027 option (a) was built: cp_trips_stage copies the zip as plain Binary into Files/bronze/_staging/trips/month=YYYYMM/ and cp_trips_unzip unzips it into Files/bronze/trips/month=YYYYMM/ with the preserve-name tick off, so the CSVs sit directly in the folder. 2026-04: 164.6 MB zip, 23 s + 25 s, 4 CSVs of 179 MB (753.5 MB written). 2026-06 (1.051 GB zip), same pipeline: 63 s + 31 s, 6 CSVs, about 1.0 GB; June folders deleted afterwards. Header (13 columns) and started_at text yyyy-MM-dd HH:mm:ss.SSS are in docs/sources.md section 4; CSV names differ by month. UI differences: the connection address needs a trailing slash (404 without it) and Fabric shows the name as conn_tripdata bharat. pl_spike_zip deleted, Source control 0. Evidence in portfolio-hq.
 
 #### T016 · Spike R4: CI can import a notebook's Git file and test it
 - **Story:** US006
@@ -401,6 +401,7 @@ As the architect, I want each risky feature tried on a small case first, so that
 2. Write the outcomes into ADR-007, ADR-008, ADR-016.
 3. If any fallback was taken, edit only the cards it affects (named in the risk row) and list the edits in the Result line. A fallback that changes the architecture goes to Bharat first.
 4. `tools/backlog.py check`, commit.
+**Note (T015, ADR-027).** R3 did not end in the notebook fallback written in its row: Copy from an HTTP source cannot unzip (the source is not seekable), and the two-Copy workaround from Microsoft's own error message worked at 165 MB and 1.05 GB. Record R3 as resolved by a different fallback, ADR-027. T026, ADR-006 and `docs/data-contracts.md` §1 were already edited in T015; name them in the Result line. The R3 row stays `open` until this task.
 **Acceptance**
 - [ ] No R1–R6 row says "open".
 - [ ] Every affected card is updated and named in the Result line.
