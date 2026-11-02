@@ -329,16 +329,16 @@ As the architect, I want each risky feature tried on a small case first, so that
 - **Sprint:** 1
 - **Depends on:** T011
 - **DP-700:** 1.2
-- **Status:** todo
+- **Status:** done
 - **Read first:** docs/risks.md R4, docs/conventions.md §4
 **Do**
 1. Bharat creates notebook `nb_lib_common` in dev with one code cell: a function `add_lineage_columns(df, source_file_col, run_id)` that Claude supplies, and commits it from Source control.
 2. After `git pull`, Claude reads `fabric/nb_lib_common.Notebook/notebook-content.py` and writes `tests/conftest.py` with a loader that imports the notebook file as a module (and strips any magic lines if needed), plus `tests/test_lib_smoke.py` that builds a local Spark session and tests the function.
 3. Claude copies the repo's `fabric/` and `tests/` into its own cloud workspace and runs the tests there (Java, `pyspark` and `pytest` installed in that workspace, never on the laptop or into the repo). CI (T075) runs the same tests on GitHub.
 **Acceptance**
-- [ ] `pytest` passes locally against the file Fabric wrote.
-- [ ] The loader approach is written in `docs/risks.md` R4 (plain import, or the cell-extract fallback).
-**Result:** —
+- [x] `pytest` passes locally against the file Fabric wrote.
+- [x] The loader approach is written in `docs/risks.md` R4 (plain import, or the cell-extract fallback).
+**Result:** Spike R4: CI imports the Git file Fabric wrote for nb_lib_common with a plain importlib import (no cell extraction needed), and 8 pytest tests pass in the cloud workspace (pyspark 4.1.4, Java 21); loader is tests/conftest.py, with a tested cell-extract fallback; function never run inside Fabric; Fabric's default commit message put the workspace id on public dev again (ADR-026).
 
 #### T017 · Spike R5: Structured Streaming `availableNow` over a Files folder
 - **Story:** US006

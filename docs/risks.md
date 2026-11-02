@@ -36,3 +36,17 @@ The HTTP source called `station_status.json` and keeps calling it. The result be
 R2: an Activator email to the tenant admin user, whose Entra contact Email is set to a plus form of the Gmail address, reached the Gmail inbox twice (a test alert and a live firing). The external Gmail address could not be picked as a recipient. Full account in ADR-016. R2's table status stays `open` until T019 records the outcome, as for R1.
 
 R9: option C, decided by Bharat. An alert rule is built by hand in a workspace without a Git link, never in dev; the repo holds a runbook with a placeholder recipient. R9 stays `open` until T086 scans the repo.
+
+## R4 spike result (T016, Nov 3, 2026): a plain import of the Git file works
+
+The loader in `tests/conftest.py` imports `fabric/nb_lib_common.Notebook/notebook-content.py` as a module with `importlib.util.spec_from_file_location`, and the 8 tests in `tests/test_lib_smoke.py` pass against it. R4's table status stays `open` until T019 records the outcome, as for R1 to R3.
+
+**What the file looks like.** Fabric wrote it on the commit of Nov 3 (`de9e688`): the line `# Fabric notebook source`, a `# METADATA ****` block holding `kernel_info` (`synapse_pyspark`) and empty `dependencies`, then `# CELL ****`, the cell's code, and a second `# METADATA ****` block with `language` and `language_group`. Every marker is a comment, so Python compiles the file as it is. No lakehouse id or workspace id is in the file because the notebook had no default lakehouse attached. The file arrived with Windows line endings (CRLF) in Bharat's clone; Python reads them without trouble.
+
+**Loader approach: plain import first, cell-extract only as a fallback.** `load_notebook(name)` checks the header line, then imports the file under the notebook's own name (the file name `notebook-content.py` has a hyphen, so a normal `import` statement cannot name it). If compiling fails with a `SyntaxError`, it writes the code cells (text between `# CELL ****` and the next marker, minus lines starting with `%` or `!`) to a temporary module and imports that instead. The loaded module carries `_loaded_by`, and one test asserts it is `"plain"` for the real file, so a future notebook that needs the fallback shows up in CI instead of passing quietly. The fallback is proven only on a made-up file with a bare `%run` line. How Fabric writes magic and markdown cells in the Git file (I expect `# MAGIC` comment lines, so they would not break a plain import) was not seen in this spike and is unverified until a notebook with a `%run` cell is committed.
+
+**Run.** In my cloud workspace, in a scratch virtual environment: pyspark 4.1.4, Java 21, Python 3.13.18, a local Spark session with the time zone set to UTC as in `env_citibike`. 8 passed. Nothing was installed on the laptop or in the repo. Fabric Runtime 2.0 is Spark 4.1 (ADR-024), so the pyspark line matches in major and minor version; Fabric's own Python version on that runtime was not checked, and T075 pins the CI versions.
+
+**Not proven.** The function was never run inside Fabric (the notebook was not connected to a session), only locally. The tests cover one function, so they show the import route and the Spark session work, not that every later function in `nb_lib_common` will import the same way.
+
+**Side finding, for ADR-026.** Bharat committed from Source control without typing a message, so Fabric's default `Committing 1 item from workspace <workspace id>` went to `origin/dev` of the public repo a second time (first time: T011).
