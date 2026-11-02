@@ -370,7 +370,7 @@ As the architect, I want each risky feature tried on a small case first, so that
 - **Sprint:** 1
 - **Depends on:** T008, T010
 - **DP-700:** 1.4, 2.2
-- **Status:** todo
+- **Status:** done
 - **Read first:** docs/risks.md R6
 **Do**
 1. Notebook (attached to `lh_silver`): create a tiny Delta table `spike_t` with three rows.
@@ -379,11 +379,11 @@ As the architect, I want each risky feature tried on a small case first, so that
 4. Notebook cell: read `env_name` from `vl_citibike` with `notebookutils` (Claude gives the call after checking Microsoft's page) and print it.
 5. Clean up: drop `spike_t`, `spike_log`, `usp_spike`; delete the pipeline and notebook.
 **Acceptance**
-- [ ] The cross-database query returns 3.
-- [ ] The pipeline run is green and `spike_log` got its row.
-- [ ] The notebook printed `dev` from the variable library.
-- [ ] The exact syntax that worked for both variable-library reads is written in `docs/conventions.md` §3 by Claude.
-**Result:** —
+- [x] The cross-database query returns 3.
+- [x] The pipeline run is green and `spike_log` got its row.
+- [x] The notebook printed `dev` from the variable library.
+- [x] The exact syntax that worked for both variable-library reads is written in `docs/conventions.md` §3 by Claude.
+**Result:** Spike R6 proven in dev: wh_gold read lh_silver.dbo.spike_t by three-part name (3); a Stored procedure activity on wh_gold ran dbo.usp_spike with n from @length(pipeline().libraryVariables.vl_citibike_env_name) (log rows 7 and 3); a notebook read env_name as dev with getLibrary(...).env_name and get("$(/**/vl_citibike/env_name)"). UI difference: a pipeline names the library variable <library>_<variable>; spike items dropped, Source control 0.
 
 #### T019 · Close the spikes: record outcomes and adjust affected cards
 - **Story:** US006

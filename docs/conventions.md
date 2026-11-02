@@ -50,6 +50,16 @@ Exactly as in `docs/data-contracts.md` §1. Never write outside `Files/bronze/`,
 
 Nothing environment-specific is typed into a pipeline, notebook or procedure. The CI scan (T075) fails a pull request that contains any of these URLs outside `vl_citibike`, `docs/` or `tests/`.
 
+### How the variables are read (proven in T018, Nov 3, 2026, dev, Runtime 2.0)
+
+| Where | Syntax that worked | Notes |
+|---|---|---|
+| Notebook, property form | `notebookutils.variableLibrary.getLibrary("vl_citibike").env_name` | printed `dev` |
+| Notebook, reference form | `notebookutils.variableLibrary.get("$(/**/vl_citibike/env_name)")` | printed `dev`; the `/**/` prefix is part of the pattern |
+| Pipeline | add the variable on the pipeline's **Library variables** tab, then `@pipeline().libraryVariables.vl_citibike_env_name` | Fabric names the pipeline-side variable `<library>_<variable>`; the plain `env_name` was refused ("Parameter env_name was not found") |
+
+Both notebook forms and the pipeline form returned the dev value: a Stored procedure activity on `wh_gold` took `@length(pipeline().libraryVariables.vl_citibike_env_name)` as an Int32 parameter and logged 3. Names are case-sensitive. Not tried: the `test` and `prod` value sets, a notebook run by a service principal (Microsoft's page says that is not supported yet), a notebook run from a pipeline Notebook activity.
+
 ## 4. Notebook layout
 
 Every notebook has these cells, in this order:
