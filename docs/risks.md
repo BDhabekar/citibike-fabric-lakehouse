@@ -50,3 +50,15 @@ The loader in `tests/conftest.py` imports `fabric/nb_lib_common.Notebook/noteboo
 **Not proven.** The function was never run inside Fabric (the notebook was not connected to a session), only locally. The tests cover one function, so they show the import route and the Spark session work, not that every later function in `nb_lib_common` will import the same way.
 
 **Side finding, for ADR-026.** Bharat committed from Source control without typing a message, so Fabric's default `Committing 1 item from workspace <workspace id>` went to `origin/dev` of the public repo a second time (first time: T011).
+
+## R5 spike result (T017, Nov 3, 2026): `availableNow` over a Files folder works as ADR-008 expects
+
+R5 did not come true, so ADR-008's batch anti-join fallback is not taken. R5's table status stays `open` until T019 records the outcome, as for R1 to R4.
+
+**What ran.** In `nb_spike_stream` (PySpark, Workspace default environment, `lh_bronze` attached as the default lakehouse), `spark.readStream.format("text").option("wholetext", True).load("Files/spike/in/")` selected `value` as `raw_json` and `_metadata.file_path` as `_source_file`, and wrote to the Delta table `spike_stream` with `checkpointLocation` `Files/_checkpoints/spike/`, `trigger(availableNow=True)` and `awaitTermination()`. The count and a count per file name were read back in a second cell.
+
+**Counts.** Run 1 with two files (`spike_a.json`, `spike_b.json`, 8 lines each): 2 rows, one per file, so `wholetext` gave one row per file and not per line. After `spike_c.json` was added, run 2: 3 rows, one new, the other two not read again. Run 3 with no new file: 3 rows, still one per file. The streaming cell took 37 s on the first run (11 s of that was the session starting), 4 s on the second and 2 s on the third.
+
+**What this shows.** The text source, `_metadata.file_path`, a checkpoint under `Files/_checkpoints/` and `availableNow` all work together in a Fabric notebook on Runtime 2.0, and a run with nothing new ends on its own and adds nothing. `nb_bronze_load_json` (ADR-008) can be written this way.
+
+**Not proven.** Only three small files were used, so nothing is known about the speed of listing a large folder. A failure half way through a batch was not tried, so exactly-once behaviour after a crash is as Spark documents it, not something seen here. Whether `_metadata.file_path` is a full OneLake path or a relative one was not looked at (only the file name was shown, to keep the workspace id off the screen); `nb_bronze_load_json` should check this before it builds `_source_file` from it. Files re-uploaded under the same name were not tried. Nothing was run as a pipeline Notebook activity.

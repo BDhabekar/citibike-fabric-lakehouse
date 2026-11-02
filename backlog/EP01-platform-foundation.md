@@ -349,7 +349,7 @@ As the architect, I want each risky feature tried on a small case first, so that
 - **Sprint:** 1
 - **Depends on:** T008, T009
 - **DP-700:** 2.3
-- **Status:** todo
+- **Status:** done
 - **Read first:** docs/risks.md R5, docs/decisions.md ADR-008
 **Do**
 1. Upload two small JSON files (Claude provides them) into `lh_bronze/Files/spike/in/`.
@@ -357,9 +357,9 @@ As the architect, I want each risky feature tried on a small case first, so that
 3. Upload a third file, run again: exactly 1 new row. Run a third time with no new file: 0 new rows.
 4. Drop the table, delete the spike folder and checkpoint, delete the notebook.
 **Acceptance**
-- [ ] Row counts 2 → 3 → 3 across the three runs, screenshot filed.
-- [ ] Result recorded in R5; if it failed, ADR-008's fallback is marked as taken.
-**Result:** —
+- [x] Row counts 2 → 3 → 3 across the three runs, screenshot filed.
+- [x] Result recorded in R5; if it failed, ADR-008's fallback is marked as taken.
+**Result:** Spike R5 passed: text source with wholetext, _metadata.file_path, checkpoint Files/_checkpoints/spike/ and availableNow gave 2, 3, 3 rows over three runs, one row per file, no re-reads; ADR-008 fallback not taken; table, folder, checkpoint and notebook deleted, Source control 0. Notebook is created from the workspace (New item) and lh_bronze added from its Explorer, as the lakehouse page has no notebook button.
 
 #### T018 · Spike R6: warehouse reads silver, a pipeline runs a procedure, and the variable library resolves
 - **Story:** US006
