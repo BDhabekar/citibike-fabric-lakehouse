@@ -200,7 +200,7 @@ The Eventhouse table `station_status` exposed through OneLake availability (ADR-
 | `ingest_time` | datetime (`ingestion_time()` at the update policy) |
 
 ### `station_status`
-**Grain:** one row per station per poll. Retention 30 days; caching 7 days. Filled by the update policy `fn_parse_station_status()` from `station_status_raw` (with `mv-expand` when one event carries the whole station array).
+**Grain:** one row per station per poll. Retention 30 days; caching 7 days. Filled by the update policy `fn_parse_station_status()` from `station_status_raw` (no `mv-expand`: one event is one station, as T013 found).
 
 | Column | Type |
 |---|---|

@@ -394,7 +394,7 @@ As the architect, I want each risky feature tried on a small case first, so that
 - **Sprint:** 1
 - **Depends on:** T013, T014, T015, T016, T017, T018
 - **DP-700:** —
-- **Status:** todo
+- **Status:** done
 - **Read first:** docs/risks.md, docs/decisions.md
 **Do**
 1. Mark R1–R6 closed or "fallback taken" in `docs/risks.md`.
@@ -403,6 +403,6 @@ As the architect, I want each risky feature tried on a small case first, so that
 4. `tools/backlog.py check`, commit.
 **Note (T015, ADR-027).** R3 did not end in the notebook fallback written in its row: Copy from an HTTP source cannot unzip (the source is not seekable), and the two-Copy workaround from Microsoft's own error message worked at 165 MB and 1.05 GB. Record R3 as resolved by a different fallback, ADR-027. T026, ADR-006 and `docs/data-contracts.md` §1 were already edited in T015; name them in the Result line. The R3 row stays `open` until this task.
 **Acceptance**
-- [ ] No R1–R6 row says "open".
-- [ ] Every affected card is updated and named in the Result line.
-**Result:** —
+- [x] No R1–R6 row says "open".
+- [x] Every affected card is updated and named in the Result line.
+**Result:** R1 to R6 closed in docs/risks.md: R1, R2, R4, R5 and R6 closed with no fallback taken (R2 on route 2 of its order); R3 recorded as resolved by a different fallback, ADR-027 (ADR-006, T026 and docs/data-contracts.md section 1 were already edited in T015). Outcomes written into ADR-007, ADR-008, ADR-016 and ADR-027. Cards and docs edited: T045 step 2 and docs/data-contracts.md section 4 (the conditional mv-expand removed, one event is one station per R1). R9 stays open until T086. No fallback changed the architecture.

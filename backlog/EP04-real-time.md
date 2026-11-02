@@ -22,7 +22,7 @@ As an operations lead, I want every station's status landed every minute, so tha
 - **Read first:** docs/data-contracts.md §4, docs/risks.md R1 (the event shape from T013)
 **Do**
 1. Bharat: `ws-citibike-dev` → New item → Eventhouse → `eh_citibike`; rename its database to `kqldb_citibike`. Leave minimum consumption off.
-2. Claude writes `kql/001_tables_and_policies.kql`: both tables; retention (raw 3 days, typed 30 days) and caching (raw 1 day, typed 7 days); `fn_parse_station_status()` (with `mv-expand` if T013 found one event per poll); the update policy on `station_status`.
+2. Claude writes `kql/001_tables_and_policies.kql`: both tables; retention (raw 3 days, typed 30 days) and caching (raw 1 day, typed 7 days); `fn_parse_station_status()` (no `mv-expand`: T013 found one event per station); the update policy on `station_status`.
 3. Bharat runs the script in a KQL queryset as one batch; then `.show table station_status policy update` to confirm.
 4. Claude tests the function by ingesting one sample payload inline (`.ingest inline`) and reading `station_status`.
 5. Commit the workspace.

@@ -4,12 +4,12 @@ Each risk is retired by a named task before any other task depends on it, and ea
 
 | Id | Risk | Retired by | If it fails (decided now) | Status |
 |---|---|---|---|---|
-| R1 | The Eventstream HTTP source (preview) does not poll the GBFS feed reliably, or its event shape is unexpected | T013 | Fall back to `pl_poll_station_status` every 5 minutes landing JSON in `lh_bronze`, with Eventhouse ingestion from OneLake; ADR-007 updated to option (c) | open |
-| R2 | No alert route reaches Bharat (the tenant user has no mailbox) | T014 | Try in order: Activator email to Gmail; Activator email to the tenant user with its contact email set to Gmail; pipeline Web activity to a phone push service | open |
-| R3 | Copy activity cannot decompress the 1 GB trip zip from HTTP into Files | T015 | Copy the zip as binary, then unzip in a notebook with Python `zipfile` through the lakehouse file mount | open |
-| R4 | CI cannot import `nb_lib_common` from its Git file (`notebook-content.py`) | T016 | CI extracts the code cells between the cell markers into a temporary module before importing | open |
-| R5 | Structured Streaming with the text source and `availableNow` misbehaves in Fabric | T017 | Batch read anti-joined on `_source_file` (ADR-008 fallback) | open |
-| R6 | Warehouse cross-database query to `lh_silver`, the Stored procedure activity, or the variable library in pipelines and notebooks does not work as documented | T018 | Cross-database: Script activity against the warehouse reading the silver SQL endpoint. Variable library: pipeline parameters with defaults plus deployment rules | open |
+| R1 | The Eventstream HTTP source (preview) does not poll the GBFS feed reliably, or its event shape is unexpected | T013 | Fall back to `pl_poll_station_status` every 5 minutes landing JSON in `lh_bronze`, with Eventhouse ingestion from OneLake; ADR-007 updated to option (c) | closed (T019): option (a) works, fallback not taken; ADR-007 |
+| R2 | No alert route reaches Bharat (the tenant user has no mailbox) | T014 | Try in order: Activator email to Gmail; Activator email to the tenant user with its contact email set to Gmail; pipeline Web activity to a phone push service | closed (T019): route 2 of the order delivered; ADR-016 |
+| R3 | Copy activity cannot decompress the 1 GB trip zip from HTTP into Files | T015 | Copy the zip as binary, then unzip in a notebook with Python `zipfile` through the lakehouse file mount | fallback taken (T019), a different one: ADR-027, two Copy activities; the notebook fallback in this row is not used |
+| R4 | CI cannot import `nb_lib_common` from its Git file (`notebook-content.py`) | T016 | CI extracts the code cells between the cell markers into a temporary module before importing | closed (T019): plain import works, fallback not taken |
+| R5 | Structured Streaming with the text source and `availableNow` misbehaves in Fabric | T017 | Batch read anti-joined on `_source_file` (ADR-008 fallback) | closed (T019): works, ADR-008 fallback not taken |
+| R6 | Warehouse cross-database query to `lh_silver`, the Stored procedure activity, or the variable library in pipelines and notebooks does not work as documented | T018 | Cross-database: Script activity against the warehouse reading the silver SQL endpoint. Variable library: pipeline parameters with defaults plus deployment rules | closed (T019): all three work in dev, fallbacks not taken; the test and prod value sets are not yet tried |
 | R7 | The tenant blocks the trial or a needed setting | T003 | Bharat is Global Administrator; the setting is switched on in the Admin portal | open |
 | R8 | The trial ends before the project, the publish or the exam | T004 sets the dates; sprints end 7 days before trial end | Publish from Git and screenshots; a short paid F2 session only by written decision (`docs/cost-and-capacity.md` §3–4) | open |
 | R9 | An email address or other personal detail ends up in the public repo through item definitions in Git | T014, T086 | Use an address Bharat is happy to publish, or keep that value out of Git; T086 scans the repo before it goes public | open |
@@ -21,7 +21,7 @@ Each risk is retired by a named task before any other task depends on it, and ea
 
 ## R1 spike result (T013, Oct 28, 2026): shape known, polling repeats
 
-The HTTP source called `station_status.json` and keeps calling it. The result below comes from Bharat's screenshots of Oct 28 and Microsoft's definition of the metrics. R1's table status stays `open` until T019 records the outcome in ADR-007.
+The HTTP source called `station_status.json` and keeps calling it. The result below comes from Bharat's screenshots of Oct 28 and Microsoft's definition of the metrics. T019 (Nov 3, 2026) closed R1 and recorded the outcome in ADR-007: option (a) holds and fallback (c) is not taken.
 
 **Settings that worked.** Method GET, Anonymous connection, request interval 60 s, Pagination method "No pagination", Response data JSON pointer `/data/stations` (the box is offered without pagination). Fabric's defaults for the rest: 10 retries, 3 s backoff, retry on 500, 502, 503 and 504. A run without the pointer was not tried.
 
@@ -33,13 +33,19 @@ The HTTP source called `station_status.json` and keeps calling it. The result be
 
 ## R2 and R9 spike result (T014, Oct 28, 2026): route found, recipient kept out of Git
 
-R2: an Activator email to the tenant admin user, whose Entra contact Email is set to a plus form of the Gmail address, reached the Gmail inbox twice (a test alert and a live firing). The external Gmail address could not be picked as a recipient. Full account in ADR-016. R2's table status stays `open` until T019 records the outcome, as for R1.
+R2: an Activator email to the tenant admin user, whose Entra contact Email is set to a plus form of the Gmail address, reached the Gmail inbox twice (a test alert and a live firing). The external Gmail address could not be picked as a recipient. Full account in ADR-016. T019 (Nov 3, 2026) closed R2 on route 2 of the order decided in advance.
 
 R9: option C, decided by Bharat. An alert rule is built by hand in a workspace without a Git link, never in dev; the repo holds a runbook with a placeholder recipient. R9 stays `open` until T086 scans the repo.
 
+## R3 spike result (T015, Oct 30, 2026): met, and resolved by a different fallback
+
+R3 came true. One Copy from the HTTP source with Binary and ZipDeflate failed with `UserErrorSourceNotSeekable`: the HTTP source does not support random read, and unzipping needs it. The notebook fallback in the R3 row is not used. Bharat chose the workaround that Microsoft's own error message names, ADR-027 option (a): `cp_trips_stage` copies the zip as plain Binary to `Files/bronze/_staging/trips/month=YYYYMM/`, then `cp_trips_unzip` unzips it into `Files/bronze/trips/month=YYYYMM/` with the preserve-name tick off. Both are pipeline Copy activities, so no Spark session sits in the trip path. T019 recorded R3 as resolved by ADR-027.
+
+Two months ran. 2026-04 (164.6 MB zip): 23 s and 25 s, 4 CSVs, 753.5 MB written. 2026-06 (1.051 GB zip): 63 s and 31 s, 6 CSVs, about 1.0 GB. The zip-to-CSV ratio is not constant and the cause is not established. The connection address needs its trailing slash (a 404 without it), which T026 carries. ADR-006, T026 and `docs/data-contracts.md` section 1 were edited in T015 to match.
+
 ## R4 spike result (T016, Nov 3, 2026): a plain import of the Git file works
 
-The loader in `tests/conftest.py` imports `fabric/nb_lib_common.Notebook/notebook-content.py` as a module with `importlib.util.spec_from_file_location`, and the 8 tests in `tests/test_lib_smoke.py` pass against it. R4's table status stays `open` until T019 records the outcome, as for R1 to R3.
+The loader in `tests/conftest.py` imports `fabric/nb_lib_common.Notebook/notebook-content.py` as a module with `importlib.util.spec_from_file_location`, and the 8 tests in `tests/test_lib_smoke.py` pass against it. T019 (Nov 3, 2026) closed R4. The cell-extract fallback is not taken; it stays in the loader as a guard.
 
 **What the file looks like.** Fabric wrote it on the commit of Nov 3 (`de9e688`): the line `# Fabric notebook source`, a `# METADATA ****` block holding `kernel_info` (`synapse_pyspark`) and empty `dependencies`, then `# CELL ****`, the cell's code, and a second `# METADATA ****` block with `language` and `language_group`. Every marker is a comment, so Python compiles the file as it is. No lakehouse id or workspace id is in the file because the notebook had no default lakehouse attached. The file arrived with Windows line endings (CRLF) in Bharat's clone; Python reads them without trouble.
 
@@ -53,7 +59,7 @@ The loader in `tests/conftest.py` imports `fabric/nb_lib_common.Notebook/noteboo
 
 ## R5 spike result (T017, Nov 3, 2026): `availableNow` over a Files folder works as ADR-008 expects
 
-R5 did not come true, so ADR-008's batch anti-join fallback is not taken. R5's table status stays `open` until T019 records the outcome, as for R1 to R4.
+R5 did not come true, so ADR-008's batch anti-join fallback is not taken. T019 (Nov 3, 2026) closed R5.
 
 **What ran.** In `nb_spike_stream` (PySpark, Workspace default environment, `lh_bronze` attached as the default lakehouse), `spark.readStream.format("text").option("wholetext", True).load("Files/spike/in/")` selected `value` as `raw_json` and `_metadata.file_path` as `_source_file`, and wrote to the Delta table `spike_stream` with `checkpointLocation` `Files/_checkpoints/spike/`, `trigger(availableNow=True)` and `awaitTermination()`. The count and a count per file name were read back in a second cell.
 
@@ -65,7 +71,7 @@ R5 did not come true, so ADR-008's batch anti-join fallback is not taken. R5's t
 
 ## R6 spike result (T018, Nov 3, 2026): all three reads work in dev
 
-R6 did not come true, so none of its fallbacks (a Script activity for the cross-database read, pipeline parameters with deployment rules for the variables) is taken. R6's table status stays `open` until T019 records the outcome, as for R1 to R5.
+R6 did not come true, so none of its fallbacks (a Script activity for the cross-database read, pipeline parameters with deployment rules for the variables) is taken. T019 (Nov 3, 2026) closed R6.
 
 **What ran.** In `ws-citibike-dev`: a notebook attached to `lh_silver` wrote the Delta table `spike_t` (3 rows). In `wh_gold`, with the `lh_silver` SQL analytics endpoint added to the Explorer through + Warehouses, `SELECT COUNT(*) AS n FROM lh_silver.dbo.spike_t;` returned 3. The warehouse got the table `dbo.spike_log (n int, logged_at datetime2(6))` and the procedure `dbo.usp_spike @n int`, which inserts `@n` and `SYSUTCDATETIME()`. The pipeline `pl_spike_sp` has one Stored procedure activity, `sp_log`, on the Warehouse connection `wh_gold (ws-citibike-dev)`. Run 1 passed the literal 7 and added one row. Run 2 passed `@length(pipeline().libraryVariables.vl_citibike_env_name)` as an Int32 parameter (12 s, Succeeded) and added a row with n = 3, which only the library value `dev` can produce. In the notebook, `notebookutils.variableLibrary.getLibrary("vl_citibike").env_name` and `notebookutils.variableLibrary.get("$(/**/vl_citibike/env_name)")` both printed `dev`. The syntax is in `docs/conventions.md` §3.
 
