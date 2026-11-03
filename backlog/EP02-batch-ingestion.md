@@ -40,23 +40,23 @@ As an operator, I want sources, watermarks and run results in control tables, so
 - **Sprint:** 2
 - **Depends on:** T020
 - **DP-700:** 1.4, 2.1
-- **Status:** todo
+- **Status:** done
 - **Read first:** docs/data-contracts.md §5 (ctl), docs/conventions.md §5, §6
 **Do**
-1. Claude writes `sql/ctl/003_logging_procs.sql`:
+1. Claude writes five files in `sql/ctl/`, one procedure each (`003_usp_run_start.sql`, `004_usp_run_end.sql`, `005_usp_watermark_set.sql`, `006_usp_weather_windows.sql`, `007_usp_month_list.sql`), because `CREATE OR ALTER PROCEDURE` must be first in its batch (`docs/conventions.md` §5, T020):
    - `ctl.usp_run_start @run_id, @parent_run_id, @pipeline_name, @step_name, @environment` (inserts a `started` row)
    - `ctl.usp_run_end @run_id, @step_name, @status, @details_json, @error_message` (updates the row; reads `rows_read`, `rows_written`, `rows_rejected` from `@details_json` with `JSON_VALUE`)
    - `ctl.usp_watermark_set @source_id, @value, @run_id`
    - `ctl.usp_weather_windows @from_date, @to_date` returning one row per calendar-month chunk (`start_date`, `end_date`), built from a numbers list (no recursive CTE)
    - `ctl.usp_month_list @first_month, @last_month` returning one row per `YYYYMM` month in the range (for `pl_backfill`)
-2. Bharat runs it, then the three test calls Claude gives (start, end with a sample exit JSON, windows for 2026-04-01 to 2026-07-15).
+2. Bharat runs the five files, then the test calls Claude gives (start, end with a sample exit JSON, windows for 2026-04-01 to 2026-07-15, months, and a watermark set twice on a test source).
 3. Commit the workspace.
 **Acceptance**
-- [ ] A started-then-ended test row in `ctl.run_log` with the counts parsed from the JSON.
-- [ ] `usp_weather_windows` returns 4 rows for the test range, the last ending 2026-07-15.
-- [ ] `usp_month_list '202607', '202609'` returns 3 rows.
-- [ ] Test rows deleted afterwards.
-**Result:** —
+- [x] A started-then-ended test row in `ctl.run_log` with the counts parsed from the JSON.
+- [x] `usp_weather_windows` returns 4 rows for the test range, the last ending 2026-07-15.
+- [x] `usp_month_list '202607', '202609'` returns 3 rows.
+- [x] Test rows deleted afterwards.
+**Result:** Five procedures live in wh_gold (dev), one file each in sql/ctl/003 to 007: usp_run_start, usp_run_end, usp_watermark_set, usp_weather_windows, usp_month_list. A started-then-ended test row held the counts parsed from the exit JSON (4512345, 4509876, 2469); a second end failed with 50023 as designed; windows gave 4 rows ending 2026-07-15 (as text); months gave 3 rows (trip_month); a watermark set twice on a test source left one row; test rows deleted. Workspace commit 93208c2 typed T021: ctl logging procs.
 
 #### T022 · `nb_lib_common` version 1: config, paths, lineage and the exit payload
 - **Story:** US007
@@ -129,8 +129,10 @@ As an analyst, I want every hour of weather since the backfill start, so that de
 3. `set_v_from`: watermark minus 7 days (the overlap that catches the archive's late days); `set_v_to`: yesterday (UTC). Claude gives the expression building blocks; Bharat writes the expressions.
    - Note from T020: `ctl.watermark` for `weather_archive` is seeded at `2026-04-01`, the first day to load, so watermark minus 7 days would start the first window on 2026-03-25. Decide here whether `set_v_from` is clamped to `weather_backfill_start` (the dev value is the same date) or the seed is moved one day earlier.
 4. `lkp_windows`: `EXEC ctl.usp_weather_windows @from_date, @to_date`.
+   - Note from T021: `start_date` and `end_date` come back as text `YYYY-MM-DD` (varchar(10)), not as a date type, so `@item().start_date` goes straight into the URL; what a date column would look like in the Lookup output was not checked.
 5. `fe_windows` (sequential) → `cp_weather_archive` with the relative URL built from the window and the library variables, and the sink path from `run_id` and the window.
 6. `sp_watermark_set` to `v_to` after the loop; `sp_run_end` with a JSON built from the loop count.
+   - Note from T021: a Warehouse UPDATE conflicts with any other UPDATE on the same table at that moment (error 24556, Microsoft Learn "Transactions in Fabric Data Warehouse"), and `sp_run_end` and `sp_watermark_set` both UPDATE. Set retry 2 after 30 seconds on both Stored procedure activities.
 7. Run twice. Second run: same windows re-fetched, new files in a new `run_id` folder, watermark unchanged.
 **Acceptance**
 - [ ] No URL, latitude or date is typed anywhere in the pipeline (all from parameters, the library or lookups).
