@@ -76,7 +76,7 @@ Rules:
 - Explicit schemas for every `from_json` and CSV read. No `inferSchema` outside a one-off investigation.
 - No `display()`, `print()` of data or `.collect()` on large frames in committed code. Row counts come from Delta history or the write metrics.
 - No `.toPandas()` on anything but tiny frames.
-- Reusable functions go in `nb_lib_common` and get a unit test. A function in `nb_lib_common` takes and returns DataFrames or plain values, and never reads config or touches storage, so CI can test it without Fabric.
+- Reusable functions go in `nb_lib_common` and get a unit test. A function in `nb_lib_common` takes and returns DataFrames or plain values, and never reads config or touches storage, so CI can test it without Fabric. The two exceptions are `get_config()` and `table_path()` (T022): they import `notebookutils` inside the function, check their arguments first, and are tested in CI against a stand-in module.
 - Default lakehouse: bronze notebooks attach `lh_bronze`; silver notebooks attach `lh_silver` and read bronze through its OneLake path built by `nb_lib_common.table_path()`.
 
 ## 5. T-SQL in `wh_gold`

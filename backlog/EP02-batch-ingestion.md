@@ -67,24 +67,24 @@ As an operator, I want sources, watermarks and run results in control tables, so
 - **Sprint:** 2
 - **Depends on:** T016, T019
 - **DP-700:** 1.4
-- **Status:** todo
+- **Status:** done
 - **Read first:** docs/conventions.md §2, §4, §6; docs/data-contracts.md §1
 **Do**
 1. Claude gives the function list and their signatures; Bharat writes the bodies in `nb_lib_common` (the notebook from T016):
    - `get_config()` → dict of every `vl_citibike` variable (Fabric-only; uses the syntax proved in T018)
    - `landing_dir(source_id, ingest_date, run_id)` → the contract path
    - `parse_landing_path(path)` → `(source_id, ingest_date, run_id)`
-   - `add_lineage_columns(df, run_id)` → adds `_source_file`, `_ingest_ts`, `_run_id`
+   - `add_lineage_columns(df, source_file_col, run_id)` → adds `_source_file`, `_ingest_ts`, `_run_id` (kept in its T016 form, Bharat's decision on Nov 3, 2026: the caller names the column that holds the file path, so the function stays testable on a plain DataFrame)
    - `exit_payload(notebook, run_id, rows_read, rows_written, rows_rejected, watermark=None, dq=None, message="")` → JSON string in the contract shape
    - `table_path(lakehouse, table)` → the table's OneLake path in the current workspace (Fabric-only)
 2. Fabric-only imports (`notebookutils`) sit inside the functions that need them, so CI can import the notebook.
 3. Claude writes `tests/test_lib_paths.py` for the three pure functions.
 4. Commit the workspace; Claude pulls and runs the tests.
 **Acceptance**
-- [ ] The six functions exist with the given signatures.
-- [ ] Path and payload tests pass.
-- [ ] `get_config()["env_name"]` returns `dev` in a test cell (cell removed before commit).
-**Result:** —
+- [x] The six functions exist with the given signatures.
+- [x] Path and payload tests pass.
+- [x] `get_config()["env_name"]` returns `dev` in a test cell (cell removed before commit).
+**Result:** nb_lib_common holds six functions in five cells (commit 6547aaa); tests/test_lib_paths.py 143 cases pass; test cell printed 12 dev and fs.ls read lh_bronze Tables; add_lineage_columns kept in its T016 form (decision A); the Source control pane writes the branch as dev/fabric (branch dev, folder fabric)
 
 ## FT07 · REST and JSON ingestion with pipelines
 
