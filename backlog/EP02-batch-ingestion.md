@@ -18,7 +18,7 @@ As an operator, I want sources, watermarks and run results in control tables, so
 - **Sprint:** 2
 - **Depends on:** T019
 - **DP-700:** 2.1
-- **Status:** todo
+- **Status:** done
 - **Read first:** docs/data-contracts.md §5 (ctl), docs/conventions.md §5
 **Do**
 1. Claude checks the Fabric Warehouse supported-types page and the `CREATE OR ALTER`/`DROP IF EXISTS` support, then writes `sql/ctl/001_ctl_tables.sql` (schema `ctl`, the four tables) and `sql/ctl/002_usp_seed_config.sql` (`ctl.usp_seed_config` inserting the five sources if absent: `weather_archive`, `weather_forecast`, `gbfs_station_information`, `gbfs_system_regions`, `trips`; and a watermark row for `weather_archive` set from a parameter).
@@ -26,10 +26,10 @@ As an operator, I want sources, watermarks and run results in control tables, so
 3. Run both scripts a second time: no error, no duplicate rows (idempotency).
 4. Commit the workspace (`T020: ctl schema`).
 **Acceptance**
-- [ ] Four `ctl` tables with the contract's columns and types.
-- [ ] `SELECT * FROM ctl.source_config` returns five rows after two runs of the seed.
-- [ ] `sql/ctl/*.sql` committed in the repo; the warehouse change committed from the workspace.
-**Result:** —
+- [x] Four `ctl` tables with the contract's columns and types.
+- [x] `SELECT * FROM ctl.source_config` returns five rows after two runs of the seed.
+- [x] `sql/ctl/*.sql` committed in the repo; the warehouse change committed from the workspace.
+**Result:** Schema ctl with source_config, watermark, run_log and dq_result (36 columns match the contract) and ctl.usp_seed_config live in wh_gold (dev); the seed gives 5 sources and one weather_archive watermark (2026-04-01) and stays at 5 and 1 after a second run of all three scripts; PKs on source_config and watermark are NOT ENFORCED; scripts in sql/ctl/; workspace commit a0d4091f typed T020: ctl schema. The query editor needed no GO and accepted CREATE OR ALTER PROCEDURE.
 
 #### T021 · Logging, watermark and window procedures
 - **Story:** US007
@@ -127,6 +127,7 @@ As an analyst, I want every hour of weather since the backfill start, so that de
 1. Parameters: `run_id` (default `manual`), `parent_run_id` (default empty). Library variables: `vl_citibike` (`weather_latitude`, `weather_longitude`, `weather_hourly_vars`, `env_name`).
 2. `sp_run_start` → `lkp_watermark` (`SELECT watermark_value FROM ctl.watermark WHERE source_id = 'weather_archive'`).
 3. `set_v_from`: watermark minus 7 days (the overlap that catches the archive's late days); `set_v_to`: yesterday (UTC). Claude gives the expression building blocks; Bharat writes the expressions.
+   - Note from T020: `ctl.watermark` for `weather_archive` is seeded at `2026-04-01`, the first day to load, so watermark minus 7 days would start the first window on 2026-03-25. Decide here whether `set_v_from` is clamped to `weather_backfill_start` (the dev value is the same date) or the seed is moved one day earlier.
 4. `lkp_windows`: `EXEC ctl.usp_weather_windows @from_date, @to_date`.
 5. `fe_windows` (sequential) → `cp_weather_archive` with the relative URL built from the window and the library variables, and the sink path from `run_id` and the window.
 6. `sp_watermark_set` to `v_to` after the loop; `sp_run_end` with a JSON built from the loop count.
@@ -154,6 +155,7 @@ As an analyst, I want a daily snapshot of the station list and regions, so that 
 - **Read first:** docs/sources.md §3, docs/data-contracts.md §1, §5 (ctl.source_config)
 **Do**
 1. Connection: HTTP, base URL `https://gbfs.lyft.com`, anonymous: `conn_gbfs`.
+   - Note from T020: the seed row holds `relative_url` = `station_information.json` and `system_regions.json` against the variable `gbfs_base_url` (`https://gbfs.lyft.com/gbfs/2.3/bkn/en`), not against `https://gbfs.lyft.com`. Settle in this task which form wins; one `UPDATE` of `ctl.source_config` aligns the rows, and T015 found that an HTTP connection needs the trailing slash in its address. `landing_folder` is stored with the `Files/` prefix; drop it in the expression if the Copy sink wants a path relative to `Files`.
 2. Pipeline: `sp_run_start` → `lkp_sources` (`SELECT source_id, relative_url, landing_folder FROM ctl.source_config WHERE load_pattern = 'snapshot' AND is_enabled = 1`) → `fe_sources` (parallel, batch count 2) → `cp_gbfs_feed`: HTTP source, relative URL from the item; format **Binary** both sides, so the file lands byte for byte; sink path from `landing_folder`, today and `run_id`.
 3. `sp_run_end` with the item count.
 4. Turn `gbfs_system_regions` off in `ctl.source_config` and run: only one feed lands. Turn it back on.
