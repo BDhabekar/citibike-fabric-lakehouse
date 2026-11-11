@@ -13,7 +13,6 @@ As an operator, I want one daily run and one monthly run, so that nobody has to 
 - **Story:** US023
 - **ADO:** #114
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 90 min
 - **Sprint:** 5
 - **Depends on:** T024, T025, T027, T029, T035, T037, T039, T052, T057, T058, T060, T062
@@ -38,7 +37,6 @@ As an operator, I want one daily run and one monthly run, so that nobody has to 
 - **Story:** US023
 - **ADO:** #115
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 60 min
 - **Sprint:** 5
 - **Depends on:** T026, T030, T041, T059, T062
@@ -57,7 +55,6 @@ As an operator, I want one daily run and one monthly run, so that nobody has to 
 - **Story:** US023
 - **ADO:** #116
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 45 min
 - **Sprint:** 5
 - **Depends on:** T065
@@ -76,7 +73,6 @@ As an operator, I want one daily run and one monthly run, so that nobody has to 
 - **Story:** US023
 - **ADO:** #117
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 60 min
 - **Sprint:** 5
 - **Depends on:** T014, T064
@@ -102,7 +98,6 @@ As an operator, I want to see what ran, what it cost in capacity, and why someth
 - **Story:** US024
 - **ADO:** #120
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 45 min
 - **Sprint:** 5
 - **Depends on:** T064
@@ -122,7 +117,6 @@ As an operator, I want to see what ran, what it cost in capacity, and why someth
 - **Story:** US024
 - **ADO:** #121
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 60 min
 - **Sprint:** 5
 - **Depends on:** T047, T051, T056, T064
@@ -141,7 +135,6 @@ As an operator, I want to see what ran, what it cost in capacity, and why someth
 - **Story:** US024
 - **ADO:** #122
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 60 min
 - **Sprint:** 5
 - **Depends on:** T068

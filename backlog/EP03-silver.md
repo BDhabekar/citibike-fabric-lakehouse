@@ -13,7 +13,6 @@ As an operator, I want every silver load to record which checks ran and how many
 - **Story:** US013
 - **ADO:** #59
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 60 min
 - **Sprint:** 3
 - **Depends on:** T029
@@ -34,7 +33,6 @@ As an operator, I want every silver load to record which checks ran and how many
 - **Story:** US013
 - **ADO:** #60
 - **Owner:** Claude builds
-- **Model:** Sonnet
 - **Estimate:** 30 min
 - **Sprint:** 3
 - **Depends on:** T032
@@ -57,7 +55,6 @@ As an analyst, I want one weather row per UTC hour, preferring measured archive 
 - **Story:** US014
 - **ADO:** #63
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 60 min
 - **Sprint:** 3
 - **Depends on:** T032
@@ -76,7 +73,6 @@ As an analyst, I want one weather row per UTC hour, preferring measured archive 
 - **Story:** US014
 - **ADO:** #64
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 75 min
 - **Sprint:** 3
 - **Depends on:** T034
@@ -100,7 +96,6 @@ As an analyst, I want one weather row per UTC hour, preferring measured archive 
 - **Story:** US014
 - **ADO:** #65
 - **Owner:** Claude builds
-- **Model:** Sonnet
 - **Estimate:** 30 min
 - **Sprint:** 3
 - **Depends on:** T035
@@ -123,7 +118,6 @@ As an analyst, I want every version of every station kept, so that a trip is mat
 - **Story:** US015
 - **ADO:** #68
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 30 min
 - **Sprint:** 3
 - **Depends on:** T029, T032
@@ -141,7 +135,6 @@ As an analyst, I want every version of every station kept, so that a trip is mat
 - **Story:** US015
 - **ADO:** #69
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 75 min
 - **Sprint:** 3
 - **Depends on:** T032
@@ -160,7 +153,6 @@ As an analyst, I want every version of every station kept, so that a trip is mat
 - **Story:** US015
 - **ADO:** #70
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 60 min
 - **Sprint:** 3
 - **Depends on:** T038
@@ -183,7 +175,6 @@ As an analyst, I want every version of every station kept, so that a trip is mat
 - **Story:** US015
 - **ADO:** #71
 - **Owner:** Claude builds
-- **Model:** Sonnet
 - **Estimate:** 45 min
 - **Sprint:** 3
 - **Depends on:** T038
@@ -206,7 +197,6 @@ As an analyst, I want one clean row per ride with UTC and local times, so that t
 - **Story:** US016
 - **ADO:** #74
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 90 min
 - **Sprint:** 3
 - **Depends on:** T030, T032
@@ -230,7 +220,6 @@ As an analyst, I want one clean row per ride with UTC and local times, so that t
 - **Story:** US016
 - **ADO:** #75
 - **Owner:** Claude builds
-- **Model:** Sonnet
 - **Estimate:** 45 min
 - **Sprint:** 3
 - **Depends on:** T041
@@ -248,7 +237,6 @@ As an analyst, I want one clean row per ride with UTC and local times, so that t
 - **Story:** US016
 - **ADO:** #76
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 45 min
 - **Sprint:** 3
 - **Depends on:** T039, T041
@@ -273,7 +261,6 @@ As an operator, I want partitioning, file sizes and old versions managed, so tha
 - **Story:** US017
 - **ADO:** #79
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 45 min
 - **Sprint:** 3
 - **Depends on:** T041

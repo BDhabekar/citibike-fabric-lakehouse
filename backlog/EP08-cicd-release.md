@@ -13,7 +13,6 @@ As a reviewer, I want tests and checks to run on every pull request, so that a b
 - **Story:** US026
 - **ADO:** #133
 - **Owner:** Claude builds
-- **Model:** Sonnet
 - **Estimate:** 60 min
 - **Sprint:** 5
 - **Depends on:** T016, T028
@@ -34,7 +33,6 @@ As a reviewer, I want tests and checks to run on every pull request, so that a b
 - **Story:** US026
 - **ADO:** #134
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 10 min
 - **Sprint:** 5
 - **Depends on:** T012, T075
@@ -57,7 +55,6 @@ As a release manager, I want items promoted dev → test → prod with each stag
 - **Story:** US027
 - **ADO:** #137
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 45 min
 - **Sprint:** 5
 - **Depends on:** T010, T064
@@ -78,7 +75,6 @@ As a release manager, I want items promoted dev → test → prod with each stag
 - **Story:** US027
 - **ADO:** #138
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 60 min
 - **Sprint:** 5
 - **Depends on:** T077
@@ -98,7 +94,6 @@ As a release manager, I want items promoted dev → test → prod with each stag
 - **Story:** US027
 - **ADO:** #139
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 90 min
 - **Sprint:** 5
 - **Depends on:** T046, T066, T067, T072, T078
@@ -122,7 +117,6 @@ As a release manager, I want items promoted dev → test → prod with each stag
 - **Story:** US027
 - **ADO:** #140
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 45 min
 - **Sprint:** 5
 - **Depends on:** T079

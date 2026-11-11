@@ -27,9 +27,8 @@ TASK_RE = re.compile(r"^#### (T\d{3}) · (.+)$")
 FIELD_RE = re.compile(r"^- \*\*([A-Za-z0-9 -]+):\*\* ?(.*)$")
 RESULT_RE = re.compile(r"^\*\*Result:\*\* ?(.*)$")
 
-REQUIRED = ["Story", "ADO", "Owner", "Model", "Estimate", "Sprint", "Depends on", "DP-700", "Status", "Read first"]
+REQUIRED = ["Story", "ADO", "Owner", "Estimate", "Sprint", "Depends on", "DP-700", "Status", "Read first"]
 STATUSES = {"todo", "doing", "done", "blocked"}
-MODELS = {"Sonnet", "Haiku", "Opus"}
 OWNERS = ("Bharat builds", "Claude builds", "Claude writes, Bharat runs")
 
 
@@ -131,8 +130,6 @@ def cmd_check(_args) -> int:
             problems.append(f"{tid}: Story field '{t.fields.get('Story')}' but card sits under {t.story}")
         if t.fields.get("Status") not in STATUSES:
             problems.append(f"{tid}: bad status '{t.fields.get('Status')}'")
-        if t.fields.get("Model") not in MODELS:
-            problems.append(f"{tid}: bad model '{t.fields.get('Model')}'")
         if not t.fields.get("Owner", "").startswith(OWNERS):
             problems.append(f"{tid}: bad owner '{t.fields.get('Owner')}'")
         if not re.fullmatch(r"#\d+", t.fields.get("ADO", "")):
@@ -208,7 +205,7 @@ def cmd_next(args) -> int:
     shown = ready if args.all else ready[:8]
     for t in shown:
         mark = " (in progress)" if t.fields.get("Status") == "doing" else ""
-        print(f"{t.id}  {t.fields.get('ADO', ''):5}  sprint {t.sprint}  {t.fields.get('Model'):6}  {t.minutes:>3} min  {t.title}{mark}")
+        print(f"{t.id}  {t.fields.get('ADO', ''):5}  sprint {t.sprint}  {t.minutes:>3} min  {t.title}{mark}")
     if len(ready) > len(shown):
         print(f"... {len(ready) - len(shown)} more ready (use --all)")
     return 0
@@ -224,7 +221,7 @@ def cmd_show(args) -> int:
     print(f"  {t.feature} · {features[t.feature]['title']}")
     print(f"    {t.story} · {stories[t.story]['title']}")
     print(f"File: {t.file.relative_to(ROOT)}")
-    print(f"Commit message: {t.id}: <summary> AB{t.fields.get('ADO', '#?')}  (then close the item in Azure Boards: protocol step 11)\n")
+    print(f"Commit message: {t.id}: <summary> AB{t.fields.get('ADO', '#?')}  (then close the item in Azure Boards)\n")
     print("\n".join(card_lines(t)))
     open_deps = [d for d in t.deps if tasks.get(d) and tasks[d].fields.get("Status") != "done"]
     if open_deps:

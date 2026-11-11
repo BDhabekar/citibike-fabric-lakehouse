@@ -20,7 +20,6 @@ Ids are never renumbered or reused. A new task gets the next free number, wherev
 - **Story:** US006
 - **ADO:** #26
 - **Owner:** Bharat builds (Claude guides) | Claude builds | Claude writes, Bharat runs
-- **Model:** Sonnet | Haiku
 - **Estimate:** 45 min
 - **Sprint:** 1
 - **Depends on:** T006
@@ -36,28 +35,20 @@ Ids are never renumbered or reused. A new task gets the next free number, wherev
 
 `DP-700` codes refer to `docs/dp700-map.md`. `ADO` is the task's work item id in Azure Boards (`dev.azure.com/bdhabekar-citibike`, project `citibike-fabric-lakehouse`), fixed once and never changed.
 
-## Running a task (the protocol every task chat follows)
+## How a task is run
 
-Bharat opens a new chat in the "Mission Azure Data Engineer" project, on the model the card names, and pastes:
+One task at a time, in this order:
 
-> Fabric project: run task T0xx. Read `D:\GitRepositories\citibike-fabric-lakehouse\START-HERE.md` first.
+1. Pick the next ready card (`python3 tools/backlog.py next`) and check that its dependencies are done.
+2. Set it to `doing`, read the files it lists under **Read first**, and build what the card says.
+3. Check every acceptance box against real evidence: a screenshot, a query result or a file in the repo.
+4. Write the Result line and close the card (`python3 tools/backlog.py set T0xx done --result "..."`).
+5. Update any doc the task changed, run `python3 tools/backlog.py check`, and commit on `dev` as `T0xx: <summary> AB#<ADO>`.
+6. Close the work item in Azure Boards, with the Result line as a comment.
 
-The chat then:
+A task that cannot be done as written stops: the card goes to `blocked` and a Proposed decision is written (`docs/architecture.md` §10).
 
-1. Asks for access to `D:\GitRepositories` (evidence and notes live in `portfolio-hq` there).
-2. Reads `START-HERE.md`, runs `python3 tools/backlog.py show T0xx`, and reads only the card's **Read first** files.
-3. Stops if a dependency is not `done` (the `show` command prints a warning) and says which task comes first.
-4. Sets the card to `doing` (`python3 tools/backlog.py set T0xx doing`).
-5. Gives Bharat the whole task before he starts, the ADE HQ way: the idea in plain words, why it matters in production and in an interview, the steps with the screen each one starts from, what to send back, a small example of the finished result, and what done looks like. Cost line: "trial capacity, ₹0" (anything else stops the task).
-6. Guides the build. Corrects any mistake before moving on.
-7. Checks each acceptance box against real evidence (a screenshot, a query result, a file in the repo).
-8. Writes the three-part explanation (what we did, in production, in an interview) into `D:\GitRepositories\portfolio-hq\citibike\fabric-project-explained.md`, and files screenshots in `D:\GitRepositories\portfolio-hq\citibike\evidence\YYYY-MM-DD\`.
-9. Closes the card: `python3 tools/backlog.py set T0xx done --result "<one line: what exists now, any UI difference met>"`.
-10. Updates any doc the task changed (for example `docs/environments.md`), runs `python3 tools/backlog.py check`, commits on `dev` with `T0xx: <summary> AB#<ADO>` (the `show` command prints the exact line), and gives Bharat the two push lines from `docs/conventions.md` §10. Once pushed, the Azure Boards GitHub app links the commit to the work item.
-11. Closes the work item in Azure Boards. In the browser pane, open `https://dev.azure.com/bdhabekar-citibike/citibike-fabric-lakehouse/_workitems/edit/<ADO>` (Bharat signs in if asked), set State to **Closed**, add the Result line as a comment, save, and confirm the item reads Closed. A `Closed AB#` keyword in the commit does not do this: Azure Boards changes state only when a pull request is merged into the default branch, and task commits go straight to `dev` (tested on T012, Oct 24, 2026). If the task was the last open child of its user story, close the story the same way, then its feature when all its stories are closed, then its epic when all its features are closed. Check the children first (the card's Parent link in Azure Boards, or the cards in the repo), and add a one-line history note saying why the parent closed. A story closes only when its acceptance lines hold; an epic only when its done-when holds.
-12. Ends with the next ready task: `python3 tools/backlog.py next`.
-
-If the task cannot be done as written, the chat follows change control (`docs/architecture.md` §10): `blocked`, a Proposed decision, and a question to Bharat.
+The project is built with an AI assistant (Claude) as mentor and pair-programmer, and the **Owner** field on each card says who does what. The working notes of those sessions, the screenshots and the per-task explanations are kept in a private repo.
 
 ## Tool
 

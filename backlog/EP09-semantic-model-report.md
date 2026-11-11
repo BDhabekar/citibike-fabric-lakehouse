@@ -13,7 +13,6 @@ As an operations lead, I want one page for demand against weather, one for empty
 - **Story:** US028
 - **ADO:** #144
 - **Owner:** Claude builds
-- **Model:** Sonnet
 - **Estimate:** 60 min
 - **Sprint:** 6
 - **Depends on:** T061
@@ -33,7 +32,6 @@ As an operations lead, I want one page for demand against weather, one for empty
 - **Story:** US028
 - **ADO:** #145
 - **Owner:** Claude builds
-- **Model:** Sonnet
 - **Estimate:** 90 min
 - **Sprint:** 6
 - **Depends on:** T081
@@ -53,7 +51,6 @@ As an operations lead, I want one page for demand against weather, one for empty
 - **Story:** US028
 - **ADO:** #146
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 30 min
 - **Sprint:** 6
 - **Depends on:** T072, T081

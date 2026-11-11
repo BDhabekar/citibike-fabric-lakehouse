@@ -13,7 +13,6 @@ As a data owner, I want analysts to see only what their job needs, so that trip 
 - **Story:** US025
 - **ADO:** #126
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 30 min
 - **Sprint:** 5
 - **Depends on:** T007, T054
@@ -33,7 +32,6 @@ As a data owner, I want analysts to see only what their job needs, so that trip 
 - **Story:** US025
 - **ADO:** #127
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 75 min
 - **Sprint:** 5
 - **Depends on:** T059, T060, T071
@@ -54,7 +52,6 @@ As a data owner, I want analysts to see only what their job needs, so that trip 
 - **Story:** US025
 - **ADO:** #128
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 30 min
 - **Sprint:** 5
 - **Depends on:** T071
@@ -74,7 +71,6 @@ As a data owner, I want analysts to see only what their job needs, so that trip 
 - **Story:** US025
 - **ADO:** #129
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 30 min
 - **Sprint:** 5
 - **Depends on:** T071

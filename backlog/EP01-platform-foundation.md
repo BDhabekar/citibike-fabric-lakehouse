@@ -13,7 +13,6 @@ As the platform owner, I want a Fabric trial capacity in my own tenant, so that 
 - **Story:** US002
 - **ADO:** #9
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 30 min
 - **Sprint:** 1
 - **Depends on:** —
@@ -41,7 +40,6 @@ As the platform owner, I want a Fabric trial capacity in my own tenant, so that 
 - **Story:** US002
 - **ADO:** #10
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 15 min
 - **Sprint:** 1
 - **Depends on:** T003
@@ -63,7 +61,6 @@ As the platform owner, I want a Fabric trial capacity in my own tenant, so that 
 - **Story:** US002
 - **ADO:** #11
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 30 min
 - **Sprint:** 1
 - **Depends on:** T004
@@ -89,7 +86,6 @@ As a developer, I want separate dev, test and prod workspaces with the same item
 - **Story:** US003
 - **ADO:** #14
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 45 min
 - **Sprint:** 1
 - **Depends on:** T004
@@ -112,7 +108,6 @@ As a developer, I want separate dev, test and prod workspaces with the same item
 - **Story:** US003
 - **ADO:** #15
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 20 min
 - **Sprint:** 1
 - **Depends on:** T006
@@ -132,7 +127,6 @@ As a developer, I want separate dev, test and prod workspaces with the same item
 - **Story:** US003
 - **ADO:** #16
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 20 min
 - **Sprint:** 1
 - **Depends on:** T006
@@ -156,7 +150,6 @@ As a developer, I want Spark settings and environment values stored as items, so
 - **Story:** US004
 - **ADO:** #18
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 30 min
 - **Sprint:** 1
 - **Depends on:** T006
@@ -179,7 +172,6 @@ As a developer, I want Spark settings and environment values stored as items, so
 - **Story:** US004
 - **ADO:** #19
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 40 min
 - **Sprint:** 1
 - **Depends on:** T006
@@ -206,7 +198,6 @@ As a developer, I want the dev workspace synced to GitHub, so that every change 
 - **Story:** US005
 - **ADO:** #22
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 30 min
 - **Sprint:** 1
 - **Depends on:** T002, T008, T009, T010
@@ -228,7 +219,6 @@ As a developer, I want the dev workspace synced to GitHub, so that every change 
 - **Story:** US005
 - **ADO:** #23
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 15 min
 - **Sprint:** 1
 - **Depends on:** T011
@@ -253,7 +243,6 @@ As the architect, I want each risky feature tried on a small case first, so that
 - **Story:** US006
 - **ADO:** #26
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 45 min
 - **Sprint:** 1
 - **Depends on:** T006
@@ -278,7 +267,6 @@ As the architect, I want each risky feature tried on a small case first, so that
 - **Story:** US006
 - **ADO:** #27
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 45 min
 - **Sprint:** 1
 - **Depends on:** T006
@@ -301,7 +289,6 @@ As the architect, I want each risky feature tried on a small case first, so that
 - **Story:** US006
 - **ADO:** #28
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 45 min
 - **Sprint:** 1
 - **Depends on:** T008
@@ -324,7 +311,6 @@ As the architect, I want each risky feature tried on a small case first, so that
 - **Story:** US006
 - **ADO:** #29
 - **Owner:** Claude builds
-- **Model:** Sonnet
 - **Estimate:** 30 min
 - **Sprint:** 1
 - **Depends on:** T011
@@ -344,7 +330,6 @@ As the architect, I want each risky feature tried on a small case first, so that
 - **Story:** US006
 - **ADO:** #30
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 30 min
 - **Sprint:** 1
 - **Depends on:** T008, T009
@@ -365,7 +350,6 @@ As the architect, I want each risky feature tried on a small case first, so that
 - **Story:** US006
 - **ADO:** #31
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 45 min
 - **Sprint:** 1
 - **Depends on:** T008, T010
@@ -389,7 +373,6 @@ As the architect, I want each risky feature tried on a small case first, so that
 - **Story:** US006
 - **ADO:** #32
 - **Owner:** Claude builds
-- **Model:** Sonnet
 - **Estimate:** 30 min
 - **Sprint:** 1
 - **Depends on:** T013, T014, T015, T016, T017, T018

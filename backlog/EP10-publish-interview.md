@@ -13,7 +13,6 @@ As a candidate, I want a README an interviewer can read in five minutes, so that
 - **Story:** US029
 - **ADO:** #150
 - **Owner:** Claude builds
-- **Model:** Sonnet
 - **Estimate:** 90 min
 - **Sprint:** 6
 - **Depends on:** T079, T082
@@ -33,7 +32,6 @@ As a candidate, I want a README an interviewer can read in five minutes, so that
 - **Story:** US029
 - **ADO:** #151
 - **Owner:** Claude builds
-- **Model:** Sonnet
 - **Estimate:** 45 min
 - **Sprint:** 6
 - **Depends on:** T079
@@ -51,7 +49,6 @@ As a candidate, I want a README an interviewer can read in five minutes, so that
 - **Story:** US029
 - **ADO:** #152
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 20 min
 - **Sprint:** 6
 - **Depends on:** T084, T085
@@ -75,7 +72,6 @@ As a candidate, I want to explain the project fluently and answer its likely que
 - **Story:** US030
 - **ADO:** #154
 - **Owner:** Claude builds
-- **Model:** Sonnet
 - **Estimate:** 45 min
 - **Sprint:** 6
 - **Depends on:** T084
@@ -93,7 +89,6 @@ As a candidate, I want to explain the project fluently and answer its likely que
 - **Story:** US030
 - **ADO:** #155
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 60 min
 - **Sprint:** 6
 - **Depends on:** T086
@@ -111,7 +106,6 @@ As a candidate, I want to explain the project fluently and answer its likely que
 - **Story:** US030
 - **ADO:** #156
 - **Owner:** Claude builds
-- **Model:** Sonnet
 - **Estimate:** 30 min
 - **Sprint:** 6
 - **Depends on:** T086

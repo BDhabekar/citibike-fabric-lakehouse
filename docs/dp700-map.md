@@ -1,6 +1,6 @@
 # DP-700 map
 
-Exam DP-700, "Implementing Data Engineering Solutions Using Microsoft Fabric" (credential: Microsoft Certified: Fabric Data Engineer Associate). Skills measured as of **October 19, 2026**, from the [official study guide](https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/dp-700). Check the page again before booking: Microsoft updates it when features go GA.
+Exam DP-700, "Implementing Data Engineering Solutions Using Microsoft Fabric" (credential: Microsoft Certified: Fabric Data Engineer Associate). Skills measured as of **October 30, 2026**, from the [official study guide](https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/dp-700). Check the page again before booking: Microsoft updates it when features go GA.
 
 Codes used on task cards: **1.1** workspace settings · **1.2** lifecycle · **1.3** security and governance · **1.4** orchestration · **2.1** loading patterns · **2.2** batch ingest and transform · **2.3** streaming · **3.1** monitoring · **3.2** errors · **3.3** optimisation.
 
@@ -11,18 +11,18 @@ Codes used on task cards: **1.1** workspace settings · **1.2** lifecycle · **1
 | Configure Spark workspace settings | T006, T009 |
 | Configure domain workspace settings | T006 |
 | Configure OneLake workspace settings | T006 |
-| Configure Apache Airflow workspace settings | **study only** |
+| Configure data workflow workspace settings (Apache Airflow) | **study only** |
 | Configure version control | T011, T012, T075, T076 |
 | Implement database projects | T054 (the warehouse in Git) |
 | Create and configure deployment pipelines | T077, T078, T079, T080 |
 | Workspace-level access controls | T071 |
 | Item-level access controls | T071 |
-| Row-, column-, object- and folder/file-level access controls | T072 (row, column, object), T073 (folder) |
+| Row-, column-, object- and file-level access controls | T072 (row, column, object), T073 (folder) |
 | Dynamic data masking | T072 |
 | Apply sensitivity labels to items | **study only** (no information-protection licence in the tenant; T074 notes it) |
 | Endorse items | T074, T081 |
-| Fabric audit logs | T074 (where they live; depth depends on tenant access) |
-| OneLake security | T073 |
+| Fabric audit logs (no longer named in the study guide; kept as extra coverage) | T074 (where they live; depth depends on tenant access) |
+| OneLake security (no longer named in the study guide; kept as extra coverage) | T073 |
 | Choose between Dataflow Gen2, a pipeline and a notebook | ADR-006, T056 |
 | Schedules and event-based triggers | T079 (schedules); event triggers: **study only** |
 | Orchestration with notebooks and pipelines, parameters, dynamic expressions | T024, T025, T064, T065, T066 |
@@ -44,8 +44,8 @@ Codes used on task cards: **1.1** workspace settings · **1.2** lifecycle · **1
 | Group and aggregate | T052, T061, T047 |
 | Duplicate, missing and late-arriving data | T035, T041, T052 |
 | Choose a streaming engine | T046 lesson |
-| Native tables vs OneLake shortcuts in Real-Time Intelligence | T048, ADR-019 |
-| Query acceleration for OneLake shortcuts vs standard shortcuts | T048 |
+| Native tables vs OneLake shortcuts in Real-Time Intelligence (no longer named in the study guide; kept as extra coverage) | T048, ADR-019 |
+| Query acceleration for OneLake shortcuts vs standard shortcuts (no longer named in the study guide; kept as extra coverage) | T048 |
 | Process data with Eventstream | T013, T046 |
 | Process data with Spark Structured Streaming | T017, T029 |
 | Process data with KQL | T045, T047, T048 |
@@ -58,7 +58,7 @@ Codes used on task cards: **1.1** workspace settings · **1.2** lifecycle · **1
 | Monitor ingestion and transformation | T068 |
 | Monitor semantic model refresh | T083 |
 | Configure alerts | T014, T050, T067 |
-| Resolve pipeline, Dataflow Gen2, notebook, Eventhouse, Eventstream, T-SQL and shortcut errors | T069 (one planted fault each) |
+| Resolve pipeline, Dataflow Gen2, notebook, Eventhouse, Eventstream and T-SQL errors | T069 (one planted fault each; the shortcut fault is no longer named in the study guide and stays as extra coverage) |
 | Optimise a lakehouse table | T044 |
 | Optimise a pipeline | T070 |
 | Optimise a warehouse | T063 |
@@ -66,6 +66,6 @@ Codes used on task cards: **1.1** workspace settings · **1.2** lifecycle · **1
 | Optimise Spark | T070 |
 | Optimise queries | T063, T048 |
 
-## Study-only list (covered by Microsoft Learn modules and practice questions in the ADE HQ plan)
+## Study-only list (covered by Microsoft Learn modules and practice questions in the study plan)
 
-Apache Airflow jobs and workspace settings · mirroring · sensitivity labels · event-based triggers (storage events, job events) · Copy job · Fabric SQL database · capacity SKUs and smoothing in depth.
+Apache Airflow jobs and data workflow workspace settings · mirroring · sensitivity labels · event-based triggers (storage events, job events) · Copy job · Fabric SQL database · capacity SKUs and smoothing in depth.

@@ -13,7 +13,6 @@ As an analyst, I want trips and station-hours in a star schema with conformed di
 - **Story:** US021
 - **ADO:** #99
 - **Owner:** Claude writes, Bharat runs
-- **Model:** Sonnet
 - **Estimate:** 45 min
 - **Sprint:** 4
 - **Depends on:** T018, T020
@@ -33,7 +32,6 @@ As an analyst, I want trips and station-hours in a star schema with conformed di
 - **Story:** US021
 - **ADO:** #100
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 30 min
 - **Sprint:** 4
 - **Depends on:** T054
@@ -52,7 +50,6 @@ As an analyst, I want trips and station-hours in a star schema with conformed di
 - **Story:** US021
 - **ADO:** #101
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 45 min
 - **Sprint:** 4
 - **Depends on:** T008, T054
@@ -72,7 +69,6 @@ As an analyst, I want trips and station-hours in a star schema with conformed di
 - **Story:** US021
 - **ADO:** #102
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 45 min
 - **Sprint:** 4
 - **Depends on:** T037, T039, T054
@@ -90,7 +86,6 @@ As an analyst, I want trips and station-hours in a star schema with conformed di
 - **Story:** US021
 - **ADO:** #103
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 45 min
 - **Sprint:** 4
 - **Depends on:** T035, T054
@@ -108,7 +103,6 @@ As an analyst, I want trips and station-hours in a star schema with conformed di
 - **Story:** US021
 - **ADO:** #104
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 90 min
 - **Sprint:** 4
 - **Depends on:** T041, T057
@@ -128,7 +122,6 @@ As an analyst, I want trips and station-hours in a star schema with conformed di
 - **Story:** US021
 - **ADO:** #105
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 45 min
 - **Sprint:** 4
 - **Depends on:** T052, T057
@@ -146,7 +139,6 @@ As an analyst, I want trips and station-hours in a star schema with conformed di
 - **Story:** US021
 - **ADO:** #106
 - **Owner:** Claude writes, Bharat runs
-- **Model:** Sonnet
 - **Estimate:** 30 min
 - **Sprint:** 4
 - **Depends on:** T058, T059, T060
@@ -170,7 +162,6 @@ As an analyst, I want gold to reconcile with silver and to answer quickly, so th
 - **Story:** US022
 - **ADO:** #109
 - **Owner:** Claude writes, Bharat runs
-- **Model:** Sonnet
 - **Estimate:** 45 min
 - **Sprint:** 4
 - **Depends on:** T059, T060
@@ -190,7 +181,6 @@ As an analyst, I want gold to reconcile with silver and to answer quickly, so th
 - **Story:** US022
 - **ADO:** #110
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 30 min
 - **Sprint:** 4
 - **Depends on:** T061

@@ -13,7 +13,6 @@ As an operations lead, I want every station's status landed every minute, so tha
 - **Story:** US018
 - **ADO:** #83
 - **Owner:** Claude writes, Bharat runs
-- **Model:** Sonnet
 - **Estimate:** 45 min
 - **Sprint:** 3
 - **Depends on:** T019
@@ -35,7 +34,6 @@ As an operations lead, I want every station's status landed every minute, so tha
 - **Story:** US018
 - **ADO:** #84
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 45 min
 - **Sprint:** 3
 - **Depends on:** T013, T045
@@ -56,7 +54,6 @@ As an operations lead, I want every station's status landed every minute, so tha
 - **Story:** US018
 - **ADO:** #85
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 60 min
 - **Sprint:** 3
 - **Depends on:** T046
@@ -83,7 +80,6 @@ As an operations lead, I want a live dashboard and an alert when a station stays
 - **Story:** US019
 - **ADO:** #88
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 45 min
 - **Sprint:** 4
 - **Depends on:** T039, T047
@@ -104,7 +100,6 @@ As an operations lead, I want a live dashboard and an alert when a station stays
 - **Story:** US019
 - **ADO:** #89
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 45 min
 - **Sprint:** 4
 - **Depends on:** T048
@@ -123,7 +118,6 @@ As an operations lead, I want a live dashboard and an alert when a station stays
 - **Story:** US019
 - **ADO:** #90
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 45 min
 - **Sprint:** 4
 - **Depends on:** T014, T048
@@ -151,7 +145,6 @@ As an analyst, I want hourly availability per station kept in the lakehouse, so 
 - **Story:** US020
 - **ADO:** #93
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 30 min
 - **Sprint:** 4
 - **Depends on:** T046
@@ -170,7 +163,6 @@ As an analyst, I want hourly availability per station kept in the lakehouse, so 
 - **Story:** US020
 - **ADO:** #94
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 75 min
 - **Sprint:** 4
 - **Depends on:** T032, T051
@@ -192,7 +184,6 @@ As an analyst, I want hourly availability per station kept in the lakehouse, so 
 - **Story:** US020
 - **ADO:** #95
 - **Owner:** Claude builds
-- **Model:** Sonnet
 - **Estimate:** 30 min
 - **Sprint:** 4
 - **Depends on:** T052

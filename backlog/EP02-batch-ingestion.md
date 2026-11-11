@@ -13,7 +13,6 @@ As an operator, I want sources, watermarks and run results in control tables, so
 - **Story:** US007
 - **ADO:** #36
 - **Owner:** Claude writes, Bharat runs
-- **Model:** Sonnet
 - **Estimate:** 45 min
 - **Sprint:** 2
 - **Depends on:** T019
@@ -35,7 +34,6 @@ As an operator, I want sources, watermarks and run results in control tables, so
 - **Story:** US007
 - **ADO:** #37
 - **Owner:** Claude writes, Bharat runs
-- **Model:** Sonnet
 - **Estimate:** 30 min
 - **Sprint:** 2
 - **Depends on:** T020
@@ -62,7 +60,6 @@ As an operator, I want sources, watermarks and run results in control tables, so
 - **Story:** US007
 - **ADO:** #38
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 60 min
 - **Sprint:** 2
 - **Depends on:** T016, T019
@@ -96,12 +93,11 @@ As an analyst, I want every hour of weather since the backfill start, so that de
 - **Story:** US008
 - **ADO:** #41
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 60 min
 - **Sprint:** 2
 - **Depends on:** T022
 - **DP-700:** 2.2
-- **Status:** todo
+- **Status:** doing
 - **Read first:** docs/sources.md §1, docs/data-contracts.md §1
 **Do**
 1. New connection: REST, base URL `https://archive-api.open-meteo.com`, authentication Anonymous. Name it `conn_open_meteo_archive`.
@@ -116,7 +112,6 @@ As an analyst, I want every hour of weather since the backfill start, so that de
 - **Story:** US008
 - **ADO:** #42
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 90 min
 - **Sprint:** 2
 - **Depends on:** T021, T023
@@ -148,7 +143,6 @@ As an analyst, I want a daily snapshot of the station list and regions, so that 
 - **Story:** US009
 - **ADO:** #44
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 75 min
 - **Sprint:** 2
 - **Depends on:** T024
@@ -175,7 +169,6 @@ As an analyst, I want each month's trip file landed and unzipped, so that Spark 
 - **Story:** US010
 - **ADO:** #46
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 75 min
 - **Sprint:** 2
 - **Depends on:** T015, T021
@@ -205,7 +198,6 @@ As a data engineer, I want one source ingested in Python with retries and backof
 - **Story:** US011
 - **ADO:** #49
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 75 min
 - **Sprint:** 2
 - **Depends on:** T022
@@ -227,7 +219,6 @@ As a data engineer, I want one source ingested in Python with retries and backof
 - **Story:** US011
 - **ADO:** #50
 - **Owner:** Claude builds
-- **Model:** Sonnet
 - **Estimate:** 45 min
 - **Sprint:** 2
 - **Depends on:** T016, T027
@@ -251,7 +242,6 @@ As a data engineer, I want every landed file turned into bronze rows exactly onc
 - **Story:** US012
 - **ADO:** #53
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 90 min
 - **Sprint:** 2
 - **Depends on:** T017, T024, T025, T027
@@ -274,7 +264,6 @@ As a data engineer, I want every landed file turned into bronze rows exactly onc
 - **Story:** US012
 - **ADO:** #54
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 60 min
 - **Sprint:** 2
 - **Depends on:** T026
@@ -295,7 +284,6 @@ As a data engineer, I want every landed file turned into bronze rows exactly onc
 - **Story:** US012
 - **ADO:** #55
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Sonnet
 - **Estimate:** 30 min
 - **Sprint:** 2
 - **Depends on:** T029, T030

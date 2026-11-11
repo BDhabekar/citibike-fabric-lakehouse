@@ -14,7 +14,6 @@ As Bharat, I want the design, conventions and backlog in one repo, so that any c
 - **Story:** US001
 - **ADO:** #4
 - **Owner:** Claude builds
-- **Model:** Opus
 - **Estimate:** 120 min
 - **Sprint:** 0
 - **Depends on:** —
@@ -35,7 +34,6 @@ As Bharat, I want the design, conventions and backlog in one repo, so that any c
 - **Story:** US001
 - **ADO:** #5
 - **Owner:** Bharat builds (Claude guides)
-- **Model:** Haiku
 - **Estimate:** 15 min
 - **Sprint:** 0
 - **Depends on:** T001
