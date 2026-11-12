@@ -140,10 +140,10 @@ As an analyst, I want every version of every station kept, so that a trip is mat
 - **Depends on:** T032
 - **DP-700:** 2.1, 2.2
 - **Status:** todo
-- **Read first:** docs/decisions.md ADR-010, ADR-011; docs/data-contracts.md §3 (station_scd2)
+- **Read first:** docs/decisions.md ADR-010, ADR-011, ADR-028; docs/data-contracts.md §3 (station_scd2)
 **Do**
 1. Claude teaches SCD2 on a 3-station made-up example first (new, changed, missing) before any code.
-2. In `nb_lib_common`: `scd2_changes(current_df, snapshot_df, snapshot_ts)` → a DataFrame of actions (`insert_new`, `close`, `insert_version`, `close_missing`) with the new rows' `station_version_key = xxhash64(station_id, valid_from_utc)` and `attr_hash`.
+2. In `nb_lib_common`: `scd2_changes(current_df, snapshot_df, snapshot_ts)` → a DataFrame of actions (`insert_new`, `close`, `insert_version`, `close_missing`) with the new rows' `station_version_key = xxhash64(station_id, valid_from_utc)` and `attr_hash`. An `insert_new` row takes `valid_from_utc = 1900-01-01 00:00:00`; an `insert_version` row takes `snapshot_ts` (ADR-028).
 3. Pure function: DataFrames in, DataFrame out; the MERGE is done by the notebook (T039).
 **Acceptance**
 - [ ] On the made-up example the function returns exactly the actions Claude predicted in the lesson.
@@ -182,9 +182,9 @@ As an analyst, I want every version of every station kept, so that a trip is mat
 - **Status:** todo
 - **Read first:** docs/decisions.md ADR-011
 **Do**
-1. `tests/test_scd2.py`: new station; unchanged station (no action); capacity change (close + insert); station missing (close); same snapshot twice (no action); coordinates differing only after the 6th decimal (no action); keys stable across two runs.
+1. `tests/test_scd2.py`: new station; unchanged station (no action); capacity change (close + insert); station missing (close); same snapshot twice (no action); coordinates differing only after the 6th decimal (no action); keys stable across two runs; a new station's first version opens at `1900-01-01` and its next version at the snapshot time (ADR-028).
 **Acceptance**
-- [ ] Seven tests pass.
+- [ ] Eight tests pass.
 **Result:** —
 
 ## FT13 · Trips silver

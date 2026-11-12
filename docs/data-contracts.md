@@ -118,13 +118,13 @@ Reload rule: `replaceWhere trip_month = '<month>'`.
 | `latitude` | double | no | rounded to 6 decimals |
 | `longitude` | double | no | rounded to 6 decimals |
 | `attr_hash` | string | no | `sha2` over the six tracked attributes, nulls as empty strings, joined with a separator |
-| `valid_from_utc` | timestamp | no | snapshot `last_updated` |
+| `valid_from_utc` | timestamp | no | `1900-01-01 00:00:00` for a station's first version (ADR-028); snapshot `last_updated` for every later version |
 | `valid_to_utc` | timestamp | no | `9999-12-31 00:00:00` while current |
 | `is_current` | boolean | no | |
 | `_source_file` | string | no | file that opened the version |
 | `_updated_ts` | timestamp | no | |
 
-**Rules (ADR-011):** new station → insert a version; changed hash → close the current version at the new snapshot time and insert a version; station missing from a snapshot → close it; re-processing a snapshot already applied changes nothing; snapshots are applied oldest first.
+**Rules (ADR-011, ADR-028):** new station (no earlier version of that `station_id`) → insert a version valid from `1900-01-01 00:00:00`; changed hash → close the current version at the new snapshot time and insert a version; station missing from a snapshot → close it; re-processing a snapshot already applied changes nothing; snapshots are applied oldest first.
 **Checks:** one current row per `station_id` (error); no overlapping validity windows per `station_id` (error); `valid_from_utc < valid_to_utc` (error).
 
 ### `trips`

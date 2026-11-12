@@ -94,6 +94,7 @@ The whole build runs on the 60-day Fabric trial capacity in Bharat's own tenant,
 
 - One weather point (Central Park) stands for the whole city.
 - Station status history starts the day streaming starts (early November 2026), so it does not overlap the trip history until the November trip file lands in early December.
+- Station history starts at the first snapshot (November 2026). A trip older than that gets the station as it was first seen (its name, region and capacity then), and a station removed before the first snapshot has no version, so its trips get the unknown station `-1` (ADR-028).
 - The Eventstream with the HTTP source cannot go through Git or the deployment pipeline (a documented preview limitation), so it is created by hand in dev and prod from `docs/runbooks/eventstream.md`.
 
 ## 10. Change control
