@@ -7,7 +7,7 @@ A data platform for New York's Citi Bike system, built end to end in Microsoft F
 
 It also has a live view: which stations are empty right now, with an alert when one stays empty for 15 minutes at rush hour.
 
-> **Status: being built.** Started in October 2026; 22 of 89 tasks were done on Nov 11, 2026 (table below). The design was fixed before the build began and is in [`docs/architecture.md`](docs/architecture.md). This page is rewritten in full when version 1.0 reaches prod.
+> **Status: being built.** Started in October 2026; 22 of 89 tasks were done on Nov 12, 2026: the setup, six risk trials and the control tables. The design was fixed before the build began and is in [`docs/architecture.md`](docs/architecture.md). On Nov 12 the build order changed from layer by layer to one source at a time (table below). This page is rewritten in full when version 1.0 reaches prod.
 
 ![Architecture](docs/img/architecture.png)
 
@@ -27,21 +27,19 @@ Every load can be run twice and give the same result, every run is logged, and e
 
 ## Where the build stands
 
-| Epic | Done | Tasks |
-|---|---|---|
-| Program setup | 2 | 2 |
-| Platform foundation and risk spikes | 17 | 17 |
-| Batch ingestion to bronze | 3 | 12 |
-| Silver transformations (PySpark) | 0 | 13 |
-| Real-time intelligence | 0 | 9 |
-| Gold warehouse (T-SQL star schema) | 0 | 10 |
-| Orchestration, monitoring and operations | 0 | 7 |
-| Security and governance | 0 | 4 |
-| CI/CD and release | 0 | 6 |
-| Semantic model and report | 0 | 3 |
-| Publish and interview readiness | 0 | 6 |
+The design is built in three passes, and each pass ends with something that runs. The reason is in [`docs/decisions.md`](docs/decisions.md), ADR-029: with a fixed end date, one finished path is worth more than three half-built layers.
 
-As of Wed Nov 11, 2026. `python3 tools/backlog.py summary` prints the live numbers.
+| Pass | What it builds | Ends with | Done | Tasks |
+|---|---|---|---|---|
+| Setup | repo, trial, workspaces, Git, six risk trials, control tables | a platform ready to build on | 22 | 22 |
+| A | Eventhouse, the 60-second poller, the latest-state view | station status collecting while the rest is built | 0 | 3 |
+| B | weather from the API to gold, with checks, the daily pipeline and its failure alert, CI, the deployment pipeline and the first report pages | release `v0.1.0` in prod | 0 | 22 |
+| C | trip files, station history (SCD Type 2), the trip fact, security, the Real-Time Dashboard and the rush-hour alert | release `v1.0.0` in prod | 0 | 27 |
+| Version 1.1 | hourly station history in the warehouse, the forecast source, a Dataflow Gen2, tuning and governance | release `v1.1.0`, if the trial allows | 0 | 15 |
+
+**What version 1.0 holds.** Question 1 is answered from the warehouse in the Power BI report. Question 2 is answered live, in KQL on the Real-Time Dashboard and by the alert. The ranked history of question 2 in the warehouse and the report waits for 1.1.
+
+As of Thu Nov 12, 2026. The calendar is in [`backlog/sprints.md`](backlog/sprints.md), and `python3 tools/backlog.py summary` prints the live numbers.
 
 Before any pipeline was built, six risks were tried on the real service: the Eventstream HTTP source, an alert route that reaches a personal mailbox, unzipping a 1 GB file from HTTP, testing a notebook's code in CI, streaming over a folder of files, and the warehouse reading the lakehouse. The risks and their fallbacks are in [`docs/risks.md`](docs/risks.md); what each trial showed is written into the decisions it touched, and one of them changed the design ([`docs/decisions.md`](docs/decisions.md), ADR-027).
 

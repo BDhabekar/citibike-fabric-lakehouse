@@ -2,6 +2,8 @@
 
 Exam DP-700, "Implementing Data Engineering Solutions Using Microsoft Fabric" (credential: Microsoft Certified: Fabric Data Engineer Associate). Skills measured as of **October 30, 2026**, from the [official study guide](https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/dp-700). Check the page again before booking: Microsoft updates it when features go GA.
 
+Fifteen of the tasks named below wait for version 1.1 (ADR-029): T027, T028, T044, T051–T053, T056, T060, T063, T068–T070, T073, T074 and T083. If 1.1 is not reached on the trial, a skill that only those tasks build is studied, not built.
+
 Codes used on task cards: **1.1** workspace settings · **1.2** lifecycle · **1.3** security and governance · **1.4** orchestration · **2.1** loading patterns · **2.2** batch ingest and transform · **2.3** streaming · **3.1** monitoring · **3.2** errors · **3.3** optimisation.
 
 ## 1. Implement and manage an analytics solution (30–35%)

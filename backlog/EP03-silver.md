@@ -14,7 +14,7 @@ As an operator, I want every silver load to record which checks ran and how many
 - **ADO:** #59
 - **Owner:** Bharat builds (Claude guides)
 - **Estimate:** 60 min
-- **Sprint:** 3
+- **Sprint:** 4
 - **Depends on:** T029
 - **DP-700:** 2.2, 3.2
 - **Status:** todo
@@ -34,7 +34,7 @@ As an operator, I want every silver load to record which checks ran and how many
 - **ADO:** #60
 - **Owner:** Claude builds
 - **Estimate:** 30 min
-- **Sprint:** 3
+- **Sprint:** 4
 - **Depends on:** T032
 - **DP-700:** 3.2
 - **Status:** todo
@@ -56,7 +56,7 @@ As an analyst, I want one weather row per UTC hour, preferring measured archive 
 - **ADO:** #63
 - **Owner:** Bharat builds (Claude guides)
 - **Estimate:** 60 min
-- **Sprint:** 3
+- **Sprint:** 4
 - **Depends on:** T032
 - **DP-700:** 2.2
 - **Status:** todo
@@ -74,7 +74,7 @@ As an analyst, I want one weather row per UTC hour, preferring measured archive 
 - **ADO:** #64
 - **Owner:** Bharat builds (Claude guides)
 - **Estimate:** 75 min
-- **Sprint:** 3
+- **Sprint:** 4
 - **Depends on:** T034
 - **DP-700:** 2.1, 2.2
 - **Status:** todo
@@ -85,9 +85,9 @@ As an analyst, I want one weather row per UTC hour, preferring measured archive 
 3. `apply_rules` (hour unique, temperature range, precipitation ≥ 0); quarantine bad rows.
 4. `MERGE` into `weather_hourly` with the ADR-018 conditions.
 5. Exit payload with counts and `dq`.
-6. Run, run again (no change), then load a new forecast file and run (only forecast hours change).
+6. Run, then run again (no change). In version 1.0 only archive rows exist, so the forecast side of the priority rule is proved by the tests in T036; it is seen on real files when T027 lands the forecast (version 1.1).
 **Acceptance**
-- [ ] One row per hour from 2026-04-01 to tomorrow + 1.
+- [ ] One row per hour from 2026-04-01 to the last hour the archive returned (the hours up to tomorrow + 1 come with the forecast source in version 1.1).
 - [ ] An archive row is never replaced by a forecast row (Claude's check query returns 0).
 - [ ] Second run reports 0 rows written.
 **Result:** —
@@ -97,7 +97,7 @@ As an analyst, I want one weather row per UTC hour, preferring measured archive 
 - **ADO:** #65
 - **Owner:** Claude builds
 - **Estimate:** 30 min
-- **Sprint:** 3
+- **Sprint:** 4
 - **Depends on:** T035
 - **DP-700:** 2.1
 - **Status:** todo
@@ -119,8 +119,8 @@ As an analyst, I want every version of every station kept, so that a trip is mat
 - **ADO:** #68
 - **Owner:** Bharat builds (Claude guides)
 - **Estimate:** 30 min
-- **Sprint:** 3
-- **Depends on:** T029, T032
+- **Sprint:** 5
+- **Depends on:** T025, T029, T032
 - **DP-700:** 2.2
 - **Status:** todo
 - **Read first:** docs/data-contracts.md §3 (region), docs/sources.md §3
@@ -136,7 +136,7 @@ As an analyst, I want every version of every station kept, so that a trip is mat
 - **ADO:** #69
 - **Owner:** Bharat builds (Claude guides)
 - **Estimate:** 75 min
-- **Sprint:** 3
+- **Sprint:** 5
 - **Depends on:** T032
 - **DP-700:** 2.1, 2.2
 - **Status:** todo
@@ -154,8 +154,8 @@ As an analyst, I want every version of every station kept, so that a trip is mat
 - **ADO:** #70
 - **Owner:** Bharat builds (Claude guides)
 - **Estimate:** 60 min
-- **Sprint:** 3
-- **Depends on:** T038
+- **Sprint:** 5
+- **Depends on:** T025, T038
 - **DP-700:** 2.1, 2.2
 - **Status:** todo
 - **Read first:** docs/data-contracts.md §3 (station_scd2), docs/decisions.md ADR-011
@@ -176,7 +176,7 @@ As an analyst, I want every version of every station kept, so that a trip is mat
 - **ADO:** #71
 - **Owner:** Claude builds
 - **Estimate:** 45 min
-- **Sprint:** 3
+- **Sprint:** 5
 - **Depends on:** T038
 - **DP-700:** 2.1
 - **Status:** todo
@@ -198,7 +198,7 @@ As an analyst, I want one clean row per ride with UTC and local times, so that t
 - **ADO:** #74
 - **Owner:** Bharat builds (Claude guides)
 - **Estimate:** 90 min
-- **Sprint:** 3
+- **Sprint:** 5
 - **Depends on:** T030, T032
 - **DP-700:** 2.2
 - **Status:** todo
@@ -221,7 +221,7 @@ As an analyst, I want one clean row per ride with UTC and local times, so that t
 - **ADO:** #75
 - **Owner:** Claude builds
 - **Estimate:** 45 min
-- **Sprint:** 3
+- **Sprint:** 5
 - **Depends on:** T041
 - **DP-700:** 2.2
 - **Status:** todo
@@ -238,7 +238,7 @@ As an analyst, I want one clean row per ride with UTC and local times, so that t
 - **ADO:** #76
 - **Owner:** Bharat builds (Claude guides)
 - **Estimate:** 45 min
-- **Sprint:** 3
+- **Sprint:** 5
 - **Depends on:** T039, T041
 - **DP-700:** 2.2
 - **Status:** todo
@@ -246,7 +246,7 @@ As an analyst, I want one clean row per ride with UTC and local times, so that t
 **Do**
 1. Query: share of `trips.start_station_short_name` values (non-null) that match a `station_scd2.short_name` valid at the trip's start time; list the top 20 unmatched names with counts.
 2. Claude explains the result and what gold does with unmatched rides (unknown member `-1`).
-3. The share becomes a warn rule in `dq.usp_run_checks` (T062) with the threshold Claude proposes from this number.
+3. The share becomes a warn rule in `dq.usp_run_checks` (added to it in T065) with the threshold Claude proposes from this number.
 **Acceptance**
 - [ ] Match share and top unmatched list in the Result line and the explained notes.
 **Result:** —
@@ -262,11 +262,12 @@ As an operator, I want partitioning, file sizes and old versions managed, so tha
 - **ADO:** #79
 - **Owner:** Bharat builds (Claude guides)
 - **Estimate:** 45 min
-- **Sprint:** 3
+- **Sprint:** 6
 - **Depends on:** T041
 - **DP-700:** 3.3
 - **Status:** todo
 - **Read first:** docs/data-contracts.md §2–3 (partitions); docs/decisions.md ADR-024
+**Version 1.1 (ADR-029).** Not in version 1.0; built after T080, and only if the trial still has days left.
 **Do**
 1. Claude lays out the options (partitioning, V-Order, optimize-write, Z-order, VACUUM retention) with their cost, checks Microsoft's current property names, and recommends. The environment runs Runtime 2.0 (ADR-024): read its defaults first (deletion vectors on for new tables, adaptive target file size, `OPTIMIZE` fast mode, optimize-write no longer set) so no setting is chosen against 1.3 behaviour.
 2. Apply the chosen table properties to the silver tables.

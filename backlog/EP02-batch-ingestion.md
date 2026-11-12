@@ -94,7 +94,7 @@ As an analyst, I want every hour of weather since the backfill start, so that de
 - **ADO:** #41
 - **Owner:** Bharat builds (Claude guides)
 - **Estimate:** 60 min
-- **Sprint:** 2
+- **Sprint:** 4
 - **Depends on:** T022
 - **DP-700:** 2.2
 - **Status:** doing
@@ -113,7 +113,7 @@ As an analyst, I want every hour of weather since the backfill start, so that de
 - **ADO:** #42
 - **Owner:** Bharat builds (Claude guides)
 - **Estimate:** 90 min
-- **Sprint:** 2
+- **Sprint:** 4
 - **Depends on:** T021, T023
 - **DP-700:** 1.4, 2.1
 - **Status:** todo
@@ -143,9 +143,9 @@ As an analyst, I want a daily snapshot of the station list and regions, so that 
 - **Story:** US009
 - **ADO:** #44
 - **Owner:** Bharat builds (Claude guides)
-- **Estimate:** 75 min
-- **Sprint:** 2
-- **Depends on:** T024
+- **Estimate:** 90 min
+- **Sprint:** 5
+- **Depends on:** T024, T029
 - **DP-700:** 1.4, 2.2
 - **Status:** todo
 - **Read first:** docs/sources.md §3, docs/data-contracts.md §1, §5 (ctl.source_config)
@@ -155,10 +155,12 @@ As an analyst, I want a daily snapshot of the station list and regions, so that 
 2. Pipeline: `sp_run_start` → `lkp_sources` (`SELECT source_id, relative_url, landing_folder FROM ctl.source_config WHERE load_pattern = 'snapshot' AND is_enabled = 1`) → `fe_sources` (parallel, batch count 2) → `cp_gbfs_feed`: HTTP source, relative URL from the item; format **Binary** both sides, so the file lands byte for byte; sink path from `landing_folder`, today and `run_id`.
 3. `sp_run_end` with the item count.
 4. Turn `gbfs_system_regions` off in `ctl.source_config` and run: only one feed lands. Turn it back on.
+5. Run `nb_bronze_load_json` with `source_ids` = the two GBFS source ids, twice (moved here from T029 by ADR-029, which proved the loader on weather only).
 **Acceptance**
 - [ ] Two files land per run in the contract paths.
 - [ ] Disabling a source row stops that copy without editing the pipeline.
 - [ ] The landed files are byte-identical to a browser download (size matches).
+- [ ] `bronze_gbfs` matches the contract's columns and types; its row count equals the number of landed GBFS files; the second loader run writes 0 rows.
 **Result:** —
 
 ### US010 · Monthly trip files in bronze
@@ -170,7 +172,7 @@ As an analyst, I want each month's trip file landed and unzipped, so that Spark 
 - **ADO:** #46
 - **Owner:** Bharat builds (Claude guides)
 - **Estimate:** 75 min
-- **Sprint:** 2
+- **Sprint:** 5
 - **Depends on:** T015, T021
 - **DP-700:** 2.1, 2.2
 - **Status:** todo
@@ -199,11 +201,12 @@ As a data engineer, I want one source ingested in Python with retries and backof
 - **ADO:** #49
 - **Owner:** Bharat builds (Claude guides)
 - **Estimate:** 75 min
-- **Sprint:** 2
+- **Sprint:** 6
 - **Depends on:** T022
 - **DP-700:** 2.2
 - **Status:** todo
 - **Read first:** docs/sources.md §2, docs/conventions.md §4, §6
+**Version 1.1 (ADR-029).** Not in version 1.0; built after T080, and only if the trial still has days left. When it is built it also runs `nb_bronze_load_json` for `weather_forecast` (T029 proved the loader on the archive only) and adds `nb_weather_forecast` to stage 1 of `pl_daily`.
 **Do**
 1. Add to `nb_lib_common`: `http_get_json(session, url, params, timeout=30, max_attempts=5, backoff_base=2)` retrying only on 429, 5xx and connection errors, with jitter; returns the parsed JSON and the attempt count.
 2. Notebook `nb_ingest_weather_forecast` (default lakehouse `lh_bronze`), parameters `run_id`. Build the request from `get_config()`, call `http_get_json`, write the raw response text to the landing path with `notebookutils.fs.put` (overwrite false).
@@ -220,11 +223,12 @@ As a data engineer, I want one source ingested in Python with retries and backof
 - **ADO:** #50
 - **Owner:** Claude builds
 - **Estimate:** 45 min
-- **Sprint:** 2
+- **Sprint:** 6
 - **Depends on:** T016, T027
 - **DP-700:** 3.2
 - **Status:** todo
 - **Read first:** docs/conventions.md §4
+**Version 1.1 (ADR-029).** Not in version 1.0; built after T080, and only if the trial still has days left. Its test file joins the `tests` job of the CI workflow with no change to the workflow (T075).
 **Do**
 1. `tests/test_http.py` with a fake session: success first time; 503 then success (2 attempts); 404 (no retry, raises); five 503s (raises after 5); timeout then success. Backoff sleeps patched to zero.
 2. Run locally (Claude's workspace).
@@ -242,20 +246,21 @@ As a data engineer, I want every landed file turned into bronze rows exactly onc
 - **Story:** US012
 - **ADO:** #53
 - **Owner:** Bharat builds (Claude guides)
-- **Estimate:** 90 min
-- **Sprint:** 2
-- **Depends on:** T017, T024, T025, T027
+- **Estimate:** 75 min
+- **Sprint:** 4
+- **Depends on:** T017, T024
 - **DP-700:** 2.1, 2.3
 - **Status:** todo
 - **Read first:** docs/decisions.md ADR-008, docs/data-contracts.md §1–2, docs/risks.md R5
+**Pass B (ADR-029).** Built and proved here on `weather_archive` only, the one JSON source that lands files in pass B. The code stays general over `source_ids`. The two GBFS sources go through it in T025 (pass C) and `weather_forecast` in T027 (version 1.1).
 **Do**
 1. Parameter `source_ids` (comma list, default all four JSON sources), `run_id`.
 2. For each source: `readStream` text, `wholetext`, path `Files/bronze/<source_id>/*/*/*.json`, add `_metadata.file_path` as `_source_file`; in `foreachBatch`, parse `_ingest_date` and `_run_id` from the path with `parse_landing_path`, pull the envelope fields with `get_json_object`, append to `bronze_weather` or `bronze_gbfs`.
 3. Checkpoint `Files/_checkpoints/<source_id>/`; `trigger(availableNow=True)`; `awaitTermination()`.
 4. Exit payload with rows written per source.
-5. Run, then run again with no new files.
+5. Run with `source_ids` = `weather_archive`, then run again with no new files.
 **Acceptance**
-- [ ] Both tables match the contract's columns and types.
+- [ ] `bronze_weather` matches the contract's columns and types (`bronze_gbfs` is checked in T025).
 - [ ] Second run writes 0 rows.
 - [ ] Row count equals the number of landed files per source.
 **Result:** —
@@ -265,7 +270,7 @@ As a data engineer, I want every landed file turned into bronze rows exactly onc
 - **ADO:** #54
 - **Owner:** Bharat builds (Claude guides)
 - **Estimate:** 60 min
-- **Sprint:** 2
+- **Sprint:** 5
 - **Depends on:** T026
 - **DP-700:** 2.1, 2.2
 - **Status:** todo
@@ -285,8 +290,8 @@ As a data engineer, I want every landed file turned into bronze rows exactly onc
 - **ADO:** #55
 - **Owner:** Bharat builds (Claude guides)
 - **Estimate:** 30 min
-- **Sprint:** 2
-- **Depends on:** T029, T030
+- **Sprint:** 5
+- **Depends on:** T025, T029, T030
 - **DP-700:** 2.1
 - **Status:** todo
 - **Read first:** docs/architecture.md §7

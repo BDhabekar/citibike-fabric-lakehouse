@@ -46,22 +46,34 @@ Why a lakehouse for bronze and silver and a warehouse for gold: Spark is the rig
 
 ## 5. How a day's run flows
 
+This section describes the full design. Version 1.0 builds it in three passes and leaves three steps of the daily run for version 1.1; they are marked below, and the passes are at the end of the section (ADR-029).
+
 `pl_daily` runs once a day in prod at 11:30 IST, which is 01:00 in New York in winter (02:00 in summer), so the previous New York day is complete when it runs.
 
 1. Log the run start in `ctl.run_log`.
 2. In parallel:
    - `pl_ingest_weather_archive`: reads the watermark, asks Open-Meteo for the missing days, lands JSON in `Files/bronze/weather_archive/...`.
-   - `nb_ingest_weather_forecast`: calls the forecast API (last 3 days plus the next 2), lands JSON.
+   - `nb_ingest_weather_forecast`: calls the forecast API (last 3 days plus the next 2), lands JSON. *Version 1.1.*
    - `pl_ingest_gbfs_reference`: reads `ctl.source_config` and copies `station_information` and `system_regions`.
 3. `nb_bronze_load_json`: Spark Structured Streaming with `trigger(availableNow=True)` picks up only the files it has not seen (checkpoint per source) and appends them to bronze tables.
-4. Silver notebooks: `nb_silver_weather_hourly` (upsert with source priority), `nb_silver_region`, `nb_silver_station_scd2`, `nb_silver_station_status_hourly` (from the Eventhouse data exposed in OneLake).
-5. Gold procedures: dimensions first, then `fact.station_hour`.
+4. Silver notebooks: `nb_silver_weather_hourly` (upsert with source priority), `nb_silver_region`, `nb_silver_station_scd2`, `nb_silver_station_status_hourly` (from the Eventhouse data exposed in OneLake; *version 1.1*).
+5. Gold procedures: dimensions first, then `fact.station_hour` (*version 1.1*).
 6. `dq.usp_run_checks` writes `ctl.dq_result`. An error-severity failure fails the pipeline.
 7. Log the run end. Any failure goes to the failure path, which logs the error and sends the alert (route fixed by spike T014).
 
 `pl_monthly_trips` runs on the 8th of each month (the trip file for the previous month is normally published by the 6th): copy the zip, load bronze, build silver trips, load `fact.trip`, run checks. `pl_backfill` runs it once per month for the history.
 
 The live path runs on its own: Eventstream polls `station_status` every 60 seconds and writes to the Eventhouse, an update policy types the rows, a materialized view keeps the latest state per station, and Activator watches the rush-hour function.
+
+**Build order and versions (ADR-029, Nov 12, 2026).** The design above is built one source at a time, each pass ending in something that runs:
+
+| Pass | Builds | Ends with |
+|---|---|---|
+| A | Eventhouse, the Eventstream poller, the latest-state view | station status collecting every minute while the rest is built |
+| B | weather from the API to `dim.weather_hour`, the checks, `pl_daily` with its failure alert, CI, the deployment pipeline, the first report pages | release `v0.1.0` in prod |
+| C | trip files, station history (SCD Type 2), `fact.trip`, `pl_monthly_trips` and `pl_backfill`, security, station names in KQL, the Real-Time Dashboard, the rush-hour alert | release `v1.0.0` in prod: version 1.0 |
+
+In version 1.0, question 1 (weather against demand) is answered from the warehouse in the Power BI report. Question 2 (stations empty at rush hour) is answered in KQL on the Real-Time Dashboard and by the alert, which is where an operations team would look for it. The ranked history of question 2 (`fact.station_hour`, `rpt.v_station_rush_empty`, the report page Empty at rush hour) is version 1.1, with the forecast source, `dim.weather_code` and the tuning and governance tasks. `pl_daily` keeps its stages from pass B onwards; each later pass adds its activities to the stage they belong to.
 
 ## 6. Environments and promotion
 
@@ -95,6 +107,9 @@ The whole build runs on the 60-day Fabric trial capacity in Bharat's own tenant,
 - One weather point (Central Park) stands for the whole city.
 - Station status history starts the day streaming starts (early November 2026), so it does not overlap the trip history until the November trip file lands in early December.
 - Station history starts at the first snapshot (November 2026). A trip older than that gets the station as it was first seen (its name, region and capacity then), and a station removed before the first snapshot has no version, so its trips get the unknown station `-1` (ADR-028).
+- Version 1.0 has no forecast source, so weather ends where the archive ends and not at tomorrow. Trips arrive a month behind, so no trip is left without its weather hour (ADR-029).
+- Version 1.0 keeps station status only in the Eventhouse. Nothing in the warehouse or the Power BI report shows station availability until `fact.station_hour` is built in version 1.1; the tables exist, empty (ADR-029).
+- `dim.weather_code` is empty until version 1.1. `is_wet_hour` comes from precipitation and does not need it.
 - The Eventstream with the HTTP source cannot go through Git or the deployment pipeline (a documented preview limitation), so it is created by hand in dev and prod from `docs/runbooks/eventstream.md`.
 
 ## 10. Change control

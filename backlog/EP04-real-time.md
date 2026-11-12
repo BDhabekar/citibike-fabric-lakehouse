@@ -65,9 +65,11 @@ As an operations lead, I want every station's status landed every minute, so tha
 2. Bharat writes `mv_station_status_latest` (`.create materialized-view ... arg_max(poll_time, *) by station_id`) and checks it.
 3. Queryset `kqs_citibike` with six saved queries Bharat writes: stations empty now; bikes available city-wide per 5 minutes (tumbling); per-station 15-minute sliding minimum; stations whose `last_reported` is older than 30 minutes (stale); top 10 stations by emptiness today; polls per minute (ingestion health).
 4. Commit the workspace.
+5. One day after T046 started the stream: open the Capacity Metrics app (Compute page) and read what the Eventstream and the Eventhouse used over 24 hours, in CU-seconds and as a share of the 345,600 CU-seconds an F4 has in a day. Claude writes both numbers into `docs/cost-and-capacity.md` §5 and under ADR-023. This is the measurement ADR-023 and ADR-029 left open.
 **Acceptance**
 - [ ] The materialized view returns one row per station.
 - [ ] Six saved queries run and are committed.
+- [ ] The 24-hour capacity reading of the stream is in `docs/cost-and-capacity.md` §5 (if the stream is less than a day old, the card stays open until it can be read).
 **Result:** —
 
 ## FT16 · Hot path for operations
@@ -81,7 +83,7 @@ As an operations lead, I want a live dashboard and an alert when a station stays
 - **ADO:** #88
 - **Owner:** Bharat builds (Claude guides)
 - **Estimate:** 45 min
-- **Sprint:** 4
+- **Sprint:** 5
 - **Depends on:** T039, T047
 - **DP-700:** 2.3, 2.2
 - **Status:** todo
@@ -101,7 +103,7 @@ As an operations lead, I want a live dashboard and an alert when a station stays
 - **ADO:** #89
 - **Owner:** Bharat builds (Claude guides)
 - **Estimate:** 45 min
-- **Sprint:** 4
+- **Sprint:** 5
 - **Depends on:** T048
 - **DP-700:** 2.3
 - **Status:** todo
@@ -119,8 +121,8 @@ As an operations lead, I want a live dashboard and an alert when a station stays
 - **ADO:** #90
 - **Owner:** Bharat builds (Claude guides)
 - **Estimate:** 45 min
-- **Sprint:** 4
-- **Depends on:** T014, T048
+- **Sprint:** 5
+- **Depends on:** T014, T048, T067
 - **DP-700:** 3.1
 - **Status:** todo
 - **Read first:** docs/decisions.md ADR-016 (route from T014)
@@ -128,8 +130,8 @@ As an operations lead, I want a live dashboard and an alert when a station stays
 1. Activator `act_citibike_alerts`, source: the `fn_rush_hour_empty_15m()` query on a 5-minute schedule.
 2. Rule `rush_hour_empty`: fire when the query returns rows; action through the route ADR-016 records; message lists station names.
 3. Test outside rush hour by a temporary copy of the function with the hour filter removed; restore it after the alert arrives.
-4. Stop the dev Eventstream after this task (`docs/runbooks/eventstream.md`, Stop section); it runs only in prod from T079.
-**Note (T014, ADR-016).** Build `act_citibike_alerts` in a workspace with no Git link (`ws-citibike-prod`, or `ws-citibike-test` while testing), never in `ws-citibike-dev`: a rule's recipient is stored in the item definition and Git would carry it into the public repo. Pick the tenant admin user in the To box, never type an address. Write `docs/runbooks/alert-rule.md` with the rule's settings and `<alert-recipient>`. Settle in this task whether the source query can be read from another workspace.
+4. Stop the dev Eventstream after this task (`docs/runbooks/eventstream.md`, Stop section); the prod one has been running since T079.
+**Note (T014, ADR-016).** Build `act_citibike_alerts` in a workspace with no Git link (`ws-citibike-prod`, or `ws-citibike-test` while testing), never in `ws-citibike-dev`: a rule's recipient is stored in the item definition and Git would carry it into the public repo. Pick the tenant admin user in the To box, never type an address. Add this rule's settings to `docs/runbooks/alert-rule.md` (written in T067). Settle in this task whether the source query can be read from another workspace.
 **Acceptance**
 - [ ] A real alert, with station names, reached Bharat; screenshot filed.
 - [ ] The temporary function is removed; the dev Eventstream is stopped.
@@ -146,11 +148,12 @@ As an analyst, I want hourly availability per station kept in the lakehouse, so 
 - **ADO:** #93
 - **Owner:** Bharat builds (Claude guides)
 - **Estimate:** 30 min
-- **Sprint:** 4
+- **Sprint:** 6
 - **Depends on:** T046
 - **DP-700:** 2.2, 2.3
 - **Status:** todo
 - **Read first:** docs/decisions.md ADR-019
+**Version 1.1 (ADR-029).** Not in version 1.0; built after T080, and only if the trial still has days left. When it is built, the same two steps are repeated by hand in prod (they were a line of T079).
 **Do**
 1. `kqldb_citibike` → table `station_status` → OneLake availability **on**. Note the latency Microsoft states.
 2. `lh_silver` → Tables → New shortcut → Microsoft OneLake → `kqldb_citibike` → `station_status`, name `kql_station_status`.
@@ -164,11 +167,12 @@ As an analyst, I want hourly availability per station kept in the lakehouse, so 
 - **ADO:** #94
 - **Owner:** Bharat builds (Claude guides)
 - **Estimate:** 75 min
-- **Sprint:** 4
+- **Sprint:** 6
 - **Depends on:** T032, T051
 - **DP-700:** 2.1, 2.2
 - **Status:** todo
 - **Read first:** docs/data-contracts.md §3 (station_status_hourly), docs/decisions.md ADR-009
+**Version 1.1 (ADR-029).** Not in version 1.0; built after T080, and only if the trial still has days left. When it is built, `nb_silver_status_hourly` joins stage 3 of `pl_daily`.
 **Do**
 1. Watermark = max `hour_utc` in the target (or the first data hour); window = watermark − 2 hours up to the last complete hour.
 2. Minute buckets from `poll_time`; aggregate per station-hour as the contract defines (distinct minutes); `hour_local` from UTC.
@@ -185,11 +189,12 @@ As an analyst, I want hourly availability per station kept in the lakehouse, so 
 - **ADO:** #95
 - **Owner:** Claude builds
 - **Estimate:** 30 min
-- **Sprint:** 4
+- **Sprint:** 6
 - **Depends on:** T052
 - **DP-700:** 2.2
 - **Status:** todo
 - **Read first:** docs/data-contracts.md §3 (station_status_hourly)
+**Version 1.1 (ADR-029).** Not in version 1.0; built after T080, and only if the trial still has days left.
 **Do**
 1. Move the aggregation into `nb_lib_common.aggregate_station_hour(df)` if not already (protocol §9).
 2. `tests/test_station_hour.py`: two polls in one minute count once; empty only while renting; full only while returning; late event inside the overlap updates the hour; on a made-up Sun Nov 1, 2026 the local day has 25 distinct UTC hours.

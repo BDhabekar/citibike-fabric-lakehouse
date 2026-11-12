@@ -33,7 +33,7 @@ Ids are never renumbered or reused. A new task gets the next free number, wherev
 **Result:** —
 ```
 
-`DP-700` codes refer to `docs/dp700-map.md`. `ADO` is the task's work item id in Azure Boards (`dev.azure.com/bdhabekar-citibike`, project `citibike-fabric-lakehouse`), fixed once and never changed.
+`Sprint` is the card's build pass, a number from the table in [`sprints.md`](sprints.md): 3 is pass A, 4 is pass B, 5 is pass C and 6 is version 1.1 (ADR-029). `DP-700` codes refer to `docs/dp700-map.md`. `ADO` is the task's work item id in Azure Boards (`dev.azure.com/bdhabekar-citibike`, project `citibike-fabric-lakehouse`), fixed once and never changed.
 
 ## How a task is run
 

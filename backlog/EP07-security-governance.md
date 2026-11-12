@@ -25,7 +25,7 @@ As a data owner, I want analysts to see only what their job needs, so that trip 
 3. Sign in as the analyst in a private window: `wh_gold` opens; `lh_bronze` and `lh_silver` do not appear.
 **Acceptance**
 - [ ] The analyst sees the warehouse and nothing else in the workspace; screenshot filed.
-- [ ] `docs/environments.md` updated to say dev holds the test grant until T079 moves it to prod.
+- [ ] `docs/environments.md` updated to say dev holds the test grant until T080 moves it to prod.
 **Result:** —
 
 #### T072 · GRANTs, row-level security, dynamic data masking and column-level security
@@ -34,13 +34,13 @@ As a data owner, I want analysts to see only what their job needs, so that trip 
 - **Owner:** Bharat builds (Claude guides)
 - **Estimate:** 75 min
 - **Sprint:** 5
-- **Depends on:** T059, T060, T071
+- **Depends on:** T059, T071
 - **DP-700:** 1.3
 - **Status:** todo
 - **Read first:** docs/data-contracts.md §5 (sec), docs/decisions.md ADR-013
 **Do**
 1. Claude teaches RLS (predicate function plus security policy), DDM and column-level `DENY`, each on a 3-row example, before any statement.
-2. Bharat writes, with Claude's skeleton: `sec.user_region` rows (analyst → one region); `sec.fn_region_predicate`; security policy `sec.rls_region` on both facts; `ALTER TABLE fact.trip ALTER COLUMN ride_id ADD MASKED WITH (FUNCTION = 'default()')`; `DENY SELECT ON fact.trip (started_at_utc, ended_at_utc) TO [analyst]`; `GRANT SELECT` on `rpt`, `dim` and the allowed fact columns.
+2. Bharat writes, with Claude's skeleton: `sec.user_region` rows (analyst → one region); `sec.fn_region_predicate`; security policy `sec.rls_region` on `fact.trip` (`fact.station_hour` joins the policy in T060, version 1.1); `ALTER TABLE fact.trip ALTER COLUMN ride_id ADD MASKED WITH (FUNCTION = 'default()')`; `DENY SELECT ON fact.trip (started_at_utc, ended_at_utc) TO [analyst]`; `GRANT SELECT` on `rpt`, `dim` and the allowed fact columns.
 3. Test as the analyst: total trips equals their region's count from Bharat's own query; `ride_id` shows masked; selecting `started_at_utc` is refused; `rpt.v_trip_daily_weather` works.
 4. Claude saves the statements as `sql/security/001_security.sql`. Commit the workspace.
 **Acceptance**
@@ -53,11 +53,12 @@ As a data owner, I want analysts to see only what their job needs, so that trip 
 - **ADO:** #128
 - **Owner:** Bharat builds (Claude guides)
 - **Estimate:** 30 min
-- **Sprint:** 5
+- **Sprint:** 6
 - **Depends on:** T071
 - **DP-700:** 1.3
 - **Status:** todo
 - **Read first:** docs/environments.md §1
+**Version 1.1 (ADR-029).** Not in version 1.0; built after T080, and only if the trial still has days left.
 **Do**
 1. Claude checks Microsoft's current OneLake security page (status, how roles combine with workspace roles) and explains it.
 2. If the feature is available in the tenant: on `lh_bronze`, create a role `seed_readers` granting Read on `Files/seed` only; add the analyst; give the analyst Read on `lh_bronze`; sign in as the analyst and confirm only `seed` is visible. Then remove the analyst's access to `lh_bronze`.
@@ -72,11 +73,12 @@ As a data owner, I want analysts to see only what their job needs, so that trip 
 - **ADO:** #129
 - **Owner:** Bharat builds (Claude guides)
 - **Estimate:** 30 min
-- **Sprint:** 5
+- **Sprint:** 6
 - **Depends on:** T071
 - **DP-700:** 1.3
 - **Status:** todo
 - **Read first:** docs/architecture.md §4
+**Version 1.1 (ADR-029).** Not in version 1.0; built after T080, and only if the trial still has days left.
 **Do**
 1. Mark `wh_gold` (and later `sm_citibike`) as **Promoted**; write a one-line description on every item (Claude supplies the lines).
 2. Open the workspace Lineage view; screenshot it (it goes in the README).

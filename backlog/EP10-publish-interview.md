@@ -14,13 +14,13 @@ As a candidate, I want a README an interviewer can read in five minutes, so that
 - **ADO:** #150
 - **Owner:** Claude builds
 - **Estimate:** 90 min
-- **Sprint:** 6
-- **Depends on:** T079, T082
+- **Sprint:** 5
+- **Depends on:** T080, T082
 - **DP-700:** —
 - **Status:** todo
 - **Read first:** docs/architecture.md, docs/decisions.md, the Result lines of every done task (`tools/backlog.py summary` and the epic files)
 **Do**
-1. Sections: what it answers; the picture; one run, step by step; design decisions with what was rejected (from the ADRs); numbers (rows per layer, run times, rejects, CU of a daily run); cost (₹0 on the trial, what an F2 would cost); security; CI/CD; Fabric vs Databricks (a short table drawn from the Olist project); known gaps; "at 100 times the scale"; how it was built (one line: built with an AI assistant, Claude, as in the Olist repo); attributions.
+1. Sections: what it answers; what version 1.0 holds and what waits for 1.1 (ADR-029); the picture; one run, step by step; design decisions with what was rejected (from the ADRs); numbers (rows per layer, run times, rejects, CU of a daily run); cost (₹0 on the trial, what an F2 would cost); security; CI/CD; Fabric vs Databricks (a short table drawn from the Olist project); known gaps; "at 100 times the scale"; how it was built (one line: built with an AI assistant, Claude, as in the Olist repo); attributions.
 2. Screenshots from the evidence folder, renamed, into `docs/img/`.
 3. Humanised writing, Bharat's voice, no AI tells.
 **Acceptance**
@@ -33,8 +33,8 @@ As a candidate, I want a README an interviewer can read in five minutes, so that
 - **ADO:** #151
 - **Owner:** Claude builds
 - **Estimate:** 45 min
-- **Sprint:** 6
-- **Depends on:** T079
+- **Sprint:** 5
+- **Depends on:** T080
 - **DP-700:** —
 - **Status:** todo
 - **Read first:** docs/environments.md §5
@@ -50,7 +50,7 @@ As a candidate, I want a README an interviewer can read in five minutes, so that
 - **ADO:** #152
 - **Owner:** Bharat builds (Claude guides)
 - **Estimate:** 20 min
-- **Sprint:** 6
+- **Sprint:** 5
 - **Depends on:** T084, T085
 - **DP-700:** —
 - **Status:** todo
@@ -73,7 +73,7 @@ As a candidate, I want to explain the project fluently and answer its likely que
 - **ADO:** #154
 - **Owner:** Claude builds
 - **Estimate:** 45 min
-- **Sprint:** 6
+- **Sprint:** 5
 - **Depends on:** T084
 - **DP-700:** —
 - **Status:** todo
@@ -90,7 +90,7 @@ As a candidate, I want to explain the project fluently and answer its likely que
 - **ADO:** #155
 - **Owner:** Bharat builds (Claude guides)
 - **Estimate:** 60 min
-- **Sprint:** 6
+- **Sprint:** 5
 - **Depends on:** T086
 - **DP-700:** —
 - **Status:** todo
@@ -107,7 +107,7 @@ As a candidate, I want to explain the project fluently and answer its likely que
 - **ADO:** #156
 - **Owner:** Claude builds
 - **Estimate:** 30 min
-- **Sprint:** 6
+- **Sprint:** 5
 - **Depends on:** T086
 - **DP-700:** —
 - **Status:** todo

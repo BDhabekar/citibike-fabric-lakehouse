@@ -227,6 +227,8 @@ The Eventhouse table `station_status` exposed through OneLake availability (ADR-
 
 ## 5. Warehouse `wh_gold`
 
+The DDL of T054 creates every table in this section. Version 1.0 loads all of them except the three marked *version 1.1* below, which stay empty until then (ADR-029).
+
 Types follow the Fabric Warehouse rules: `varchar` (no `nvarchar`), `datetime2(6)` (no `datetime`), `int`/`smallint`/`bigint`, `bit`, `decimal`, `float`, `date`. Primary keys are declared `NOT ENFORCED` and are checked by `dq.usp_run_checks`. T054 checks the type list against the Microsoft page before the DDL runs.
 
 ### Schema `ctl` (control)
@@ -241,27 +243,27 @@ Decided and built in T021 (Nov 3, 2026), where the list above is silent: each pr
 
 ### Schema `dim`
 - **`dim.date`**: grain one row per calendar date, 2026-01-01 to 2027-12-31. `date_key int` (yyyymmdd), `date date`, `year smallint`, `quarter smallint`, `month smallint`, `month_name varchar(10)`, `day_of_month smallint`, `day_of_week smallint` (1 = Monday), `day_name varchar(10)`, `iso_week smallint`, `is_weekend bit`, `month_start date`.
-- **`dim.weather_code`**: grain one row per WMO code. `weather_code int`, `description varchar(100)`, `category varchar(30)` (`clear`, `cloudy`, `fog`, `drizzle`, `rain`, `snow`, `thunderstorm`). Loaded by Dataflow Gen2 `df_weather_codes`.
+- **`dim.weather_code`**: grain one row per WMO code. `weather_code int`, `description varchar(100)`, `category varchar(30)` (`clear`, `cloudy`, `fog`, `drizzle`, `rain`, `snow`, `thunderstorm`). Loaded by Dataflow Gen2 `df_weather_codes`. *Version 1.1 (T056).*
 - **`dim.weather_hour`**: grain one row per UTC hour. All columns of silver `weather_hourly` except lineage, plus `date_key_local int`, `hour_of_day_local smallint`, `is_wet_hour bit` (`precipitation_mm >= 0.2`).
 - **`dim.region`**: `region_id varchar(20)`, `region_name varchar(100)`. Includes the unknown member `('-1', 'Unknown')`.
 - **`dim.station`**: grain one row per station version. All columns of silver `station_scd2` except `attr_hash` and lineage. Includes the unknown member `station_version_key = -1`.
 
 ### Schema `fact`
 - **`fact.trip`**: grain one row per ride. `ride_id varchar(40)`, `trip_date_key int` (local date), `start_hour_utc datetime2(6)`, `start_hour_local smallint`, `start_station_version_key bigint`, `end_station_version_key bigint`, `start_region_id varchar(20)`, `rideable_type varchar(20)`, `member_type varchar(10)`, `duration_sec int`, `is_round_trip bit`, `has_end_station bit`, `started_at_utc datetime2(6)`, `ended_at_utc datetime2(6)`, `trip_month char(6)`, `load_run_id varchar(64)`. Station keys are looked up "as of" `started_at_utc` against the SCD2 validity window, by short name; no match gives `-1`.
-- **`fact.station_hour`**: grain one row per station per UTC hour. `station_id varchar(64)`, `station_version_key bigint` (as of the hour), `region_id varchar(20)`, `hour_utc datetime2(6)`, `date_key_local int`, `hour_of_day_local smallint`, `is_weekday bit`, `samples int`, `avg_bikes_available decimal(9,2)`, `min_bikes_available int`, `avg_docks_available decimal(9,2)`, `minutes_empty int`, `minutes_full int`, `minutes_not_renting int`, `load_run_id varchar(64)`.
+- **`fact.station_hour`** (*version 1.1, T060; its silver source `station_status_hourly` and the shortcut `kql_station_status` in §3 wait with it*): grain one row per station per UTC hour. `station_id varchar(64)`, `station_version_key bigint` (as of the hour), `region_id varchar(20)`, `hour_utc datetime2(6)`, `date_key_local int`, `hour_of_day_local smallint`, `is_weekday bit`, `samples int`, `avg_bikes_available decimal(9,2)`, `min_bikes_available int`, `avg_docks_available decimal(9,2)`, `minutes_empty int`, `minutes_full int`, `minutes_not_renting int`, `load_run_id varchar(64)`.
 
 ### Schema `rpt` (views for people and the report)
-- `rpt.v_trip_daily_weather`: one row per local date: trips, member trips, casual trips, average duration in minutes, average temperature, total precipitation, wet hours.
-- `rpt.v_station_rush_empty`: one row per station: weekday rush-hour minutes empty over the last 14 days of data, rank within region.
-- `rpt.v_pipeline_health`: one row per run: duration, status, rows, failed checks.
+- `rpt.v_trip_daily_weather` (pass C, T059): one row per local date: trips, member trips, casual trips, average duration in minutes, average temperature, total precipitation, wet hours.
+- `rpt.v_station_rush_empty` (*version 1.1, T060*): one row per station: weekday rush-hour minutes empty over the last 14 days of data, rank within region.
+- `rpt.v_pipeline_health` (pass B, T061): one row per run: duration, status, rows, failed checks.
 
 ### Schema `dq`
-- `dq.usp_run_checks @run_id, @scope`: runs the gold checks (row reconciliation with silver per month, key uniqueness, orphan keys, unknown-member share), writes `ctl.dq_result`, raises an error when an error-severity check fails.
+- `dq.usp_run_checks @run_id, @scope`: runs the gold checks (row reconciliation with silver per month, key uniqueness, orphan keys, unknown-member share), writes `ctl.dq_result`, raises an error when an error-severity check fails. The `daily` scope starts in pass B with the weather checks (T062); the `monthly` scope and the station checks are added in pass C (T065); the station-hour checks in version 1.1 (T060).
 
 ### Schema `sec`
 - `sec.user_region`: `user_principal_name varchar(256)`, `region_id varchar(20)`.
 - `sec.fn_region_predicate(@region_id)`: inline table function; Bharat's account sees everything, others see their mapped regions.
-- Security policy `sec.rls_region` on `fact.trip` (`start_region_id`) and `fact.station_hour` (`region_id`).
+- Security policy `sec.rls_region` on `fact.trip` (`start_region_id`) and `fact.station_hour` (`region_id`). Version 1.0 puts it on `fact.trip` (T072); `fact.station_hour` joins the policy when it is loaded (T060, version 1.1).
 
 ### Procedures (schema `gold` for loads, `ctl` for logging)
-`ctl.usp_run_start`, `ctl.usp_run_end`, `ctl.usp_watermark_set`, `ctl.usp_seed_config`; `gold.usp_load_dim_date`, `gold.usp_load_dim_region`, `gold.usp_load_dim_station`, `gold.usp_load_dim_weather_hour @from_utc, @to_utc`, `gold.usp_load_fact_trip @trip_month`, `gold.usp_load_fact_station_hour @from_utc, @to_utc`. Each load deletes its window and inserts it inside one transaction (ADR-017).
+`ctl.usp_run_start`, `ctl.usp_run_end`, `ctl.usp_watermark_set`, `ctl.usp_seed_config`; `gold.usp_load_dim_date`, `gold.usp_load_dim_region`, `gold.usp_load_dim_station`, `gold.usp_load_dim_weather_hour @from_utc, @to_utc`, `gold.usp_load_fact_trip @trip_month`, `gold.usp_load_fact_station_hour @from_utc, @to_utc` (*version 1.1*). Each load deletes its window and inserts it inside one transaction (ADR-017).
