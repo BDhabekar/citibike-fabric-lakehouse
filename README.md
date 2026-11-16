@@ -63,3 +63,5 @@ I am building this with an AI assistant (Claude) as mentor and pair-programmer. 
 ## Data and licence
 
 Data: trip data from Citi Bike under the [NYCBS Data Use Policy](https://www.citibikenyc.com/data-sharing-policy); live station data from Citi Bike's public GBFS feed; weather data by [Open-Meteo.com](https://open-meteo.com/) (CC BY 4.0).
+
+The icons in the architecture picture are [Tabler Icons](https://github.com/tabler/tabler-icons) (MIT licence).

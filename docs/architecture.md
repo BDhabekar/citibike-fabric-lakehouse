@@ -27,7 +27,7 @@ All three are public. Full details (URLs, parameters, response shapes, limits, l
 
 ![Architecture](img/architecture.png)
 
-The picture is drawn from `docs/img/architecture.dot` (Graphviz). Change the `.dot` file, then rebuild the PNG with `dot -Tpng docs/img/architecture.dot -o docs/img/architecture.png`.
+The picture is drawn from `docs/img/architecture.html`, a single self-contained page (redrawn Nov 16, 2026; the design is unchanged, and the earlier Graphviz file is in the Git history). Change the HTML, then rebuild the PNG with headless Chrome: `chrome --headless --hide-scrollbars --window-size=1600,1000 --force-device-scale-factor=2 --screenshot=docs/img/architecture.png docs/img/architecture.html`, and scale the result to 2000 px wide. The text is set in Inter; without that font the browser falls back to its default sans-serif.
 
 ## 4. Layers and where each one lives
 

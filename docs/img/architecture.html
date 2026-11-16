@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Citi Bike operations lakehouse on Microsoft Fabric: architecture</title>
+<!-- Source of docs/img/architecture.png. Render: 1600 x 1000 CSS pixels at device scale 2 (see docs/architecture.md, section 3). Icons: Tabler Icons (MIT). -->
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1600px;height:1000px;overflow:hidden}
+body{font-family:Inter,sans-serif;color:#fff;position:relative;
+ background:
+  radial-gradient(1100px 540px at 88% -10%, rgba(70,150,255,.55), transparent 62%),
+  radial-gradient(820px 520px at -8% 110%, rgba(0,170,255,.24), transparent 62%),
+  radial-gradient(760px 420px at 46% 56%, rgba(30,95,225,.20), transparent 70%),
+  linear-gradient(158deg,#0d3588 0%,#08286f 34%,#061d56 63%,#04133a 100%);}
+.bg{position:absolute;inset:0;pointer-events:none}
+.beams{background:
+  linear-gradient(116deg, transparent 0 53%, rgba(150,205,255,.11) 53.4%, rgba(150,205,255,.025) 59%, transparent 59.4%),
+  linear-gradient(116deg, transparent 0 64%, rgba(150,205,255,.08) 64.3%, rgba(150,205,255,.015) 71%, transparent 71.3%),
+  linear-gradient(116deg, transparent 0 16%, rgba(150,205,255,.05) 16.3%, transparent 25%);}
+.dots{background-image:radial-gradient(rgba(170,210,255,.11) 1px, transparent 1.4px);background-size:22px 22px;
+ -webkit-mask-image:radial-gradient(1100px 650px at 50% 48%, #000 25%, transparent 85%);}
+.vig{background:radial-gradient(1500px 950px at 50% 42%, transparent 58%, rgba(0,6,26,.6) 100%)}
+
+.title{position:absolute;top:16px;left:0;width:100%;text-align:center;font-size:54px;font-weight:800;letter-spacing:-1.4px;line-height:1.1;
+ background:linear-gradient(180deg,#ffffff 35%,#b9dcff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+ filter:drop-shadow(0 4px 20px rgba(30,130,255,.6));}
+.sub{position:absolute;top:84px;width:100%;text-align:center;font-size:20px;font-weight:500;color:#b7cdf2;letter-spacing:.2px}
+.sub b{color:#46d6ff;margin:0 11px}
+
+.band{position:absolute;border-radius:18px;border:1.5px solid rgba(95,180,255,.85);
+ background:linear-gradient(180deg,rgba(28,86,200,.30),rgba(10,36,104,.22));
+ box-shadow:0 0 24px rgba(40,140,255,.38), inset 0 0 34px rgba(40,140,255,.10), inset 0 1px 0 rgba(255,255,255,.08)}
+.band.ghost{background:rgba(10,36,104,.18);border-color:rgba(95,180,255,.38);box-shadow:0 0 14px rgba(40,140,255,.18)}
+.tab{position:absolute;top:-1.5px;left:-1.5px;display:flex;align-items:center;gap:9px;padding:8px 18px 8px 14px;white-space:nowrap;
+ font-size:19px;font-weight:700;border:1.5px solid rgba(95,180,255,.85);border-radius:18px 0 14px 0;
+ background:linear-gradient(180deg,#1b58c8,#0f3b96);box-shadow:0 0 14px rgba(40,140,255,.45)}
+.tab .m{font-weight:500;color:#d6e5ff;font-size:16.5px}
+.tab svg{color:#8fe8ff}
+
+.card{position:absolute;display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:14px;
+ border:1.5px solid rgba(115,198,255,.92);
+ background:linear-gradient(180deg,rgba(26,70,162,.96),rgba(10,32,92,.96));
+ box-shadow:0 0 18px rgba(50,160,255,.5),0 12px 26px rgba(0,6,28,.5),inset 0 1px 0 rgba(255,255,255,.16)}
+.card .t{font-size:19px;font-weight:700;line-height:1.22;white-space:nowrap;letter-spacing:-.1px}
+.card .s{font-size:14.5px;font-weight:500;color:#d3e2ff;line-height:1.34;white-space:nowrap}
+.id{color:#8fe8ff}
+.tile{flex:none;width:46px;height:46px;border-radius:12px;display:grid;place-items:center;color:#fff;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.4),inset 0 -2px 6px rgba(0,0,0,.18),0 0 14px var(--g)}
+.tile svg{filter:drop-shadow(0 1px 1px rgba(0,0,0,.3))}
+.k-src{background:linear-gradient(135deg,#5b97ff,#1f47c4);--g:rgba(79,141,255,.6)}
+.k-adf{background:linear-gradient(135deg,#2ad8ff,#1c62e6);--g:rgba(42,216,255,.6)}
+.k-meta{background:linear-gradient(135deg,#7fb2ff,#4b3fd2);--g:rgba(122,140,255,.6)}
+.k-kv{background:linear-gradient(135deg,#ffd75e,#e08600);--g:rgba(255,200,60,.55)}
+.k-dbx{background:linear-gradient(135deg,#ff9d4d,#e3342b);--g:rgba(255,120,70,.6)}
+.k-mon{background:linear-gradient(135deg,#46e6a8,#0f9a8b);--g:rgba(67,227,166,.55)}
+.k-bi{background:linear-gradient(135deg,#ffe066,#f0a400);--g:rgba(255,210,70,.55)}
+.k-gh{background:linear-gradient(135deg,#94a0b2,#2b3340);--g:rgba(170,180,200,.45)}
+.k-ado{background:linear-gradient(135deg,#ad8fff,#5a33d6);--g:rgba(169,139,255,.6)}
+
+.lake{position:absolute;border-radius:16px;border:1.5px dashed rgba(125,205,255,.9);
+ background:linear-gradient(180deg,rgba(45,120,240,.17),rgba(20,60,160,.10));box-shadow:inset 0 0 30px rgba(60,150,255,.12)}
+.lake .lt{position:absolute;left:0;right:0;bottom:15px;text-align:center}
+.lake .lt .t{font-size:18.5px;font-weight:700;white-space:nowrap}
+.lake .lt .s{font-size:14px;font-weight:500;color:#bcd4f8;margin-top:3px;white-space:nowrap}
+.med{flex-direction:column;justify-content:center;text-align:center;gap:5px;padding:10px 6px}
+.med .t{font-size:19px}.med .s{font-size:13.5px;line-height:1.3}
+
+svg.wires{position:absolute;left:0;top:0;width:1600px;height:900px;overflow:visible;pointer-events:none}
+.data{fill:none;stroke:#40d4ff;stroke-width:3.2;filter:url(#gd)}
+.ctl{fill:none;stroke:#aac3ff;stroke-width:2.2;stroke-dasharray:7 6;filter:url(#gc)}
+.dep{fill:none;stroke:#bba5ff;stroke-width:2.6;filter:url(#gv)}
+.depd{fill:none;stroke:#bba5ff;stroke-width:2.2;stroke-dasharray:7 6;filter:url(#gv)}
+.lbl{position:absolute;display:flex;align-items:center;gap:7px;font-size:15px;font-weight:600;color:#f0f6ff;white-space:nowrap;
+ text-shadow:0 1px 8px rgba(0,16,60,.95),0 0 2px rgba(0,16,60,.9)}
+.lbl.two{align-items:flex-start;line-height:1.35}
+.n{flex:none;width:21px;height:21px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:800;color:#03214d;text-shadow:none;
+ background:linear-gradient(180deg,#9af2ff,#36c6ff);box-shadow:0 0 10px rgba(63,210,255,.8),inset 0 1px 0 rgba(255,255,255,.6)}
+
+.legend{position:absolute;padding:13px 16px;border-radius:14px;border:1.5px solid rgba(115,198,255,.55);
+ background:linear-gradient(180deg,rgba(14,46,120,.78),rgba(8,28,82,.78));box-shadow:0 0 16px rgba(40,140,255,.28)}
+.legend .h{font-size:11.5px;font-weight:800;letter-spacing:1.8px;color:#9cc0f0}
+.legend .r{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;color:#e6efff;margin-top:9px;white-space:nowrap}
+
+.pills{position:absolute;display:flex;align-items:center;gap:9px}
+.pill{padding:6px 13px;border-radius:999px;font-size:14px;font-weight:700;white-space:nowrap;display:flex;align-items:center;gap:6px;
+ border:1.5px solid rgba(175,150,255,.95);background:linear-gradient(180deg,rgba(115,85,235,.6),rgba(62,36,165,.6));box-shadow:0 0 12px rgba(150,120,255,.5)}
+.pill.ok{border-color:rgba(255,212,95,.95);background:linear-gradient(180deg,rgba(205,145,25,.6),rgba(140,90,0,.6));box-shadow:0 0 12px rgba(255,200,80,.5)}
+.chev{color:#cbbcff;font-size:16px;font-weight:800}
+
+.cap{position:absolute;font-size:11.5px;font-weight:800;letter-spacing:1.6px;color:#9cc0f0;white-space:nowrap}
+.chips{position:absolute;display:grid;grid-template-columns:auto auto;gap:8px 10px}
+.chip{display:flex;align-items:center;gap:8px;padding:4px 12px 4px 5px;border-radius:10px;border:1px solid rgba(140,195,255,.55);
+ background:rgba(14,44,118,.8);font-size:13.5px;font-weight:600;white-space:nowrap}
+.chip .mini{flex:none;width:23px;height:23px;border-radius:7px;display:grid;place-items:center;color:#fff}
+
+/* --- additions for this diagram --- */
+.card .t{font-size:17px}
+.card .s{font-size:13.5px}
+.card .t.id{font-family:"JetBrains Mono","Cascadia Code",Consolas,monospace;font-size:14.5px;letter-spacing:-.3px;color:#fff}
+.tile{width:42px;height:42px}
+.stack{flex-direction:column;align-items:stretch;gap:8px;padding:12px 14px}
+.stack .hd{display:flex;align-items:center;gap:12px}
+.stack .s{white-space:nowrap}
+.stack .t{font-size:16px}
+.k-api{background:linear-gradient(135deg,#5b97ff,#1f47c4);--g:rgba(79,141,255,.6)}
+.k-pl{background:linear-gradient(135deg,#2ad8ff,#1c62e6);--g:rgba(42,216,255,.6)}
+.k-nb{background:linear-gradient(135deg,#ff9d4d,#e3342b);--g:rgba(255,120,70,.6)}
+.k-rt{background:linear-gradient(135deg,#ffc24d,#f0660a);--g:rgba(255,160,60,.65)}
+.k-files{background:linear-gradient(135deg,#8fa6c8,#3d5380);--g:rgba(150,175,215,.5)}
+.k-wh{background:linear-gradient(135deg,#ffe066,#f0a400);--g:rgba(255,210,70,.55)}
+.k-sm{background:linear-gradient(135deg,#46e6a8,#0f9a8b);--g:rgba(67,227,166,.55)}
+.k-ops{background:linear-gradient(135deg,#7fb2ff,#4b3fd2);--g:rgba(122,140,255,.6)}
+.band.rt{border-color:rgba(255,176,84,.9);background:linear-gradient(180deg,rgba(200,110,20,.20),rgba(120,56,6,.14));
+ box-shadow:0 0 22px rgba(255,150,50,.30), inset 0 0 30px rgba(255,150,50,.08)}
+.band.rt .tab{border-color:rgba(255,176,84,.9);background:linear-gradient(180deg,#c9731a,#8f4a0a);box-shadow:0 0 14px rgba(255,150,50,.45)}
+.band.rt .tab svg{color:#ffe2a8}
+.card.rtc{border-color:rgba(255,190,110,.95);background:linear-gradient(180deg,rgba(122,64,22,.96),rgba(60,30,26,.96));
+ box-shadow:0 0 18px rgba(255,150,50,.42),0 12px 26px rgba(0,6,28,.5),inset 0 1px 0 rgba(255,255,255,.16)}
+.card.rtc .id,.card.rtc .s.id{color:#ffd9a0}
+.rtw{fill:none;stroke:#ffb14a;stroke-width:3.2;filter:url(#gr)}
+.link{fill:none;stroke:#aac3ff;stroke-width:2.2;stroke-dasharray:7 6;filter:url(#gc)}
+.cyl{flex:none;width:42px;height:48px}
+.cap{font-size:12px}
+.lbl{font-size:14px}
+.lbl.small{font-size:13px;line-height:1.35;font-weight:600}
+.pill.rt{border-color:rgba(255,190,110,.95);background:linear-gradient(180deg,rgba(205,120,25,.6),rgba(140,70,0,.6));box-shadow:0 0 12px rgba(255,170,80,.5)}
+
+svg.wires{width:1600px;height:1000px}
+</style></head><body>
+<div class="bg beams"></div><div class="bg dots"></div><div class="bg vig"></div>
+<div class="title">Citi Bike Lakehouse on Microsoft Fabric</div>
+<div class="sub">Batch and live ingestion<b>•</b>Medallion lakehouse<b>•</b>T-SQL warehouse<b>•</b>Direct Lake<b>•</b>Real-Time Intelligence</div>
+<div class="band" id="src" style="left:24px;top:122px;width:316px;height:680px"><div class="tab"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"/><path d="M3.6 9h16.8"/><path d="M3.6 15h16.8"/><path d="M11.5 3a17 17 0 0 0 0 18"/><path d="M12.5 3a17 17 0 0 1 0 18"/></svg>Public sources</div></div>
+<div class="band" id="fab" style="left:364px;top:122px;width:1220px;height:680px"><div class="tab"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l-8 4l8 4l8 -4l-8 -4"/><path d="M4 12l8 4l8 -4"/><path d="M4 16l8 4l8 -4"/></svg>Microsoft Fabric <span class="m">(one workspace per environment: dev, test, prod)</span></div></div>
+<div class="band rt" id="rt" style="left:374px;top:622px;width:1200px;height:170px"><div class="tab"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11"/></svg>Real-Time Intelligence</div></div>
+<div class="band" id="ops" style="left:24px;top:816px;width:1560px;height:166px"><div class="tab"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13a8 8 0 0 1 7 7a6 6 0 0 0 3 -5a9 9 0 0 0 6 -8a3 3 0 0 0 -3 -3a9 9 0 0 0 -8 6a6 6 0 0 0 -5 3" /> <path d="M7 14a6 6 0 0 0 -3 6a6 6 0 0 0 6 -3" /> <path d="M15 9m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>Orchestration and delivery</div></div>
+<div class="card " id="s1" style="left:40px;top:196px;width:284px;height:84px"><div class="tile k-api"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"/><path d="M3 12h1"/><path d="M12 3v1"/><path d="M20 12h1"/><path d="M12 20v1"/><path d="M5.6 5.6l.7 .7"/><path d="M18.4 5.6l-.7 .7"/><path d="M17.7 17.7l.7 .7"/><path d="M6.3 17.7l-.7 .7"/></svg></div><div><div class="t">Open-Meteo archive</div><div class="s">REST · JSON · daily</div></div></div>
+<div class="card " id="s2" style="left:40px;top:300px;width:284px;height:84px"><div class="tile k-api"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M6.657 18c-2.572 0 -4.657 -2.007 -4.657 -4.483c0 -2.475 2.085 -4.482 4.657 -4.482c.393 -1.762 1.794 -3.2 3.675 -3.773c1.88 -.572 3.956 -.193 5.444 1c1.488 1.19 2.162 3.007 1.77 4.769h.99c1.913 0 3.464 1.56 3.464 3.486c0 1.927 -1.551 3.487 -3.465 3.487h-11.878" /></svg></div><div><div class="t">Open-Meteo forecast</div><div class="s">REST · JSON · daily</div></div></div>
+<div class="card " id="s3" style="left:40px;top:404px;width:284px;height:84px"><div class="tile k-api"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/><path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0"/></svg></div><div><div class="t">GBFS station_information</div><div class="s">+ system_regions</div><div class="s">JSON · daily snapshot</div></div></div>
+<div class="card " id="s4" style="left:40px;top:508px;width:284px;height:84px"><div class="tile k-api"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2"/><path d="M11 5h-1"/><path d="M12 7h-1"/><path d="M11 9h-1"/><path d="M12 11h-1"/><path d="M11 13h-1"/><path d="M10 15h2v3h-2z"/></svg></div><div><div class="t">Citi Bike trip files</div><div class="s">zipped CSV · ~1 GB/month</div></div></div>
+<div class="card " id="s5" style="left:40px;top:676px;width:284px;height:84px"><div class="tile k-rt"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8l4 -16l3 8h4"/></svg></div><div><div class="t">GBFS station_status</div><div class="s">JSON · every 60 s</div></div></div>
+<div class="cap" style="left:384px;top:172px">INGESTION</div>
+<div class="card " id="i1" style="left:384px;top:196px;width:316px;height:84px"><div class="tile k-pl"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18" /> <path d="M5 21v-12l5 4v-4l5 4h4" /> <path d="M19 21v-8l-1.436 -9.574a.5 .5 0 0 0 -.495 -.426h-1.145a.5 .5 0 0 0 -.494 .418l-1.43 8.582" /> <path d="M9 17h1" /> <path d="M14 17h1" /></svg></div><div><div class="t id">pl_ingest_weather_archive</div><div class="s">Copy · REST connector</div><div class="s">watermark + 7-day overlap</div></div></div>
+<div class="card " id="i2" style="left:384px;top:300px;width:316px;height:84px"><div class="tile k-nb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M7 8l-4 4l4 4"/><path d="M17 8l4 4l-4 4"/><path d="M14 4l-4 16"/></svg></div><div><div class="t id">nb_ingest_weather_forecast</div><div class="s">Python requests</div><div class="s">retries + backoff</div></div></div>
+<div class="card " id="i3" style="left:384px;top:404px;width:316px;height:84px"><div class="tile k-pl"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18" /> <path d="M5 21v-12l5 4v-4l5 4h4" /> <path d="M19 21v-8l-1.436 -9.574a.5 .5 0 0 0 -.495 -.426h-1.145a.5 .5 0 0 0 -.494 .418l-1.43 8.582" /> <path d="M9 17h1" /> <path d="M14 17h1" /></svg></div><div><div class="t id">pl_ingest_gbfs_reference</div><div class="s">Copy · HTTP · metadata-driven</div><div class="s id">ctl.source_config</div></div></div>
+<div class="card " id="i4" style="left:384px;top:508px;width:316px;height:84px"><div class="tile k-pl"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18" /> <path d="M5 21v-12l5 4v-4l5 4h4" /> <path d="M19 21v-8l-1.436 -9.574a.5 .5 0 0 0 -.495 -.426h-1.145a.5 .5 0 0 0 -.494 .418l-1.43 8.582" /> <path d="M9 17h1" /> <path d="M14 17h1" /></svg></div><div><div class="t id">pl_ingest_trips_month</div><div class="s">Copy · HTTP · ZipDeflate</div></div></div>
+<div class="card rtc" id="es" style="left:384px;top:676px;width:276px;height:84px"><div class="tile k-rt"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11"/></svg></div><div><div class="t id">es_station_status</div><div class="s">Eventstream · HTTP source</div></div></div>
+<div class="lake" id="lake" style="left:738px;top:164px;width:420px;height:422px"></div>
+<div class="cap" style="left:756px;top:175px">LAKEHOUSE (SPARK)</div>
+<div class="card " id="files" style="left:756px;top:198px;width:392px;height:88px"><div class="tile k-files"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l3 3h7a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2"/></svg></div><div><div class="t">lh_bronze · Files</div><div class="s">raw JSON and CSV, immutable</div><div class="s">partitioned by ingest date</div></div></div>
+<div class="card " id="bronze" style="left:756px;top:326px;width:392px;height:88px"><svg class="cyl" viewBox="0 0 54 62"><defs><linearGradient id="cg-bronze" x1="0" x2="1"><stop offset="0" stop-color="#6a300d"/><stop offset=".42" stop-color="#f2a46b"/><stop offset=".62" stop-color="#c96d30"/><stop offset="1" stop-color="#6a300d"/></linearGradient>
+ <radialGradient id="cg-bronzet" cx=".45" cy=".4" r=".7"><stop offset="0" stop-color="#f7bd8f"/><stop offset="1" stop-color="#c96d30"/></radialGradient></defs>
+ <ellipse cx="27" cy="56.5" rx="23" ry="4.5" fill="#000" opacity=".38"/><path d="M5 12v36c0 4.4 9.8 8 22 8s22-3.6 22-8V12" fill="url(#cg-bronze)"/>
+ <path d="M5 24.5c0 4.4 9.8 8 22 8s22-3.6 22-8M5 37c0 4.4 9.8 8 22 8s22-3.6 22-8" fill="none" stroke="rgba(0,0,0,.24)" stroke-width="1.6"/>
+ <ellipse cx="27" cy="12" rx="22" ry="8" fill="url(#cg-bronzet)"/><ellipse cx="27" cy="12" rx="21.4" ry="7.5" fill="none" stroke="rgba(255,255,255,.65)" stroke-width="1.1"/>
+ <path d="M12 20v24" stroke="rgba(255,255,255,.35)" stroke-width="3" stroke-linecap="round"/></svg><div><div class="t">lh_bronze · Tables</div><div class="s id">bronze_weather · bronze_gbfs · bronze_trips</div><div class="s">Structured Streaming availableNow</div></div></div>
+<div class="card " id="silver" style="left:756px;top:454px;width:392px;height:114px"><svg class="cyl" viewBox="0 0 54 62"><defs><linearGradient id="cg-silver" x1="0" x2="1"><stop offset="0" stop-color="#5f6b7d"/><stop offset=".42" stop-color="#f5f8fc"/><stop offset=".62" stop-color="#b6c0ce"/><stop offset="1" stop-color="#5f6b7d"/></linearGradient>
+ <radialGradient id="cg-silvert" cx=".45" cy=".4" r=".7"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#b6c0ce"/></radialGradient></defs>
+ <ellipse cx="27" cy="56.5" rx="23" ry="4.5" fill="#000" opacity=".38"/><path d="M5 12v36c0 4.4 9.8 8 22 8s22-3.6 22-8V12" fill="url(#cg-silver)"/>
+ <path d="M5 24.5c0 4.4 9.8 8 22 8s22-3.6 22-8M5 37c0 4.4 9.8 8 22 8s22-3.6 22-8" fill="none" stroke="rgba(0,0,0,.24)" stroke-width="1.6"/>
+ <ellipse cx="27" cy="12" rx="22" ry="8" fill="url(#cg-silvert)"/><ellipse cx="27" cy="12" rx="21.4" ry="7.5" fill="none" stroke="rgba(255,255,255,.65)" stroke-width="1.1"/>
+ <path d="M12 20v24" stroke="rgba(255,255,255,.35)" stroke-width="3" stroke-linecap="round"/></svg><div><div class="t">lh_silver · Tables</div><div class="s id">weather_hourly · region · station_scd2</div><div class="s id">trips · station_status_hourly</div><div class="s">quarantine_* · data-quality rules</div></div></div>
+<div class="card stack " id="sm" style="left:1262px;top:176px;width:308px;height:138px"><div class="hd"><div class="tile k-sm"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /> <path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /> <path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /> <path d="M4 20h14" /></svg></div><div><div class="t">sm_citibike · Direct Lake</div></div></div><div><div class="s id">→ rpt_citibike_ops · Power BI report</div><div class="s">demand vs weather · empty at rush hour</div><div class="s">pipeline health</div></div></div>
+<div class="card stack " id="gold" style="left:1262px;top:368px;width:308px;height:206px"><div class="hd"><svg class="cyl" viewBox="0 0 54 62"><defs><linearGradient id="cg-gold" x1="0" x2="1"><stop offset="0" stop-color="#966500"/><stop offset=".42" stop-color="#ffe486"/><stop offset=".62" stop-color="#e5b11e"/><stop offset="1" stop-color="#966500"/></linearGradient>
+ <radialGradient id="cg-goldt" cx=".45" cy=".4" r=".7"><stop offset="0" stop-color="#fff0b0"/><stop offset="1" stop-color="#e5b11e"/></radialGradient></defs>
+ <ellipse cx="27" cy="56.5" rx="23" ry="4.5" fill="#000" opacity=".38"/><path d="M5 12v36c0 4.4 9.8 8 22 8s22-3.6 22-8V12" fill="url(#cg-gold)"/>
+ <path d="M5 24.5c0 4.4 9.8 8 22 8s22-3.6 22-8M5 37c0 4.4 9.8 8 22 8s22-3.6 22-8" fill="none" stroke="rgba(0,0,0,.24)" stroke-width="1.6"/>
+ <ellipse cx="27" cy="12" rx="22" ry="8" fill="url(#cg-goldt)"/><ellipse cx="27" cy="12" rx="21.4" ry="7.5" fill="none" stroke="rgba(255,255,255,.65)" stroke-width="1.1"/>
+ <path d="M12 20v24" stroke="rgba(255,255,255,.35)" stroke-width="3" stroke-linecap="round"/></svg><div><div class="t">wh_gold · Warehouse (T-SQL)</div></div></div><div><div class="s id">dim: date · station (SCD2) · region</div><div class="s id">weather_hour · weather_code</div><div class="s id">fact: trip · station_hour · rpt views</div><div class="s id">ctl run log + DQ results</div><div class="s">RLS by region · masking · column security</div></div></div>
+<div class="card stack rtc" id="eh" style="left:756px;top:656px;width:392px;height:124px"><div class="hd"><div class="tile k-rt"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6m-8 0a8 3 0 1 0 16 0a8 3 0 1 0 -16 0" /> <path d="M4 6v6a8 3 0 0 0 16 0v-6" /> <path d="M4 12v6a8 3 0 0 0 16 0v-6" /></svg></div><div><div class="t">eh_citibike · kqldb_citibike</div></div></div><div><div class="s id">station_status_raw → update policy → station_status</div><div class="s id">mv_station_status_latest</div></div></div>
+<div class="card rtc" id="act" style="left:1200px;top:656px;width:370px;height:58px"><div class="tile k-rt"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6"/><path d="M9 17v1a3 3 0 0 0 6 0v-1"/></svg></div><div><div class="t id">act_citibike_alerts</div><div class="s">empty 15 min at rush hour</div></div></div>
+<div class="card rtc" id="rtd" style="left:1200px;top:724px;width:370px;height:58px"><div class="tile k-rt"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M4 15l4 -6l4 2l4 -5l4 4"/></svg></div><div><div class="t id">rtd_citibike_live</div><div class="s">Real-Time Dashboard</div></div></div>
+<div class="card stack " id="pl" style="left:48px;top:864px;width:700px;height:102px"><div class="hd"><div class="tile k-ops"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"/><path d="M12 7v5l3 3"/></svg></div><div><div class="t">Pipelines and monitoring</div></div></div><div><div class="s"><span class="id">pl_daily</span> 11:30 IST · <span class="id">pl_monthly_trips</span> on the 8th · <span class="id">pl_backfill</span></div><div class="s">logging (<span class="id">ctl.run_log</span>) · failure alert · Monitoring hub · Capacity Metrics</div></div></div>
+<div class="card " id="gh" style="left:784px;top:866px;width:250px;height:98px"><div class="tile k-gh"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /> <path d="M6 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /> <path d="M18 18m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /> <path d="M6 8l0 8" /> <path d="M11 6h5a2 2 0 0 1 2 2v8" /> <path d="M14 9l-3 -3l3 -3" /></svg></div><div><div class="t">GitHub</div><div class="s id">dev ↔ ws-citibike-dev</div><div class="s">PR dev → main, CI checks</div></div></div>
+<div class="cap" id="capdep" style="left:1072px;top:868px">DEPLOYMENT PIPELINE</div>
+<div class="pills" id="pills" style="left:1072px;top:890px"><div class="pill" id="p-dev">dev</div><span class="chev">›</span><div class="pill" id="p-test">test</div><span class="chev">›</span><div class="pill ok" id="p-prod">prod</div></div>
+<div class="chips" id="chips" style="left:1072px;top:932px;grid-template-columns:auto"><div class="chip"><span class="mini k-ops"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"/><path d="M3 10h18"/><path d="M10 3v18"/></svg></span><span><span class="id">vl_citibike</span> value sets</span></div></div>
+
+<div class="lbl" id="l1">new files only</div>
+<div class="lbl" id="l2">PySpark: flatten, type, dedupe, SCD2, UTC</div>
+<div class="lbl small" id="l3">stored<br>procedures:<br>delete + insert<br>per window</div>
+<div class="lbl small" id="l4">every minute</div>
+<div class="lbl small" id="l5">shortcut with query acceleration</div>
+<div class="lbl small" id="l6">OneLake availability + shortcut</div>
+<div class="legend" id="legend" style="left:1392px;top:850px;width:176px;height:118px">
+ <div class="h">LEGEND</div>
+ <div class="r"><svg width="34" height="8"><line x1="1" y1="4" x2="33" y2="4" stroke="#40d4ff" stroke-width="3.2"/></svg>batch data</div>
+ <div class="r"><svg width="34" height="8"><line x1="1" y1="4" x2="33" y2="4" stroke="#ffb14a" stroke-width="3.2"/></svg>live data</div>
+ <div class="r"><svg width="34" height="8"><line x1="1" y1="4" x2="33" y2="4" stroke="#aac3ff" stroke-width="2.2" stroke-dasharray="7 6"/></svg>shortcut</div>
+</div>
+<svg class="wires" id="wires"></svg>
+<script>
+const $=id=>{const r=document.getElementById(id).getBoundingClientRect();return {l:r.left,t:r.top,r:r.right,b:r.bottom,w:r.width,h:r.height,cx:(r.left+r.right)/2,cy:(r.top+r.bottom)/2}};
+const P=[];
+function add(cls,d,head=true){P.push(`<path class="${cls}" d="${d}" ${head?`marker-end="url(#m-${cls})"`:''}/>`)}
+function place(id,x,y,anchor='l'){const e=document.getElementById(id);const w=e.offsetWidth;let L=x;if(anchor==='c')L=x-w/2;if(anchor==='r')L=x-w;e.style.left=L+'px';e.style.top=y+'px'}
+const g={};['s1','s2','s3','s4','s5','i1','i2','i3','i4','es','files','bronze','silver','gold','sm','eh','act','rtd','lake','rt'].forEach(k=>g[k]=$(k));
+// sources -> ingestion
+[1,2,3,4].forEach(n=>add('data',`M${g['s'+n].r} ${g['s'+n].cy} H${g['i'+n].l-1}`));
+add('rtw',`M${g.s5.r} ${g.s5.cy} H${g.es.l-1}`);
+// ingestion -> Files, one bus
+const bx=(g.i1.r+g.files.l)/2-4, fy=g.files.cy, R=12;
+add('data',`M${g.i1.r} ${g.i1.cy} H${g.files.l-1}`);
+[2,3,4].forEach(n=>{const y=g['i'+n].cy;add('data',`M${g['i'+n].r} ${y} H${bx-R} Q${bx} ${y} ${bx} ${y-R} V${fy+R} Q${bx} ${fy} ${bx+R} ${fy}`,false)});
+// lake
+const ax=g.files.l+35;
+add('data',`M${ax} ${g.files.b} V${g.bronze.t-1}`);
+add('data',`M${ax} ${g.bronze.b} V${g.silver.t-1}`);
+const sy=g.silver.cy;
+add('data',`M${g.silver.r} ${sy} H${g.gold.l-1}`);
+add('data',`M${g.gold.cx} ${g.gold.t} V${g.sm.b+1}`);
+// live
+add('rtw',`M${g.es.r} ${g.es.cy} H${g.eh.l-1}`);
+const mx=(g.eh.r+g.act.l)/2;
+add('rtw',`M${g.eh.r} ${g.act.cy} H${g.act.l-1}`);
+add('rtw',`M${g.eh.r} ${g.rtd.cy} H${g.rtd.l-1}`);
+// shortcuts between silver and the eventhouse
+const x1=g.silver.l+160, x2=g.silver.r-150;
+add('link',`M${x1} ${g.silver.b} V${g.eh.t-1}`);
+add('link',`M${x2} ${g.eh.t} V${g.silver.b+1}`);
+// labels
+place('l1',ax+16,(g.files.b+g.bronze.t)/2-11);
+place('l2',ax+16,(g.bronze.b+g.silver.t)/2-11);
+place('l3',(g.silver.r+g.gold.l)/2+5,sy-84,'c');
+place('l4',(g.es.r+g.eh.l)/2,g.es.cy-28,'c');
+const ly=(g.lake.b+g.rt.t)/2-9;
+place('l5',x1-10,ly,'r');
+place('l6',x2+10,ly);
+const mk=(c,col,s)=>`<marker id="m-${c}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="${s}" markerHeight="${s}" orient="auto-start-reverse" markerUnits="strokeWidth"><path d="M0 0L10 5L0 10z" fill="${col}"/></marker>`;
+const fl=(id,col)=>`<filter id="${id}" filterUnits="userSpaceOnUse" x="0" y="0" width="1600" height="1000"><feGaussianBlur stdDeviation="2.6" result="b"/><feFlood flood-color="${col}" flood-opacity=".75"/><feComposite in2="b" operator="in"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>`;
+document.getElementById('wires').innerHTML=`<defs>${mk('data','#40d4ff',4.6)}${mk('rtw','#ffb14a',4.6)}${mk('link','#aac3ff',5.4)}${fl('gd','#2aa8ff')}${fl('gr','#ff8a1e')}${fl('gc','#6f8fe0')}</defs>`+P.join('');
+</script>
+</body></html>
